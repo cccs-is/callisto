@@ -1,16 +1,20 @@
 import requests
 import arrow
 import json
+import requests_oauthlib
+
 from django.conf import settings
 from django.urls import reverse
 from main.models import SharedNotebook
 import re
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from ohapi import api
+from urllib.parse import urlparse
 import logging
 from open_humans.models import OpenHumansMember
 from django.contrib import messages
 from collections import defaultdict
+
 logger = logging.getLogger(__name__)
 
 
@@ -26,7 +30,23 @@ def get_notebook_oh(oh_member_data, notebook_id):
             return (data_object['basename'], data_object['download_url'])
 
 
+# Temp local reader for testing.... for now.
+def local_get(url):
+    p_url = urlparse(url)
+    if p_url.scheme != 'file':
+        raise ValueError("Expected file scheme")
+
+    filename = p_url.path
+    content = ''
+    with open(filename, 'rb') as f:
+        content = f.read()
+    return content
+
+
 def download_notebook_oh(notebook_url):
+    if notebook_url.startswith('file:///'):
+        return local_get(notebook_url)
+
     notebook_content = requests.get(notebook_url).content
     return notebook_content
 
@@ -80,6 +100,9 @@ def find_notebook_by_keywords(search_term, search_field=None):
 
 def suggest_data_sources(notebook_content):
     potential_sources = re.findall("direct-sharing-\d+", str(notebook_content))
+    print('TBD: suggest_data_sources() Implement ME!')
+    return ""
+    
     if potential_sources:
         response = requests.get(
             'https://www.openhumans.org/api/public-data/members-by-source/')
@@ -116,34 +139,37 @@ def paginate_items(queryset, page):
     return paged_queryset
 
 
-def oh_code_to_member(code):
+def oh_code_to_member(data):
     """
-    Exchange code for token, use this to create and return OpenHumansMember.
-    If a matching OpenHumansMember exists, update and return it.
+    Exchange data for token, use this to create and return OrgMember.
+    If a matching OrgMember exists, update and return it.
     """
-    if settings.OPENHUMANS_CLIENT_SECRET and \
-       settings.OPENHUMANS_CLIENT_ID and code:
-        data = {
-            'grant_type': 'authorization_code',
-            'redirect_uri':
-            '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL),
-            'code': code,
-        }
-        req = requests.post(
-            '{}/oauth2/token/'.format(settings.OPENHUMANS_OH_BASE_URL),
-            data=data,
-            auth=requests.auth.HTTPBasicAuth(
-                settings.OPENHUMANS_CLIENT_ID,
-                settings.OPENHUMANS_CLIENT_SECRET
-            )
-        )
-        data = req.json()
+    if data:
+
+        # TBD, we need to have thsi OAuth2Session held by the model someow
+        # TBD, we need to have the state is set here and checked against the
+        #      returned state.
+                           
+
+        # data = {
+        #     'grant_type': 'authorization_code',
+        #     'redirect_uri':
+        #     '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL),
+        #     'code': code,
+        # }
+        # req = requests.post(
+        #     '{}/oauth2/token/'.format(settings.OPENHUMANS_OH_BASE_URL),
+        #     data=data,
+        #     auth=requests.auth.HTTPBasicAuth(
+        #         settings.OPENHUMANS_CLIENT_ID,
+        #         settings.OPENHUMANS_CLIENT_SECRET
+        #     )
+        # )
+        # data = req.json()
 
         if 'access_token' in data:
-            oh_memberdata = api.exchange_oauth2_member(
-                data['access_token'])
-            oh_id = oh_memberdata['project_member_id']
-            oh_username = oh_memberdata['username']
+            oh_id = data['id']
+            oh_username = data['username']
             try:
                 oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
                 logger.debug('Member {} re-authorized.'.format(oh_id))
@@ -163,8 +189,8 @@ def oh_code_to_member(code):
 
             return oh_member
 
-        elif 'error' in req.json():
-            logger.debug('Error in token exchange: {}'.format(req.json()))
+        # elif 'error' in req.json():
+        #     logger.debug('Error in token exchange: {}'.format(req.json()))
         else:
             logger.warning('Neither token nor error info in OH response!')
     else:

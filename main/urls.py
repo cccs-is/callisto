@@ -7,6 +7,7 @@ from . import views_comments
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
+    path('login-user/', views.login_user, name='login-user'),
     path('complete/', views.complete, name='complete'),
     path('delete-user/', views.delete_user, name='delete-user'),
     path('shared/', views.shared, name='shared'),
@@ -25,7 +26,7 @@ urlpatterns = [
     path('open-notebook/<notebook_id>/',
          views_notebook_details.open_notebook_hub,
          name='open-notebook'),
-    path('add-notebook-gallery/<notebook_id>/',
+    path('add-notebook-gallery/<path:notebook_url>/<str:notebook_name>',
          views.add_notebook,
          name='add-notebook-gallery'),
     path('edit-notebook/<notebook_id>/',

@@ -3,11 +3,11 @@
 {% block content %}
 
     {%if edit %}
-      <h1>Update your existing notebook <code>{{name}}</code>.</h1>
+      <h1>Update your existing notebook <code>{{notebook_name}}</code>.</h1>
     {%else%}
-    <h1>Publish your notebook <code>{{name}}</code>.</h1>
+    <h1>Publish your notebook <code>{{notebook_name}}</code>.</h1>
     {%endif%}
-    <form action="{% url 'add-notebook-gallery' notebook_id %}" method="post">
+    <form action="{% url 'add-notebook-gallery' notebook_url notebook_name %}" method="post">
     {% csrf_token %}
     <div class="form-group">
       <label>Description</label>

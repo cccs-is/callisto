@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import requests
 
-OH_BASE_URL = settings.OPENHUMANS_OH_BASE_URL
+OH_BASE_URL = settings.OH_BASE_URL
 OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
 OH_DELETE_FILES = OH_API_BASE + '/project/files/delete/'
 OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
@@ -72,8 +72,8 @@ class OpenHumansMember(models.Model):
             self.oh_id)
 
     def get_access_token(self,
-                         client_id=settings.OPENHUMANS_CLIENT_ID,
-                         client_secret=settings.OPENHUMANS_CLIENT_SECRET):
+                         client_id=settings.CLIENT_ID,
+                         client_secret=settings.CLIENT_SECRET):
         """
         Return access token. Refresh first if necessary.
         """
@@ -88,6 +88,9 @@ class OpenHumansMember(models.Model):
         """
         Refresh access token.
         """
+        print('TBD: _refresh_tokens() Implement ME!!!')
+        return
+
         response = requests.post(
             'https://www.openhumans.org/oauth2/token/',
             data={

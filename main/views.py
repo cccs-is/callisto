@@ -13,13 +13,18 @@ from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook
 import arrow
 import json
+import requests_oauthlib
+import jwt
+import uuid
 from django.db.models import Count
 from django.urls import reverse
 from django.http import JsonResponse
 
 # Set up logging.
 logger = logging.getLogger(__name__)
-
+MSGRAPH = requests_oauthlib.OAuth2Session(settings.CLIENT_ID,
+                                    scope=settings.OAUTH2_SCOPES,
+                                    redirect_uri=settings.REDIRECT_URI)
 
 def shared(request):
     """
@@ -51,7 +56,7 @@ def index(request):
                    'latest_notebooks': latest_notebooks,
                    'data_sources': data_sources}
 
-        return render(request, 'main/index.html', context=context)
+    return render(request, 'main/index.html', context=context)
 
 
 def data_source_index(request):
@@ -73,16 +78,46 @@ def delete_user(request):
         logout(request)
     return redirect('index')
 
+def login_user(request):
+    # print('Attempt to login to MSFT!!!')
+    auth_base = settings.AUTHORITY_HOST_URL + '/oauth2/v2.0/authorize'
+    authorization_url, state = MSGRAPH.authorization_url(auth_base)
+    MSGRAPH.auth_state = state
+    return redirect(authorization_url)
 
 def complete(request):
     """
     Receive user from Open Humans. Store data, start upload.
     """
-    # print("Received user returning from Open Humans.")
+ 
     # Exchange code for token.
     # This creates an OpenHumansMember and associated user account.
     code = request.GET.get('code', '')
-    oh_member = oh_code_to_member(code=code)
+    tokens = MSGRAPH.fetch_token(settings.AUTHORITY_HOST_URL + '/oauth2/v2.0/token',
+                    client_secret=settings.CLIENT_SECRET,
+                    code = code)
+    
+    access_info = jwt.decode(tokens['access_token'], verify=False)
+    # print('ACCESS_INFO:', access_info)
+
+    # endpoint = settings.OAUTH2_RESOURCE + '/v1.0/me'
+    # headers = {'SdkVersion': 'juno-0.1.0',
+    #         'x-client-SKU': 'juno',
+    #         'client-request-id': str(uuid.uuid4()),
+    #         'return-client-request-id': 'true'}
+    # graphdata = MSGRAPH.get(endpoint, headers=headers).json()
+    # print('>>> MSGraph res:', graphdata)
+
+    # print('>>> tokens keys:', tokens.keys())
+
+    data = {'access_token': tokens['access_token'],
+            'expires_in': tokens['expires_in'], 
+            'refresh_token': tokens['refresh_token'],
+            'id': access_info['oid'],
+            'username': access_info['unique_name']
+            }
+
+    oh_member = oh_code_to_member(data)
 
     if oh_member:
         # Log in the user.
@@ -112,8 +147,23 @@ def dashboard(request):
         'oh_member': oh_member,
     }
     try:
-        oh_member_data = api.exchange_oauth2_member(
-                            oh_member.get_access_token())
+        # oh_member_data = api.exchange_oauth2_member(
+        #                     oh_member.get_access_token())
+        # TBD: for now we'll have a simple mock data structure
+        oh_member_data = {
+            'data': [{
+                'source': 'direct-sharing-71',
+                'basename': 'pyspark_local_example',
+                'url' : 'file:///tmp/pyspark_local_example.ipynb'
+
+            },
+            {
+                'source': 'direct-sharing-71',
+                'basename': 'iris_example',
+                'url' : 'file:///tmp/iris_example.ipynb'
+
+            }]
+        }
     except:
         messages.error(request, "You need to re-authenticate with Open Humans")
         logout(request)
@@ -143,17 +193,19 @@ def likes(request):
 
 
 @login_required(login_url='/')
-def add_notebook(request, notebook_id):
+def add_notebook(request, notebook_url, notebook_name):
     oh_member = request.user.oh_member
-    try:
-        oh_member_data = api.exchange_oauth2_member(
-                                oh_member.get_access_token())
-    except:
-        messages.error(request, "You need to re-authenticate with Open Humans")
-        logout(request)
-        return redirect("/")
+    # TBD: Remove it
+    # try:
+    #     oh_member_data = api.exchange_oauth2_member(
+    #                             oh_member.get_access_token())
+    # except:
+    #     print('.... EXCEPTION....')
+    #     messages.error(request, "You need to re-authenticate with Open Humans")
+    #     logout(request)
+    #     return redirect("/")
 
-    notebook_name, notebook_url = get_notebook_oh(oh_member_data, notebook_id)
+    # notebook_name, notebook_url = get_notebook_oh(oh_member_data, notebook_id)
 
     if request.method == 'POST':
         add_notebook_helper(request, notebook_url, notebook_name, oh_member)
@@ -167,15 +219,15 @@ def add_notebook(request, notebook_id):
             context = {'description': existing_notebook.description,
                        'tags': existing_notebook.get_tags(),
                        'data_sources': existing_notebook.get_data_sources(),
-                       'name': notebook_name,
-                       'notebook_id': str(notebook_id),
+                       'notebook_name': notebook_name,
+                       'notebook_url': str(notebook_url),
                        'edit': True}
         else:
             notebook_content = download_notebook_oh(notebook_url)
             suggested_sources = suggest_data_sources(notebook_content)
             context = {'description': '',
-                       'name': notebook_name,
-                       'notebook_id': str(notebook_id),
+                       'notebook_name': notebook_name,
+                       'notebook_url': str(notebook_url),
                        'tags': '',
                        'data_sources': suggested_sources}
         return render(request, 'main/add_notebook.html', context=context)

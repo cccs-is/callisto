@@ -21,7 +21,7 @@
             {% for nb_file in notebook_files%}
             <tr>
               <td>
-              <code>{{nb_file.basename}}</code> <a href="{% url 'add-notebook-gallery' nb_file.id%}"><button type="button" class="btn btn-default btn-xs">add/replace <i class="far fa-plus-square"></i></button></a>
+              <code>{{nb_file.basename}}</code> <a href="{% url 'add-notebook-gallery' nb_file.url nb_file.basename%}"><button type="button" class="btn btn-default btn-xs">add/replace <i class="far fa-plus-square"></i></button></a>
               </td>
             </tr>
             {%endfor%}
