@@ -228,6 +228,23 @@ def add_notebook_helper(request, notebook_url, notebook_name, oh_member):
     notebook.save()
 
 
+def add_notebook_direct(request, oh_member, notebook_name, notebook_content):
+    notebook, created = SharedNotebook.objects.get_or_create(oh_member=oh_member, notebook_name=notebook_name)
+    notebook.notebook_content = notebook_content  # TODO: .decode() - do we need to encode / decode if passed as data?
+    notebook.notebook_name = notebook_name
+    notebook.updated_at = arrow.now().format()
+    notebook.oh_member = oh_member
+    notebook.master_notebook = identify_master_notebook(notebook_name, oh_member)
+    notebook.tags = '{}'
+    notebook.data_sources = '{}'
+    if created:
+        notebook.created_at = arrow.now().format()
+        messages.info(request, 'Your notebook {} has been shared!'.format(notebook_name))
+    else:
+        messages.info(request, 'Your notebook {} has been updated!'.format(notebook_name))
+    notebook.save()
+
+
 def get_all_data_sources_numeric():
     sdict = defaultdict(int)
     for nb in SharedNotebook.objects.filter(master_notebook=None):

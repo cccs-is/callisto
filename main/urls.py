@@ -17,6 +17,7 @@ urlpatterns = [
     path('search/', views.search_notebooks, name='search'),
     path('likes/', views.likes, name='likes'),
     path('sources/', views.data_source_index, name='data-source-index'),
+    path('nbupload/', views.nbupload, name='nbupload'),
     path(
         'notebook_by_source/',
         views.notebook_by_source, name='notebook_by_source'),

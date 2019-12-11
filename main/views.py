@@ -7,7 +7,7 @@ from django.conf import settings
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import find_notebook_by_keywords, get_all_data_sources
-from .helpers import suggest_data_sources, add_notebook_helper
+from .helpers import suggest_data_sources, add_notebook_helper, add_notebook_direct
 from .helpers import paginate_items, oh_code_to_member
 from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook
@@ -18,7 +18,13 @@ import jwt
 import uuid
 from django.db.models import Count
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .oauth_utils import unique_name
+from .temp import get_user
+
+# OAuth token prefix passed in the REST header
+TOKEN_PREFIX = 'Token '
 
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -357,3 +363,22 @@ def notebook_by_source(request):
         'source_name': source_name, 'hits': len(notebook_list),
         'notebooks': notebook_list}
     return JsonResponse(output)
+
+
+@csrf_exempt
+def nbupload(request):
+    if request.method != 'POST':
+        return HttpResponse('Unexpected method.', status=405)
+
+    auth_header = request.headers.get('Authorization')
+    if auth_header.startswith(TOKEN_PREFIX):
+        auth_header = auth_header[len(TOKEN_PREFIX):]
+    user_name = unique_name(auth_header)
+    if not user_name:
+        return HttpResponse(status=401)
+
+    oh_member = get_user(user_name)
+    notebook_name = request.POST.get('notebook_name')
+    notebook_content = request.POST.get('notebook_contents')
+    add_notebook_direct(request, oh_member, notebook_name, notebook_content)
+    return HttpResponse('All good and well') # return redirect('/shared')
