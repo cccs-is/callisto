@@ -211,7 +211,7 @@ def add_notebook_helper(request, notebook_url, notebook_name, oh_member):
     data_sources = [ds.strip() for ds in data_sources.split(',')]
     notebook.data_sources = json.dumps(data_sources)
     notebook.notebook_name = notebook_name
-    notebook.notebook_content = notebook_content.decode()
+    notebook.notebook_content = notebook_content # notebook_content.decode()
     notebook.updated_at = arrow.now().format()
     notebook.oh_member = oh_member
     notebook.master_notebook = identify_master_notebook(notebook_name,
