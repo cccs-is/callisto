@@ -21,17 +21,13 @@ def azure_public_certificate(user_token):
     return None
 
 
-def unique_name(user_token):
+def verify_and_decode(user_token):
     cert_str = azure_public_certificate(user_token)
     cert_obj = load_pem_x509_certificate(cert_str.encode('utf-8'), default_backend())
     public_key = cert_obj.public_key()
-
-    tenant_id = os.getenv('JHUB_APP_ID', '70415f0c-dc04-44dd-94a3-c6a5fef093a9')
-
+    tenant_id = os.getenv('JUPYTERHUB_CLIENT_ID', '')
     try:
-        decoded = jwt.decode(user_token, public_key, algorithms=['RS256'], audience=tenant_id)
-        if decoded:
-            return decoded.get('unique_name')
+        return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=tenant_id)
     except jwt.exceptions.InvalidTokenError as e:
         print('Exception: ' + repr(e))
     return None

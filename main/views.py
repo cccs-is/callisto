@@ -20,8 +20,7 @@ from django.db.models import Count
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .oauth_utils import unique_name
-from .temp import get_user
+from .oauth_utils import verify_and_decode
 
 # OAuth token prefix passed in the REST header
 TOKEN_PREFIX = 'Token '
@@ -373,11 +372,19 @@ def nbupload(request):
     auth_header = request.headers.get('Authorization')
     if auth_header.startswith(TOKEN_PREFIX):
         auth_header = auth_header[len(TOKEN_PREFIX):]
-    user_name = unique_name(auth_header)
-    if not user_name:
+    decoded = verify_and_decode(auth_header)
+    if not decoded:
         return HttpResponse(status=401)
 
-    oh_member = get_user(user_name)
+    data = {
+            'id': decoded.get('oid'),
+            'username': decoded.get('unique_name'),
+            'access_token': auth_header,
+            'expires_in': None,  # TODO
+            'refresh_token': None  # TODO
+            }
+    oh_member = oh_code_to_member(data)
+
     notebook_name = request.POST.get('notebook_name')
     notebook_content = request.POST.get('notebook_contents')
     add_notebook_direct(request, oh_member, notebook_name, notebook_content)

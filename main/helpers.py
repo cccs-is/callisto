@@ -173,17 +173,22 @@ def oh_code_to_member(data):
             try:
                 oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
                 logger.debug('Member {} re-authorized.'.format(oh_id))
-                oh_member.access_token = data['access_token']
-                oh_member.refresh_token = data['refresh_token']
-                oh_member.token_expires = OpenHumansMember.get_expiration(
-                    data['expires_in'])
+                access_token = data.get('access_token')
+                if access_token:
+                    oh_member.access_token = access_token
+                refresh_token = data.get('refresh_token')
+                if refresh_token:
+                    oh_member.refresh_token = refresh_token
+                expires_in = data.get('expires_in')
+                if expires_in:
+                    oh_member.token_expires = OpenHumansMember.get_expiration(expires_in)
             except OpenHumansMember.DoesNotExist:
                 oh_member = OpenHumansMember.create(
                     oh_id=oh_id,
                     oh_username=oh_username,
-                    access_token=data['access_token'],
-                    refresh_token=data['refresh_token'],
-                    expires_in=data['expires_in'])
+                    access_token=data.get('access_token'),
+                    refresh_token=data.get('refresh_token'),
+                    expires_in=data.get('expires_in'))  # TODO this does not match update case which goes via OpenHumansMember.get_expiration(expires_in)
                 logger.debug('Member {} created.'.format(oh_id))
             oh_member.save()
 
