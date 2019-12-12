@@ -31,7 +31,13 @@ code {
 a,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-brand {
-  color: #008c94;
+  color: #001e5e;
+}
+
+.navbar-brand {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
 }
 
 .navbar-default {
@@ -46,27 +52,27 @@ a:focus,
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #3c9da3;
+  color: #002e91;
 }
 
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover {
-  color: #3c9da3;
-  background-color: #e6f9fa;
+  color: #0086bb;
+  background-color: #e8f8ff;
 }
 
 .btn-default {
   background-color: #fff;
-  border: 2px solid #4ac1c8;
-  color: #008c94;
+  border: 2px solid #001e5e;
+  color: #004594;
   padding: 5px 10px;
 }
 
 .btn-default:hover, .btn-default:focus {
-  background-color: #e6f9fa;
-  border: 2px solid #4ac1c8;
-  color: #008c94;
+  background-color: #e8f8ff;
+  border: 2px solid #001e5e;
+  color: #004594;
   padding: 5px 10px;
 }
 
@@ -112,14 +118,14 @@ a:focus,
 .btn-primary.btn-primary-hollow {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #008c94;
+  color: #004594;
   padding: 5px 10px;
 }
 
 .btn-primary.btn-primary-hollow.padded {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #008c94;
+  color: #004594;
   padding: 5px 10px;
   margin-bottom: 5px;
 }
@@ -131,7 +137,7 @@ a:focus,
 .btn-primary.btn-primary-hollow:hover, .btn-primary.btn-primary-hollow:focus {
   background-color: #fff1eb;
   border: 2px solid #f7763e;
-  color: #3c9da3;
+  color: #0086bb;
   padding: 5px 10px;
 }
 
@@ -146,37 +152,37 @@ a:focus,
 }
 
 .btn-info {
-  background-color: #008c94;
-  border-color: #008c94;
+  background-color: #004594;
+  border-color: #004594;
 }
 
 .btn-info:hover, .btn-info:focus {
-  background-color: #3c9da3;
-  border-color: #3c9da3;
+  background-color: #0086bb;
+  border-color: #0086bb;
 }
 
 .form-control {
-  border: 1px solid #4ac1c8;
+  border: 1px solid #001e5e;
 }
 
 .form-control:focus {
-  box-shadow: 0px 0px 4px #4ac1c8;
-  border: 1px solid #4ac1c8;
+  box-shadow: 0px 0px 4px #001e5e;
+  border: 1px solid #001e5e;
 }
 
 .footer {
-  background-color: #e6f9fa;
+  background-color: #e8f8ff;
 }
 
 .jumbotron {
-  background-color: #e6f9fa;
+  background-color: #e8f8ff;
 }
 
 .panel-default {
-  border-color: #4ac1c8;
+  border-color: #001e5e;
 }
 
 .panel-default > .panel-heading {
-    background-color: #e6f9fa;
-    border-color: #4ac1c8;
+    background-color: #e8f8ff;
+    border-color: #001e5e;
 }

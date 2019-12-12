@@ -72,6 +72,7 @@ def export_notebook(request, notebook_id):
 
 
 def open_notebook_hub(request, notebook_id):
+    print('notebook_id:', notebook_id)
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     nbview_session_key = 'nb-view-{}'.format(notebook_id)
     if not request.session.get(nbview_session_key):
@@ -79,4 +80,5 @@ def open_notebook_hub(request, notebook_id):
         notebook.views += 1
         notebook.save()
     notebook_link = create_notebook_link(notebook, request)
+    print('notebook_link:', notebook_link)
     return redirect(notebook_link)

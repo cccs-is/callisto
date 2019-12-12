@@ -158,14 +158,26 @@ def dashboard(request):
         oh_member_data = {
             'data': [{
                 'source': 'direct-sharing-71',
-                'basename': 'pyspark_local_example',
+                'basename': 'pyspark_local_example.ipynb',
                 'url' : 'file:///tmp/pyspark_local_example.ipynb'
 
             },
             {
                 'source': 'direct-sharing-71',
-                'basename': 'iris_example',
+                'basename': 'iris_example.ipynb',
                 'url' : 'file:///tmp/iris_example.ipynb'
+
+            },
+                        {
+                'source': 'direct-sharing-71',
+                'basename': 'jupyterhub-setup.pdf',
+                'url' : 'file:///tmp/jupyterhub-setup.pdf'
+
+            },
+                        {
+                'source': 'direct-sharing-71',
+                'basename': 'python_example.py',
+                'url' : 'file:///tmp/python_example.py'
 
             }]
         }
