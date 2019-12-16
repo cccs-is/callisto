@@ -31,18 +31,41 @@ MSGRAPH = requests_oauthlib.OAuth2Session(settings.CLIENT_ID,
                                     scope=settings.OAUTH2_SCOPES,
                                     redirect_uri=settings.REDIRECT_URI)
 
+@login_required(login_url="/")
 def shared(request):
     """
     Users get linked here after clicking export
     on notebooks.openhumans.org
     """
+    access_token = request.META.get('HTTP_X_ACCESS_TOKEN', None)
     if request.user.is_authenticated:
+        print('in shared()-> user:', request.user)
         messages.info(request,
                       ("Your notebook was uploaded into your Open Humans "
                        "account and can now be shared from here!"))
         return redirect('/dashboard')
+    elif access_token != None:
+        # TBD: we need to verify the token 
+        access_info = jwt.decode(access_token, verify=False)
+        print('>>> access_info:', access_info)
+        data = {'access_token': access_token,
+                'expires_in': access_info['exp'], 
+                'refresh_token': '', #tokens['refresh_token'],
+                'id': access_info['oid'],
+                'username': access_info['unique_name']
+                }
+
+        oh_member = oh_code_to_member(data)
+
+        if oh_member:
+            # Log in the user.
+            user = oh_member.user
+            login(request, user,
+                  backend='django.contrib.auth.backends.ModelBackend')
+
     latest_notebooks = SharedNotebook.objects.all(
         ).order_by('-updated_at')[:10]
+    print('in shared()-> lates_notebooks:', latest_notebooks)
     context = {'latest_notebooks': latest_notebooks}
     return render(request, 'main/shared.html', context)
 
@@ -51,13 +74,37 @@ def index(request):
     """
     Starting page for app.
     """
+    #print('>>> request.META:', request.META)
+    access_token = request.META.get('HTTP_X_ACCESS_TOKEN', None)
+
     if request.user.is_authenticated:
+        print('index() - request.user:', request.user)
         return redirect('/notebooks')
-    else:
-        latest_notebooks = SharedNotebook.objects.filter(
+    elif access_token != None:
+        # TBD: we need to verify the token 
+        access_info = jwt.decode(access_token, verify=False)
+        print('>>> access_info:', access_info)
+        data = {'access_token': access_token,
+                'expires_in': access_info['exp'], 
+                'refresh_token': '', #tokens['refresh_token'],
+                'id': access_info['oid'],
+                'username': access_info['unique_name']
+                }
+
+        oh_member = oh_code_to_member(data)
+
+        if oh_member:
+            # Log in the user.
+            user = oh_member.user
+            login(request, user,
+                  backend='django.contrib.auth.backends.ModelBackend')
+            return redirect("/dashboard")
+
+    # otherwise
+    latest_notebooks = SharedNotebook.objects.filter(
             master_notebook=None).order_by('-views')[:5]
-        data_sources = get_all_data_sources()[:6]
-        context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+    data_sources = get_all_data_sources()[:6]
+    context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks,
                    'data_sources': data_sources}
 
@@ -159,25 +206,25 @@ def dashboard(request):
             'data': [{
                 'source': 'direct-sharing-71',
                 'basename': 'pyspark_local_example.ipynb',
-                'url' : 'file:///tmp/pyspark_local_example.ipynb'
+                'url' : 'file:///code/pyspark_local_example.ipynb'
 
             },
             {
                 'source': 'direct-sharing-71',
                 'basename': 'iris_example.ipynb',
-                'url' : 'file:///tmp/iris_example.ipynb'
+                'url' : 'file:///code/iris_example.ipynb'
 
             },
                         {
                 'source': 'direct-sharing-71',
                 'basename': 'jupyterhub-setup.pdf',
-                'url' : 'file:///tmp/jupyterhub-setup.pdf'
+                'url' : 'file:///code/jupyterhub-setup.pdf'
 
             },
                         {
                 'source': 'direct-sharing-71',
                 'basename': 'python_example.py',
-                'url' : 'file:///tmp/python_example.py'
+                'url' : 'file:///code/python_example.py'
 
             }]
         }
@@ -378,10 +425,13 @@ def notebook_by_source(request):
 
 @csrf_exempt
 def nbupload(request):
+
+    logger.info('>>>> in nbupload()')
     if request.method != 'POST':
         return HttpResponse('Unexpected method.', status=405)
 
     auth_header = request.headers.get('Authorization')
+    logger.info('in nbupload() --> auth_header:' + auth_header)
     if auth_header.startswith(TOKEN_PREFIX):
         auth_header = auth_header[len(TOKEN_PREFIX):]
     decoded = verify_and_decode(auth_header)
@@ -397,6 +447,8 @@ def nbupload(request):
             }
     oh_member = oh_code_to_member(data)
 
+    logger.info('in nbupload() -> oh_member.user:'+ oh_member.user)
+    
     notebook_name = request.POST.get('notebook_name')
     notebook_content = request.POST.get('notebook_contents')
     add_notebook_direct(request, oh_member, notebook_name, notebook_content)

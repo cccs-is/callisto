@@ -38,7 +38,7 @@ def local_get(url):
 
     filename = p_url.path
     content = ''
-    with open(filename, 'rb') as f:
+    with open(filename, 'r') as f:
         content = f.read()
     return content
 
@@ -53,18 +53,23 @@ def download_notebook_oh(notebook_url):
 
 def create_notebook_link(notebook, request):
     base_url = request.build_absolute_uri("/").rstrip('/')
+    print('>> create_notebook_link() -> base_url:', base_url)
     target = request.GET.get('target', '')
     if target == 'voila':
         target = "&target=voila"
     else:
         target = ''
+    if request.user.is_authenticated:
+        oh_member=request.user.oh_member
+        access_token = oh_member.access_token
     jupyterhub_url = settings.JUPYTERHUB_BASE_URL
     export_url = reverse('export-notebook', args=(notebook.id,))
-    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}{}'.format(
+    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}&access_token={}{}'.format(
         jupyterhub_url,
         base_url,
         export_url,
         notebook.notebook_name,
+        access_token,
         target
     )
     return notebook_link

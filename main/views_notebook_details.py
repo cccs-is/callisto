@@ -65,13 +65,17 @@ def render_notebook(request, notebook_id):
     return HttpResponse(body)
 
 
+@login_required(login_url='/')
 def export_notebook(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    print('exporting notebook:', notebook.notebook_content)
     return HttpResponse(notebook.notebook_content,
                         content_type='application/json')
 
 
 def open_notebook_hub(request, notebook_id):
+    base_url = request.build_absolute_uri()
+    print('-> open_notebook_hub() -> base_url:', base_url)
     print('notebook_id:', notebook_id)
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     nbview_session_key = 'nb-view-{}'.format(notebook_id)
