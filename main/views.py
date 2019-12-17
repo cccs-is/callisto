@@ -426,30 +426,39 @@ def notebook_by_source(request):
 @csrf_exempt
 def nbupload(request):
 
-    logger.info('>>>> in nbupload()')
+    print('>>>> in nbupload()')
     if request.method != 'POST':
         return HttpResponse('Unexpected method.', status=405)
 
+    # print('request.META:', request.META)
+
+    access_token = request.META.get('HTTP_X_ACCESS_TOKEN', None)
+    if access_token != None:
+        print('in nbupload() -> access_token:' + access_token)
     auth_header = request.headers.get('Authorization')
-    logger.info('in nbupload() --> auth_header:' + auth_header)
+    print('in nbupload() --> auth_header:' + auth_header)
     if auth_header.startswith(TOKEN_PREFIX):
         auth_header = auth_header[len(TOKEN_PREFIX):]
+    """
     decoded = verify_and_decode(auth_header)
     if not decoded:
         return HttpResponse(status=401)
+    """
+    decoded = jwt.decode(access_token, verify=False)
+    
+    print('>>> in nbupload() -> access_info:', decoded)
 
     data = {
             'id': decoded.get('oid'),
             'username': decoded.get('unique_name'),
-            'access_token': auth_header,
-            'expires_in': None,  # TODO
-            'refresh_token': None  # TODO
+            'access_token': access_token,
+            'expires_in': decoded.get('exp'),
+            'refresh_token': '' # TODO
             }
     oh_member = oh_code_to_member(data)
 
-    logger.info('in nbupload() -> oh_member.user:'+ oh_member.user)
-    
     notebook_name = request.POST.get('notebook_name')
     notebook_content = request.POST.get('notebook_contents')
     add_notebook_direct(request, oh_member, notebook_name, notebook_content)
+    
     return HttpResponse('All good and well') # return redirect('/shared')

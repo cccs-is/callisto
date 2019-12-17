@@ -65,7 +65,7 @@ def render_notebook(request, notebook_id):
     return HttpResponse(body)
 
 
-@login_required(login_url='/')
+#@login_required(login_url='/')
 def export_notebook(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     print('exporting notebook:', notebook.notebook_content)
