@@ -9,3 +9,5 @@ __pycache__
 staticfiles/*
 dump.rdb
 .idea/
+.ipynb_checkpoints/*
+*.ipynb

@@ -23,7 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .oauth_utils import verify_and_decode
 
 # OAuth token prefix passed in the REST header
-TOKEN_PREFIX = 'Token '
+AUTHORIZATION_TYPE = 'Bearer '
 
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -425,27 +425,20 @@ def notebook_by_source(request):
 
 @csrf_exempt
 def nbupload(request):
-
-    print('>>>> in nbupload()')
     if request.method != 'POST':
         return HttpResponse('Unexpected method.', status=405)
 
-    # print('request.META:', request.META)
+    access_token = request.headers.get('Authorization')
+    print('in nbupload() -> access_token:' + access_token)
+    if not access_token:
+        return HttpResponse(status=401)
+    if access_token.startswith(AUTHORIZATION_TYPE):
+        access_token = access_token[len(AUTHORIZATION_TYPE):]
 
-    access_token = request.META.get('HTTP_X_ACCESS_TOKEN', None)
-    if access_token != None:
-        print('in nbupload() -> access_token:' + access_token)
-    auth_header = request.headers.get('Authorization')
-    print('in nbupload() --> auth_header:' + auth_header)
-    if auth_header.startswith(TOKEN_PREFIX):
-        auth_header = auth_header[len(TOKEN_PREFIX):]
-    """
-    decoded = verify_and_decode(auth_header)
+    decoded = verify_and_decode(access_token)
     if not decoded:
         return HttpResponse(status=401)
-    """
     decoded = jwt.decode(access_token, verify=False)
-    
     print('>>> in nbupload() -> access_info:', decoded)
 
     data = {
@@ -453,7 +446,7 @@ def nbupload(request):
             'username': decoded.get('unique_name'),
             'access_token': access_token,
             'expires_in': decoded.get('exp'),
-            'refresh_token': '' # TODO
+            'refresh_token': ''  # TODO
             }
     oh_member = oh_code_to_member(data)
 
@@ -461,4 +454,4 @@ def nbupload(request):
     notebook_content = request.POST.get('notebook_contents')
     add_notebook_direct(request, oh_member, notebook_name, notebook_content)
     
-    return HttpResponse('All good and well') # return redirect('/shared')
+    return HttpResponse(status=200)

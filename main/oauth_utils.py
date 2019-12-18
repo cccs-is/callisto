@@ -25,7 +25,13 @@ def verify_and_decode(user_token):
     cert_str = azure_public_certificate(user_token)
     cert_obj = load_pem_x509_certificate(cert_str.encode('utf-8'), default_backend())
     public_key = cert_obj.public_key()
-    tenant_id = os.getenv('JUPYTERHUB_CLIENT_ID', '')
+
+    # This is not correct and should be fixed in the login sequence.
+    # The proper value should be == TENANT
+    tenant_id = 'https://graph.windows.net'
+    # Proper way once login proxy is fixed:
+    # tenant_id = os.getenv('TENANT', '')
+
     try:
         return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=tenant_id)
     except jwt.exceptions.InvalidTokenError as e:
