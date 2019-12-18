@@ -438,7 +438,6 @@ def nbupload(request):
     decoded = verify_and_decode(access_token)
     if not decoded:
         return HttpResponse(status=401)
-    decoded = jwt.decode(access_token, verify=False)
     print('>>> in nbupload() -> access_info:', decoded)
 
     data = {
