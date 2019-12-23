@@ -8,6 +8,13 @@ from django.urls import reverse
 from django.http import HttpResponse
 import arrow
 from .helpers import create_notebook_link
+import requests
+from django.conf import settings
+
+
+# This is the cookie name used by OAuth2 proxy
+# By default it is '_oauth2_proxy' and can be changed using '-cookie-name' config on the OAuth2 proxy.
+OAUTH_COOKIE_NAME = '_oauth2_proxy'
 
 
 def notebook_details(request, notebook_id):
@@ -65,24 +72,37 @@ def render_notebook(request, notebook_id):
     return HttpResponse(body)
 
 
-#@login_required(login_url='/')
-def export_notebook(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    print('exporting notebook:', notebook.notebook_content)
-    return HttpResponse(notebook.notebook_content,
-                        content_type='application/json')
-
-
 def open_notebook_hub(request, notebook_id):
-    base_url = request.build_absolute_uri()
-    print('-> open_notebook_hub() -> base_url:', base_url)
-    print('notebook_id:', notebook_id)
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     nbview_session_key = 'nb-view-{}'.format(notebook_id)
     if not request.session.get(nbview_session_key):
         request.session[nbview_session_key] = True
         notebook.views += 1
         notebook.save()
-    notebook_link = create_notebook_link(notebook, request)
-    print('notebook_link:', notebook_link)
-    return redirect(notebook_link)
+
+    # payload: notebook contents, notebook name
+    data = {'notebook_name': notebook.notebook_name, 'notebook_contents': notebook.notebook_content}
+    # authentication:
+    access_token = request.headers.get('X-Access-Token')
+    headers = {'Authorization': 'Bearer ' + access_token}
+    oauth_cookies = None
+    if request.COOKIES.get(OAUTH_COOKIE_NAME) is not None:
+        oauth_cookies = {OAUTH_COOKIE_NAME: request.COOKIES.get(OAUTH_COOKIE_NAME)}
+    # URL to call :
+    # This must matches processing done by the JupyterHub authenticator to convert external 'unique_name'
+    # into the name used by the Hub:
+    unique_name = request.user.oh_member.oh_username
+    jhub_user_name = unique_name.split('@')[0].replace('.', '-')
+    jhub_user_url = settings.JUPYTERHUB_URL.rstrip('/') + '/user/' + jhub_user_name
+
+    post_url = jhub_user_url + '/notebook-import'
+    response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        actual_notebook_name = response_data.get('notebook_name')
+        redirect_url = jhub_user_url + '/notebooks/' + actual_notebook_name
+        return redirect(redirect_url)
+
+    return HttpResponse('Upload failed. Jupyter Hub returned code: {0} with message {1}'.
+                        format(response.status_code, response.text), status=response.status_code)
