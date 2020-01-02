@@ -32,11 +32,8 @@ def verify_and_decode(user_token):
     # Proper way once login proxy is fixed:
     # tenant_id = os.getenv('TENANT', '')
 
-    # Ignore expiration date for now until we figure out how to either get refresh tokens
-    # or make environment update them for us:
-    verification_options = {'verify_exp': False}
     try:
-        return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=tenant_id, options=verification_options)
+        return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=tenant_id)
     except jwt.exceptions.InvalidTokenError as e:
         print('Exception: ' + repr(e))
     return None
