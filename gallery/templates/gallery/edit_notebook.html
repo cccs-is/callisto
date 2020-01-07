@@ -1,0 +1,41 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+{% block content %}
+
+    <h1>Edit your notebook <code>{{name}}</code>.</h1>
+    <form action="{% url 'edit-notebook' notebook_id %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Description</label>
+      <textarea rows=10 class="form-control" name="description" size=60 type="text"
+        placeholder="Enter a description for your notebook" required>{{description}}</textarea>
+        <p class="help-block">
+        Please give a description of what your notebook does, which data sources it uses etc.
+        You can <a href="https://guides.github.com/features/mastering-markdown/">
+          format this text using Markdown</a>.
+        </p>
+    </div>
+    <div class="form-group">
+      <label>Tags</label>
+      <input class="form-control" name="tags" size=60 type="text"
+        value="{{tags}}"
+        placeholder="Enter a comma-separated list of tags" required>
+      <p class="help-block">
+      Tags make your notebook more discoverable as people can search & screen for them.
+      </p>
+    </div>
+    <div class="form-group">
+      <label>Data Sources</label>
+      <input class="form-control" name="data_sources" size=60 type="text"
+        value="{{data_sources}}"
+        placeholder="Enter a comma-separated list of data sources your notebook uses" required>
+      <p class="help-block">
+      Please specify the data sources your notebook uses. This makes it easier for people to find notebooks relevant for them.
+      </p>
+    </div>
+    <input type="submit"
+            value="Update"
+            style="margin-top:6px;"
+            class="btn btn-primary">
+    </form>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+    <h1><i>Jupyter Notebooks Sharing</i></h1>
+    <div class="row">
+      <!-- <div class="col-md-5"> -->
+
+        <p class='lead'>
+          Notebooks are interactive documents that combine text, graphics and data analysis. They live
+          right in your browser and allow you to gain insight from the data analysis they provide.
+          </br></br>
+          <i>Once you have found a notebook you like, just click the <button type="button" class="btn btn-primary btn-sm disabled">Open in Jupyterhub <i class="fas fa-external-link-alt"></i></button>
+          button on the notebook page to run it on your own data!</i>
+          <center>
+            <a class="btn btn-primary btn-lg"
+              href="{%url 'notebook-index'%}">
+              Explore Notebooks
+            </a>
+          </center>
+        </br>
+        </p>
+      <!-- </div> -->
+      <!-- <div class="col-md-7">
+        <img data-gifffer="{% static 'aboutgifs/index.gif' %}" data-gifffer-width="100%" />
+      </div> -->
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Popular Data Sources</h2>
+        <p>
+          Our community contributed ready-to-use notebooks for many different personal data sources.
+          Click the buttons below to find notebooks that analyze data from the most popular sources:
+        </p>
+        <p>
+        {%for source in data_sources%}
+          <a href="{%url 'notebook-index'%}?source={{source}}" class="btn btn-primary btn-primary-hollow btn-lg padded">
+          {{source}}
+        </a>
+        {%endfor%}
+        </p>
+      </div>
+      <div class='col-md-6'>
+        <h2>Popular Notebooks</h2>
+        Below are some of the notebooks that are most popular with our community:
+        <div class="table-responsive">
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Data sources</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for notebook in latest_notebooks%}
+            <tr>
+              <td>
+                <a href="{%url 'notebook-details' notebook.id%}">
+                  <code>{{notebook.notebook_name}}</code>
+                  <small>by {{notebook.full_user_name}} </small><i class="fas fa-info-circle"></i>
+                </a>
+              </td>
+              <td>
+                {%for source in notebook.get_data_sources_json%}
+                <a href="{%url 'notebook-index'%}?source={{source}}">
+                <span class="label label-info">{{source}}</span>
+                </a>
+                {%endfor%}
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
