@@ -20,50 +20,46 @@ OAUTH_COOKIE_NAME = '_oauth2_proxy'
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     if notebook.master_notebook:
-        other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(
-            pk=notebook.id)
+        other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(pk=notebook.id)
     else:
-        other_notebooks = notebook.sharednotebook_set.exclude(
-            pk=notebook.id)
+        other_notebooks = notebook.sharednotebook_set.exclude(pk=notebook.id)
     liked = False
+    # TODO can we get here without authentication?
     if request.user.is_authenticated:
-        if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
+        hub_member = request.user
+
+        if notebook.notebooklike_set.filter(hub_member=hub_member):
             liked = True
-    format_notebook = nbformat.reads(notebook.notebook_content,
-                                     as_version=nbformat.NO_CONVERT)
+    format_notebook = nbformat.reads(notebook.notebook_content, as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
     # below also removes output of code
     # html_exporter.exclude_code_cell = True
 
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
-    return render(request,
-                  'main/notebook_details.html',
-                  {'notebook': notebook,
-                   'other_notebooks': other_notebooks,
-                   'notebook_preview': body,
-                   'liked': liked})
+    context = {'notebook': notebook,
+               'other_notebooks': other_notebooks,
+               'notebook_preview': body,
+               'liked': liked}
+    return render(request, 'main/notebook_details.html', context=context)
 
 
-@login_required(login_url='/')
+@login_required
 def like_notebook(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
-    if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
-        like = NotebookLike.objects.get(oh_member=request.user.oh_member,
-                                        notebook=notebook)
+    hub_member = request.user
+    if notebook.notebooklike_set.filter(hub_member=hub_member):
+        like = NotebookLike.objects.get(hub_member=hub_member, notebook=notebook)
         like.delete()
     else:
-        like = NotebookLike(notebook=notebook,
-                            oh_member=request.user.oh_member,
-                            created_at=arrow.now().format())
+        like = NotebookLike(notebook=notebook, hub_member=hub_member, created_at=arrow.now().format())
         like.save()
     return redirect(reverse('notebook-details', args=(notebook_id,)))
 
 
 def render_notebook(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
-    format_notebook = nbformat.reads(notebook.notebook_content,
-                                     as_version=nbformat.NO_CONVERT)
+    format_notebook = nbformat.reads(notebook.notebook_content, as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
     # below also removes output of code
@@ -72,6 +68,7 @@ def render_notebook(request, notebook_id):
     return HttpResponse(body)
 
 
+@login_required
 def open_notebook_hub(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     nbview_session_key = 'nb-view-{}'.format(notebook_id)
@@ -91,7 +88,7 @@ def open_notebook_hub(request, notebook_id):
     # URL to call :
     # This must matches processing done by the JupyterHub authenticator to convert external 'unique_name'
     # into the name used by the Hub:
-    unique_name = request.user.oh_member.oh_username
+    unique_name = request.user.email
     jhub_user_name = unique_name.split('@')[0].replace('.', '-')
     jhub_user_url = settings.JUPYTERHUB_URL.rstrip('/') + '/user/' + jhub_user_name
 

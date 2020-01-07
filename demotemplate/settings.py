@@ -88,6 +88,11 @@ INSTALLED_APPS = [
     'main.apps.MainConfig'
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'main.oauth2backend.OAuth2Authentication',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -182,6 +187,7 @@ LOGGING = {
     },
 }
 
+LOGIN_URL = '/login/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
