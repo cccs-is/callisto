@@ -15,7 +15,7 @@ def get_full_name(user):
 
 
 class SharedNotebook(models.Model):
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
     notebook_name = models.TextField(default='')
     notebook_content = models.TextField(default='')
     description = models.TextField(default='')
@@ -49,7 +49,7 @@ class NotebookComment(models.Model):
     """
     comments about a given notebook
     """
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
     notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
     comment_text = models.TextField(default='')
     created_at = models.DateTimeField(default=arrow.now().format())
@@ -65,7 +65,7 @@ class NotebookLike(models.Model):
     """
     like a given notebook
     """
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
     notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=arrow.now().format())
 

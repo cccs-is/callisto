@@ -3,8 +3,8 @@ from main import helpers
 from django.conf import settings
 import arrow
 from main.models import SharedNotebook
-from open_humans.models import OpenHumansMember
 from main.signals import my_handler
+from django.contrib.auth.models import User
 
 
 class HelpersTest(TestCase):
@@ -12,15 +12,10 @@ class HelpersTest(TestCase):
         settings.DEBUG = True
         settings.JUPYTERHUB_BASE_URL = 'http://example.com/'
         self.factory = RequestFactory()
-        self.oh_member = OpenHumansMember.create(
-                            oh_id=1234,
-                            oh_username='testuser1',
-                            access_token='foo',
-                            refresh_token='bar',
-                            expires_in=36000)
-        self.oh_member.save()
+        self.user = User(username='ab-1234')
+        self.user.save()
         self.notebook = SharedNotebook(
-            oh_member=self.oh_member,
+            hub_member=self.user,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
@@ -32,21 +27,8 @@ class HelpersTest(TestCase):
             created_at=arrow.now().format()
         )
         self.notebook.save()
-        self.oh_member_two = OpenHumansMember.create(
-                            oh_id=2345,
-                            oh_username='testuser2',
-                            access_token='foo',
-                            refresh_token='bar',
-                            expires_in=36000)
-        self.oh_member_two.save()
-
-    def test_notebook_link(self):
-        request = self.factory.get('/')
-        self.assertEqual(
-            ('http://example.com//notebook-import?notebook_location'
-                '=http://testserver/export-notebook/1/&notebook_name'
-                '=test_notebook.ipynb'),
-            helpers.create_notebook_link(self.notebook, request))
+        self.user_two = User(username='ab-5678')
+        self.user_two.save()
 
     def test_notebook_search(self):
         sources = helpers.find_notebook_by_keywords('foo', 'data_sources')
@@ -66,7 +48,7 @@ class HelpersTest(TestCase):
     def test_signal_nb_delete(self):
         self.notebook_two = SharedNotebook(
             pk=2,
-            oh_member=self.oh_member_two,
+            hub_member=self.user_two,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
@@ -82,7 +64,7 @@ class HelpersTest(TestCase):
         self.assertEqual(self.notebook_two.master_notebook, self.notebook)
         self.notebook_three = SharedNotebook(
             pk=3,
-            oh_member=self.oh_member_two,
+            hub_member=self.user_two,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),

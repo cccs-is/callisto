@@ -1,13 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from .models import SharedNotebook, NotebookLike
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 import nbconvert
 import nbformat
 from django.urls import reverse
 from django.http import HttpResponse
 import arrow
-from .helpers import create_notebook_link
 import requests
 from django.conf import settings
 

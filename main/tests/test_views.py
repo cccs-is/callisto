@@ -1,10 +1,10 @@
 from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
-from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook, NotebookLike
 from main.views_notebook_details import render_notebook
 import arrow
 import vcr
+from django.contrib.auth.models import User
 
 
 class ViewTest(TestCase):
@@ -14,18 +14,10 @@ class ViewTest(TestCase):
         settings.OPENHUMANS_CLIENT_SECRET = "Y2xpZW50aWQ6Y2xpZW50c2VjcmV0"
         settings.OPENHUMANS_APP_BASE_URL = "http://127.0.0.1:5000"
         self.factory = RequestFactory()
-        self.oh_member = OpenHumansMember.create(
-                            oh_id=1234,
-                            oh_username='testuser1',
-                            access_token='foobar',
-                            refresh_token='bar',
-                            expires_in=36000)
-        self.oh_member.save()
-        self.user = self.oh_member.user
-        self.user.set_password('foobar')
+        self.user = User(username='ab-1234')
         self.user.save()
         self.notebook = SharedNotebook(
-            oh_member=self.oh_member,
+            hub_member=self.user,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
@@ -86,26 +78,6 @@ class ViewTest(TestCase):
         logged_in_response = c.get('/likes/')
         self.assertEqual(logged_in_response.status_code, 200)
 
-    @vcr.use_cassette(
-        'main/tests/fixtures/complete.yaml',
-        record_mode='none')
-    def test_complete(self):
-        c = Client()
-        self.assertEqual(1,
-                         OpenHumansMember.objects.all().count())
-        response = c.get("/complete", {'code': 'mytestcode'}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'main/index.html')
-        self.assertEqual(2,
-                         OpenHumansMember.objects.all().count())
-
-    def test_delete_user(self):
-        c = Client()
-        c.login(username=self.user.username, password='foobar')
-        self.assertEqual(len(OpenHumansMember.objects.all()), 1)
-        c.post('/delete-user/')
-        self.assertEqual(len(OpenHumansMember.objects.all()), 0)
-
     def test_delete_notebook(self):
         c = Client()
         c.login(username=self.user.username, password='foobar')
@@ -150,7 +122,7 @@ class ViewTest(TestCase):
 
     def test_notebook_index(self):
         self.second_notebook = SharedNotebook(
-            oh_member=self.oh_member,
+            hub_member=self.user,
             notebook_name='second_test.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),

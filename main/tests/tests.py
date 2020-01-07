@@ -1,23 +1,15 @@
 from django.test import TestCase, Client
 from django.conf import settings
-from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook, NotebookComment
 import vcr
 import arrow
+from django.contrib.auth.models import User
 
 
 class GeneralTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-        self.oh_member = OpenHumansMember.create(
-                            oh_id=1234,
-                            oh_username='testuser1',
-                            access_token='foobar',
-                            refresh_token='bar',
-                            expires_in=36000)
-        self.oh_member.save()
-        self.user = self.oh_member.user
-        self.user.set_password('foobar')
+        self.user = User(username='ab-1234')
         self.user.save()
 
     @vcr.use_cassette('main/tests/fixtures/add_notebook.yaml',
@@ -63,7 +55,7 @@ class GeneralTest(TestCase):
         c.login(username=self.user.username, password='foobar')
         self.assertEqual(len(NotebookComment.objects.all()), 0)
         self.notebook = SharedNotebook(
-            oh_member=self.oh_member,
+            hub_member=self.user,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
@@ -85,7 +77,7 @@ class GeneralTest(TestCase):
 
     def test_edit_notebook(self):
         self.notebook = SharedNotebook(
-            oh_member=self.oh_member,
+            hub_member=self.user,
             notebook_name='test_notebook.ipynb',
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),

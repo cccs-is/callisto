@@ -7,17 +7,15 @@ from django.conf import settings
 from .helpers import get_notebook_files, download_notebook_oh
 from .helpers import find_notebook_by_keywords, get_all_data_sources
 from .helpers import suggest_data_sources, add_notebook_helper, add_notebook_direct
-from .helpers import paginate_items, oh_code_to_member
+from .helpers import paginate_items
 from .helpers import get_all_data_sources_numeric
-from .models import SharedNotebook
+from .models import SharedNotebook, NotebookComment
 import arrow
 import json
-import jwt
 from django.db.models import Count
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
 from django.contrib.auth import authenticate, login
 
 # Set up logging.
@@ -293,6 +291,22 @@ def notebook_by_source(request):
         'source_name': source_name, 'hits': len(notebook_list),
         'notebooks': notebook_list}
     return JsonResponse(output)
+
+
+@login_required
+def add_comment(request, notebook_id):
+    if request.method == "POST":
+        hub_member = request.user
+        notebook = SharedNotebook.objects.get(pk=notebook_id)
+        comment = NotebookComment(
+            hub_member=hub_member,
+            notebook=notebook,
+            created_at=arrow.now().format(),
+            comment_text=request.POST.get('comment_text')
+        )
+        comment.save()
+        messages.info(request, "Your comment has been posted")
+        return redirect(reverse('notebook-details', args=(notebook_id,)))
 
 
 # TODO rename notebook_upload

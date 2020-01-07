@@ -1,17 +1,11 @@
 import requests
 import arrow
 import json
-import requests_oauthlib
-
-from django.conf import settings
-from django.urls import reverse
 from main.models import SharedNotebook
 import re
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from ohapi import api
 from urllib.parse import urlparse
 import logging
-from open_humans.models import OpenHumansMember
 from django.contrib import messages
 from collections import defaultdict
 
@@ -49,30 +43,6 @@ def download_notebook_oh(notebook_url):
 
     notebook_content = requests.get(notebook_url).content
     return notebook_content
-
-# TODO Remove
-def create_notebook_link(notebook, request):
-    base_url = request.build_absolute_uri("/").rstrip('/')
-    print('>> create_notebook_link() -> base_url:', base_url)
-    target = request.GET.get('target', '')
-    if target == 'voila':
-        target = "&target=voila"
-    else:
-        target = ''
-    if request.user.is_authenticated:
-        oh_member=request.user.username
-        access_token = oh_member.access_token
-    jupyterhub_url = settings.JUPYTERHUB_BASE_URL
-    export_url = reverse('export-notebook', args=(notebook.id,))
-    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}&access_token={}{}'.format(
-        jupyterhub_url,
-        base_url,
-        export_url,
-        notebook.notebook_name,
-        access_token,
-        target
-    )
-    return notebook_link
 
 
 def find_notebook_by_keywords(search_term, search_field=None):
@@ -143,70 +113,6 @@ def paginate_items(queryset, page):
     except EmptyPage:
         paged_queryset = paginator.page(paginator.num_pages)
     return paged_queryset
-
-
-def oh_code_to_member(data):
-    """
-    Exchange data for token, use this to create and return OrgMember.
-    If a matching OrgMember exists, update and return it.
-    """
-    if data:
-
-        # TBD, we need to have thsi OAuth2Session held by the model someow
-        # TBD, we need to have the state is set here and checked against the
-        #      returned state.
-                           
-
-        # data = {
-        #     'grant_type': 'authorization_code',
-        #     'redirect_uri':
-        #     '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL),
-        #     'code': code,
-        # }
-        # req = requests.post(
-        #     '{}/oauth2/token/'.format(settings.OPENHUMANS_OH_BASE_URL),
-        #     data=data,
-        #     auth=requests.auth.HTTPBasicAuth(
-        #         settings.OPENHUMANS_CLIENT_ID,
-        #         settings.OPENHUMANS_CLIENT_SECRET
-        #     )
-        # )
-        # data = req.json()
-
-        if 'access_token' in data:
-            oh_id = data['id']
-            oh_username = data['username']
-            try:
-                oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
-                logger.debug('Member {} re-authorized.'.format(oh_id))
-                access_token = data.get('access_token')
-                if access_token:
-                    oh_member.access_token = access_token
-                refresh_token = data.get('refresh_token')
-                if refresh_token:
-                    oh_member.refresh_token = refresh_token
-                expires_in = data.get('expires_in')
-                if expires_in:
-                    oh_member.token_expires = OpenHumansMember.get_expiration(expires_in)
-            except OpenHumansMember.DoesNotExist:
-                oh_member = OpenHumansMember.create(
-                    oh_id=oh_id,
-                    oh_username=oh_username,
-                    access_token=data.get('access_token'),
-                    refresh_token=data.get('refresh_token'),
-                    expires_in=data.get('expires_in'))  # TODO this does not match update case which goes via OpenHumansMember.get_expiration(expires_in)
-                logger.debug('Member {} created.'.format(oh_id))
-            oh_member.save()
-
-            return oh_member
-
-        # elif 'error' in req.json():
-        #     logger.debug('Error in token exchange: {}'.format(req.json()))
-        else:
-            logger.warning('Neither token nor error info in OH response!')
-    else:
-        logger.error('OH_CLIENT_SECRET or code are unavailable')
-    return None
 
 
 def add_notebook_helper(request, notebook_url, notebook_name, hub_member):
