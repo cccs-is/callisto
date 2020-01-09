@@ -1,0 +1,19 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+{% block content %}
+
+    <h1>Upload notebook</h1>
+
+    <form action="{% url 'upload-notebook' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="form-group">
+            <label>Select file(s):</label>
+            <input class="form-control" type="file" name="upload_files" multiple="true">
+            <p class="help-block">
+            Please select file(s) to upload.
+            </p>
+        </div>
+        <input type="submit" value="Upload" style="margin-top:6px;" class="btn btn-primary">
+    </form>
+
+{% endblock %}

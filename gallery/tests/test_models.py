@@ -1,10 +1,8 @@
 from django.test import TestCase
 from django.conf import settings
 from gallery.models import SharedNotebook
-from gallery.helpers import suggest_data_sources, identify_master_notebook
-from gallery.helpers import get_notebook_files, get_notebook_oh
+from gallery.helpers import identify_master_notebook
 import arrow
-import vcr
 from django.contrib.auth.models import User
 
 
@@ -46,14 +44,6 @@ class SharedNotebookTest(TestCase):
                     'description': 'A Personal Data Notebook'}
                     }]}
 
-    @vcr.use_cassette('gallery/tests/fixtures/suggested_sources.yaml')
-    def test_notebook_present(self):
-        suggested_sources = suggest_data_sources(
-                                self.notebook.notebook_content)
-        self.assertEqual(
-            len(suggested_sources.split(',')),
-            2)
-
     def test_identify_master_notebook(self):
         mnb = identify_master_notebook(
                 'test_notebook.ipynb',
@@ -64,12 +54,22 @@ class SharedNotebookTest(TestCase):
                 self.user_two)
         self.assertEqual(no_mnb, None)
 
+    def get_notebook_files(self, oh_member_data):
+        files = [i for i in oh_member_data['data']
+                 if i['source'] == 'direct-sharing-71']
+        return files
+
     def test_get_notebook_files(self):
-        nb_files = get_notebook_files(self.oh_member_data)
+        nb_files = self.get_notebook_files(self.oh_member_data)
         self.assertEqual(len(nb_files), 1)
 
+    def get_notebook_oh(self, oh_member_data, notebook_id):
+        for data_object in oh_member_data['data']:
+            if str(data_object['id']) == notebook_id:
+                return (data_object['basename'], data_object['download_url'])
+
     def test_get_notebook_oh(self):
-        nbd = get_notebook_oh(
+        nbd = self.get_notebook_oh(
             oh_member_data=self.oh_member_data,
             notebook_id='12')
         self.assertEqual(

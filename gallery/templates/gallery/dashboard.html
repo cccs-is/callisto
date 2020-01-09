@@ -33,32 +33,7 @@
         You haven't uploaded any notebooks yet! <b>Head to the <a href="/about">About</a> page</b> to learn how to share your own notebooks!
         {%endif%}
         </p>
-
-        <p>
-          {%if notebook_files%}
-          <h4>Notebooks you can share</h4>
-          <div class="table-responsive">
-          <table class='table'>
-            <thead>
-              <tr>
-                <th>Notebook title</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for nb_file in notebook_files%}
-            <tr>
-              <td>
-              <code>{{nb_file.basename}}</code> <a href="{% url 'add-notebook-gallery' nb_file.url nb_file.basename%}"><button type="button" class="btn btn-default btn-xs">add/replace <i class="far fa-plus-square"></i></button></a>
-              </td>
-            </tr>
-            {%endfor%}
-          </tbody>
-        </table>
-        </div>
-        {%else%}
-        You haven't shared any notebooks yet! <b>Head to the <a href="/about">About</a> page</b> to learn how to share your own notebooks!
-        {%endif%}
-        </p>
+        <a href='{% url 'upload-notebook' %}'><button type="button" class="btn btn-default">Upload notebook</button></a>
       </div>
       <div class="col-md-8">
         <p>

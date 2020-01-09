@@ -17,10 +17,10 @@ urlpatterns = [
     path('notebook_by_source/', views.notebook_by_source, name='notebook_by_source'),
     path('notebook/<notebook_id>/', views_notebook_details.notebook_details, name='notebook-details'),
     path('open-notebook/<notebook_id>/', views_notebook_details.open_notebook_hub, name='open-notebook'),
-    path('add-notebook-gallery/<path:notebook_url>/<str:notebook_name>', views.add_notebook, name='add-notebook-gallery'),
     path('edit-notebook/<notebook_id>/', views.edit_notebook, name='edit-notebook'),
     path('render-notebook/<notebook_id>/', views_notebook_details.render_notebook, name='render-notebook'),
     path('delete-notebook/<notebook_id>/', views.delete_notebook, name='delete-notebook'),
+    path('upload-notebook/', views.upload_notebook, name='upload-notebook'),
     path('add-comment/<notebook_id>/', views.add_comment, name='add-comment'),
     path('like-notebook/<notebook_id>/', views_notebook_details.like_notebook, name='like-notebook')
 ]

@@ -4,9 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .helpers import get_notebook_files, download_notebook_oh
 from .helpers import find_notebook_by_keywords, get_all_data_sources
-from .helpers import suggest_data_sources, add_notebook_helper, add_notebook_direct
+from .helpers import add_notebook_direct
 from .helpers import paginate_items
 from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook, NotebookComment
@@ -92,41 +91,9 @@ def logout_user(request):
 @login_required
 def dashboard(request):
     hub_member = request.user
-
-    # TODO: Remove once we have file upload.
-    # TBD: for now we'll have a simple mock data structure
-    oh_member_data = {
-        'data': [{
-            'source': 'direct-sharing-71',
-            'basename': 'pyspark_local_example.ipynb',
-            'url' : 'file:///code/pyspark_local_example.ipynb'
-
-        },
-        {
-            'source': 'direct-sharing-71',
-            'basename': 'iris_example.ipynb',
-            'url' : 'file:///code/iris_example.ipynb'
-
-        },
-                    {
-            'source': 'direct-sharing-71',
-            'basename': 'jupyterhub-setup.pdf',
-            'url' : 'file:///code/jupyterhub-setup.pdf'
-
-        },
-                    {
-            'source': 'direct-sharing-71',
-            'basename': 'python_example.py',
-            'url' : 'file:///code/python_example.py'
-
-        }]
-    }
-
-    all_available_notebooks = get_notebook_files(oh_member_data)
     existing_notebooks = SharedNotebook.objects.filter(hub_member=hub_member, published=True)
     notebooks_to_publish = SharedNotebook.objects.filter(hub_member=hub_member, published=False)
     context = {
-        'notebook_files': all_available_notebooks,
         'existing_notebooks': existing_notebooks,
         'notebooks_to_publish': notebooks_to_publish,
         'JH_URL': settings.JUPYTERHUB_BASE_URL,
@@ -142,32 +109,6 @@ def likes(request):
     liked_notebooks = paginate_items(liked_notebook_list, request.GET.get('page'))
     context = {'liked_notebooks': liked_notebooks, 'section': 'likes'}
     return render(request, 'gallery/likes.html', context=context)
-
-# TODO Remove after we have file upload
-@login_required
-def add_notebook(request, notebook_url, notebook_name):
-    hub_member = request.user
-    if request.method == 'POST':
-        add_notebook_helper(request, notebook_url, notebook_name, hub_member)
-        return redirect('/dashboard')
-    else:
-        if len(SharedNotebook.objects.filter(hub_member=hub_member, notebook_name=notebook_name)) > 0:
-            existing_notebook = SharedNotebook.objects.get(hub_member=hub_member, notebook_name=notebook_name)
-            context = {'description': existing_notebook.description,
-                       'tags': existing_notebook.get_tags(),
-                       'data_sources': existing_notebook.get_data_sources(),
-                       'notebook_name': notebook_name,
-                       'notebook_url': str(notebook_url),
-                       'edit': True}
-        else:
-            notebook_content = download_notebook_oh(notebook_url)
-            suggested_sources = suggest_data_sources(notebook_content)
-            context = {'description': '',
-                       'notebook_name': notebook_name,
-                       'notebook_url': str(notebook_url),
-                       'tags': '',
-                       'data_sources': suggested_sources}
-        return render(request, 'gallery/add_notebook.html', context=context)
 
 
 @login_required
@@ -312,6 +253,24 @@ def add_comment(request, notebook_id):
         comment.save()
         messages.info(request, "Your comment has been posted")
         return redirect(reverse('notebook-details', args=(notebook_id,)))
+
+
+@login_required
+def upload_notebook(request):
+    hub_member = request.user
+    if request.method == 'POST' and request.FILES.getlist('upload_files'):
+        files = request.FILES.getlist('upload_files')
+        notebook_name = ''
+        for f in files:
+            notebook_content = ''
+            for chunk in f.chunks():
+                notebook_content += chunk.decode("utf-8")
+            notebook_name = f.name
+            add_notebook_direct(request, hub_member, notebook_name, notebook_content)
+        return render(request, 'gallery/upload_notebook.html', {
+            'uploaded_notebook': notebook_name
+        })
+    return render(request, 'gallery/upload_notebook.html')
 
 
 # TODO rename notebook_upload
