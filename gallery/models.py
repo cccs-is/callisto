@@ -25,6 +25,7 @@ class SharedNotebook(models.Model):
     updated_at = models.DateTimeField(default=(arrow.now() - timedelta(days=7)).format())
     created_at = models.DateTimeField(default=(arrow.now() - timedelta(days=7)).format())
     master_notebook = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
+    published = models.BooleanField(default=False)
 
     def full_user_name(self):
         return get_full_name(self.hub_member)

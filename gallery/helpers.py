@@ -48,27 +48,31 @@ def download_notebook_oh(notebook_url):
 def find_notebook_by_keywords(search_term, search_field=None):
     notebooks_tag = SharedNotebook.objects.filter(
         tags__contains=search_term,
-        master_notebook=None)
+        master_notebook=None,
+        published=True)
     if search_field == 'tags':
         return notebooks_tag.order_by('updated_at')
     notebooks_source = SharedNotebook.objects.filter(
-                        data_sources__contains=search_term,
-                        master_notebook=None)
+        data_sources__contains=search_term,
+        master_notebook=None,
+        published=True)
     if search_field == 'data_sources':
         return notebooks_source.order_by('updated_at')
     # TODO verify
     notebooks_user = SharedNotebook.objects.filter(
-                        hub_member__username__contains=search_term,
-                        master_notebook=None)
+        hub_member__username__contains=search_term,
+        master_notebook=None,
+        published=True)
     if search_field == 'username':
         return notebooks_user.order_by('updated_at')
     notebooks_description = SharedNotebook.objects.filter(
-                        description__contains=search_term,
-                        master_notebook=None)
+        description__contains=search_term,
+        master_notebook=None,
+        published=True)
     notebooks_name = SharedNotebook.objects.filter(
-                        notebook_name__contains=search_term,
-                        master_notebook=None)
-
+        notebook_name__contains=search_term,
+        master_notebook=None,
+        published=True)
     nbs = notebooks_tag | notebooks_source | notebooks_description | notebooks_name | notebooks_user
     nbs = nbs.order_by('updated_at')
     return nbs
@@ -97,7 +101,7 @@ def suggest_data_sources(notebook_content):
 
 def identify_master_notebook(notebook_name, hub_member):
     other_notebooks = SharedNotebook.objects.filter(
-                        notebook_name=notebook_name).exclude(
+                        notebook_name=notebook_name, published=True).exclude(
                         hub_member=hub_member).order_by('created_at')
     if other_notebooks:
         return other_notebooks[0]
@@ -114,7 +118,7 @@ def paginate_items(queryset, page):
         paged_queryset = paginator.page(paginator.num_pages)
     return paged_queryset
 
-
+# TODO this is used for original population from files. Remove after we add file upload.
 def add_notebook_helper(request, notebook_url, notebook_name, hub_member):
     notebook_content = download_notebook_oh(notebook_url)
     notebook, created = SharedNotebook.objects.get_or_create(
@@ -131,6 +135,7 @@ def add_notebook_helper(request, notebook_url, notebook_name, hub_member):
     notebook.notebook_content = notebook_content # notebook_content.decode()
     notebook.updated_at = arrow.now().format()
     notebook.hub_member = hub_member
+    notebook.published = True
     notebook.master_notebook = identify_master_notebook(notebook_name,
                                                         hub_member)
     if created:
@@ -164,7 +169,7 @@ def add_notebook_direct(request, hub_member, notebook_name, notebook_content):
 
 def get_all_data_sources_numeric():
     sdict = defaultdict(int)
-    for nb in SharedNotebook.objects.filter(master_notebook=None):
+    for nb in SharedNotebook.objects.filter(master_notebook=None, published=True):
         for source in nb.get_data_sources_json():
             sdict[source] += 1
     sorted_sdict = sorted(sdict.items(), key=lambda x: x[1], reverse=True)

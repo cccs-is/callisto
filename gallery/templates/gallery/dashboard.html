@@ -1,12 +1,39 @@
 {% extends 'gallery/base.html' %}
 {% block content %}
 {% load static %}
-    <h1>Your Notebooks & Account</h1>
+    <h1>Your Notebooks</h1>
     <p class="lead">
     </br>See which notebooks you have shared and can share.
     </p>
     <div class="row">
       <div class="col-md-4">
+
+        <p>
+          {%if notebooks_to_publish%}
+          <h4>Notebooks you can publish</h4>
+          <div class="table-responsive">
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Notebook title</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for notebook in notebooks_to_publish%}
+            <tr>
+              <td>
+              <code>{{notebook.notebook_name}}</code> <a href='{% url 'edit-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">Publish <i class="far fa-plus-square"></i></button></a>
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        </div>
+        {%else%}
+        You haven't uploaded any notebooks yet! <b>Head to the <a href="/about">About</a> page</b> to learn how to share your own notebooks!
+        {%endif%}
+        </p>
+
         <p>
           {%if notebook_files%}
           <h4>Notebooks you can share</h4>
@@ -54,7 +81,7 @@
             <tr>
               <td><a href="{%url 'notebook-details' notebook.id%}"><code>{{notebook.notebook_name}}</code><i class="fas fa-info-circle"></i>
             </a></td>
-              <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit description <i class="far fa-edit"></i></button></a></td>
+              <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit metadata <i class="far fa-edit"></i></button></a></td>
               <td>
                 <form action="{% url 'delete-notebook' notebook.id %}" method="post">
                   {% csrf_token %}

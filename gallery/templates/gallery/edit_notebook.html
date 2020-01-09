@@ -2,7 +2,12 @@
 {% load static %}
 {% block content %}
 
-    <h1>Edit your notebook <code>{{name}}</code>.</h1>
+    {%if edit %}
+      <h1>Edit your notebook <code>{{notebook_name}}</code>.</h1>
+    {%else%}
+      <h1>Publish your notebook <code>{{notebook_name}}</code>.</h1>
+    {%endif%}
+
     <form action="{% url 'edit-notebook' notebook_id %}" method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -33,9 +38,12 @@
       Please specify the data sources your notebook uses. This makes it easier for people to find notebooks relevant for them.
       </p>
     </div>
-    <input type="submit"
-            value="Update"
-            style="margin-top:6px;"
-            class="btn btn-primary">
+
+    {%if edit %}
+      <input type="submit" value="Update" style="margin-top:6px;" class="btn btn-primary">
+    {%else%}
+      <input type="submit" value="Publish" style="margin-top:6px;" class="btn btn-primary">
+    {%endif%}
+
     </form>
 {% endblock %}

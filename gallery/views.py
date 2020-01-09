@@ -38,7 +38,7 @@ def index(request):
 # TODO turn non-authenticated part of this into after-logout page?
 def indexOLD(request):
     # otherwise
-    latest_notebooks = SharedNotebook.objects.filter(master_notebook=None).order_by('-views')[:5]
+    latest_notebooks = SharedNotebook.objects.filter(master_notebook=None, published=True).order_by('-views')[:5]
     data_sources = get_all_data_sources()[:6]
     context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                'latest_notebooks': latest_notebooks,
@@ -93,6 +93,7 @@ def logout_user(request):
 def dashboard(request):
     hub_member = request.user
 
+    # TODO: Remove once we have file upload.
     # TBD: for now we'll have a simple mock data structure
     oh_member_data = {
         'data': [{
@@ -122,10 +123,12 @@ def dashboard(request):
     }
 
     all_available_notebooks = get_notebook_files(oh_member_data)
-    existing_notebooks = SharedNotebook.objects.filter(hub_member=hub_member)
+    existing_notebooks = SharedNotebook.objects.filter(hub_member=hub_member, published=True)
+    notebooks_to_publish = SharedNotebook.objects.filter(hub_member=hub_member, published=False)
     context = {
         'notebook_files': all_available_notebooks,
         'existing_notebooks': existing_notebooks,
+        'notebooks_to_publish': notebooks_to_publish,
         'JH_URL': settings.JUPYTERHUB_BASE_URL,
         'base_url': request.build_absolute_uri("/").rstrip('/'),
         'section': 'dashboard'}
@@ -140,7 +143,7 @@ def likes(request):
     context = {'liked_notebooks': liked_notebooks, 'section': 'likes'}
     return render(request, 'gallery/likes.html', context=context)
 
-
+# TODO Remove after we have file upload
 @login_required
 def add_notebook(request, notebook_url, notebook_name):
     hub_member = request.user
@@ -183,6 +186,7 @@ def edit_notebook(request, notebook_id):
         data_sources = [ds.strip() for ds in data_sources.split(',')]
         notebook.data_sources = json.dumps(data_sources)
         notebook.updated_at = arrow.now().format()
+        notebook.published = True
         notebook.save()
         messages.info(request, 'Updated {}!'.format(notebook.notebook_name))
         return redirect("/dashboard")
@@ -190,8 +194,9 @@ def edit_notebook(request, notebook_id):
         context = {'description': notebook.description,
                    'tags': notebook.get_tags(),
                    'data_sources': notebook.get_data_sources(),
-                   'name': notebook.notebook_name,
-                   'notebook_id': str(notebook_id)}
+                   'notebook_name': notebook.notebook_name,
+                   'notebook_id': str(notebook_id),
+                   'edit': notebook.published}
         return render(request, 'gallery/edit_notebook.html', context=context)
 
 
@@ -220,8 +225,7 @@ def notebook_index(request):
                             source_filter,
                             search_field='data_sources')
     else:
-        notebook_list = SharedNotebook.objects.filter(
-            master_notebook=None)
+        notebook_list = SharedNotebook.objects.filter(master_notebook=None, published=True)
     if order_variable == 'likes':
         notebook_list = notebook_list.annotate(
             likes=Count('notebooklike'))
@@ -263,8 +267,9 @@ def notebook_by_source(request):
     source_name = request.GET.get('source')
     notebook_list = []
     notebooks = SharedNotebook.objects.filter(
-                        data_sources__contains=source_name,
-                        master_notebook=None)
+        data_sources__contains=source_name,
+        master_notebook=None,
+        published=True)
     notebooks = notebooks.annotate(
         likes=Count('notebooklike'))
     for notebook in notebooks:
