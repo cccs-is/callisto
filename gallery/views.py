@@ -39,8 +39,7 @@ def indexOLD(request):
     # otherwise
     latest_notebooks = SharedNotebook.objects.filter(master_notebook=None, published=True).order_by('-views')[:5]
     data_sources = get_all_data_sources()[:6]
-    context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
-               'latest_notebooks': latest_notebooks,
+    context = {'latest_notebooks': latest_notebooks,
                'data_sources': data_sources}
     return render(request, 'gallery/index.html', context=context)
 
@@ -93,8 +92,6 @@ def dashboard(request):
     context = {
         'existing_notebooks': existing_notebooks,
         'notebooks_to_publish': notebooks_to_publish,
-        'JH_URL': settings.JUPYTERHUB_BASE_URL,
-        'base_url': request.build_absolute_uri("/").rstrip('/'),
         'section': 'dashboard'}
     return render(request, 'gallery/dashboard.html', context=context)
 

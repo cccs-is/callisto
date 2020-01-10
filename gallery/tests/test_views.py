@@ -10,9 +10,6 @@ from django.contrib.auth.models import User
 class ViewTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-        settings.OPENHUMANS_CLIENT_ID = "6yNYmUlXN1wLwQFQR0lnUohR1KMeVt"
-        settings.OPENHUMANS_CLIENT_SECRET = "Y2xpZW50aWQ6Y2xpZW50c2VjcmV0"
-        settings.OPENHUMANS_APP_BASE_URL = "http://127.0.0.1:5000"
         self.factory = RequestFactory()
         self.user = User(username='ab-1234')
         self.user.save()

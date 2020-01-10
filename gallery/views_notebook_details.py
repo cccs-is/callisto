@@ -15,6 +15,7 @@ from django.conf import settings
 OAUTH_COOKIE_NAME = '_oauth2_proxy'
 
 
+@login_required
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     if notebook.master_notebook:

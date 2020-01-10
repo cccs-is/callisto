@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import uuid
 import dj_database_url
 from env_tools import apply_env
 
@@ -34,23 +33,7 @@ if REMOTE:
 
 ALLOWED_HOSTS = ['*']
 
-HEROKUCONFIG_APP_NAME = os.getenv('HEROKUCONFIG_APP_NAME', '')
-
 DEFAULT_BASE_URL = ('http://localhost:5000')
-
-OPENHUMANS_APP_BASE_URL = os.getenv('APP_BASE_URL', DEFAULT_BASE_URL)
-if OPENHUMANS_APP_BASE_URL[-1] == "/":
-    OPENHUMANS_APP_BASE_URL = OPENHUMANS_APP_BASE_URL[:-1]
-
-# OAuth configuration
-CLIENT_ID = os.getenv('CLIENT_ID')
-CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-# for microsoft oauth2
-AUTHORITY_HOST_URL = os.getenv('AUTHORITY_HOST_URL') + '/' + os.getenv('TENANT')
-OAUTH2_RESOURCE = os.getenv('OAUTH2_RESOURCE') # for token access
-OAUTH2_SCOPES = ['offline_access', 'User.Read'] # Add other scopes/permissions as needed.
-REDIRECT_URI = os.getenv('REDIRECT_URI')
-AUTH_STATE = str(uuid.uuid4())
 
 # The expected audience in the OAuth2 authentication token
 OAUTH_TOKEN_AUDIENCE=os.getenv('OAUTH_TOKEN_AUDIENCE')
@@ -60,24 +43,13 @@ OAUTH_PUBLIC_KEYS_URL=os.getenv('OAUTH_PUBLIC_KEYS_URL')
 
 ### TBD: needed for now, but we the INSECURE_TRANSPORT can be eliminated once out of dev
 # Enable non-HTTPS redirect URI for development/testing.
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+#os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 # Allow token scope to not match requested scope. (Other auth libraries allow
 # this, but Requests-OAuthlib raises exception on scope mismatch by default.)
-os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-os.environ['OAUTHLIB_IGNORE_SCOPE_CHANGE'] = '1'
+#os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+#os.environ['OAUTHLIB_IGNORE_SCOPE_CHANGE'] = '1'
 
-OH_ACTIVITY_PAGE = os.getenv('OH_ACTIVITY_PAGE')
-
-OH_BASE_URL = 'https://www.openhumans.org'
-
-OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
-OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
-OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
-OH_DELETE_FILES = OH_API_BASE + '/project/files/delete/'
-
-# TODO remove JUPYTERHUB_BASE_URL, replcae with JUPYTERHUB_BASE_URL + '/hub/user-redirect'
-JUPYTERHUB_BASE_URL = os.getenv('JUPYTERHUB_BASE_URL',
-                                'http://localhost:8888')
+# JupyterHub base URL
 JUPYTERHUB_URL = os.getenv('JUPYTERHUB_URL', 'http://localhost:8888')
 
 # Applications installed
@@ -127,8 +99,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'hub.context_processors.login_fills'
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -198,15 +169,10 @@ LOGIN_URL = '/login/'
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 STATIC_URL = '/static/'
 

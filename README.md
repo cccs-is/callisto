@@ -66,16 +66,16 @@ Most likely it will not work completely unless you have set up some `.env` file 
 what should be in the `.env` file:
 
 ```
-# the usual stuff for a django app that interfaces with open humans:
+# the usual stuff for a django app:
 SECRET_KEY='secret_key_here'
-OH_ACTIVITY_PAGE='https://www.openhumans.org/activity/your-project-name-should-be-here/'
-OH_CLIENT_ID='id'
-OH_CLIENT_SECRET='secret'
-APP_BASE_URL='http://127.0.0.1:5000'
 
 # the only UNusual stuff:
-# the JUPYTERHUB_BASE_URL should be the local
-# jupyter notebook url if running in dev
-# or https://notebooks.openhumans.org/hub/user-redirect
-# for production
-JUPYTERHUB_BASE_URL = http://localhost:8888
+# JupyterHub URL
+JUPYTERHUB_URL = http://localhost:8888
+
+# The expected audience in the OAuth2 authentication token
+OAUTH_TOKEN_AUDIENCE='https://graph.windows.net'
+
+# Source of the public keys used by the OAuth2 provider to sign tokens
+OAUTH_PUBLIC_KEYS_URL='https://login.microsoftonline.com/common/discovery/keys'
+

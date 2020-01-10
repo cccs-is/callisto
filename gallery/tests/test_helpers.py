@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 class HelpersTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-        settings.JUPYTERHUB_BASE_URL = 'http://example.com/'
+        settings.JUPYTERHUB_URL = 'http://example.com/'
         self.factory = RequestFactory()
         self.user = User(username='ab-1234')
         self.user.save()

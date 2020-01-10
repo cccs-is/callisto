@@ -25,15 +25,10 @@
     </p>
     <h3>
       <button data-toggle="tooltip" data-container='body' data-placement="top" title='Number of views' class="btn btn-default btn-xs"><i class="fas fa-eye"></i> {{notebook.views}}</button>
-      {%if request.user.is_authenticated %}
       <form action="{% url 'like-notebook' notebook.id %}" method="post">
         {% csrf_token %}
         <button type="submit" value="like_notebook" data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Press to {%if liked%}un{%endif%}like.' class="btn btn-default btn-xs"><i class="fa{%if liked%}s{%else%}r{%endif%} fa-heart"></i> {{notebook.notebooklike_set.all|length}}</button>
       </form>
-      {%else%}
-      <a class="btn btn-default btn-xs" href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"
-        data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Please log in to like.'><i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}</a>
-      {%endif%}
     </h3>
     <p>
     <h4><i class="fas fa-tags"></i> Tags & Data Sources</h4>
@@ -71,7 +66,6 @@
       </footer>
     </blockquote>
         {%endfor%}
-        {% if request.user.is_authenticated %}
         <form action="{% url 'add-comment' notebook.pk %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -89,10 +83,6 @@
                 class="btn btn-primary">
         </form>
       </br>
-      {%else%}
-      Please <a href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}">
-        log in to comment</a>.
-        {%endif%}
   </div>
   <div class="col-md-7">
     <div class="panel panel-default">
