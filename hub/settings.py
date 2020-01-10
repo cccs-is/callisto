@@ -52,6 +52,12 @@ OAUTH2_SCOPES = ['offline_access', 'User.Read'] # Add other scopes/permissions a
 REDIRECT_URI = os.getenv('REDIRECT_URI')
 AUTH_STATE = str(uuid.uuid4())
 
+# The expected audience in the OAuth2 authentication token
+OAUTH_TOKEN_AUDIENCE=os.getenv('OAUTH_TOKEN_AUDIENCE')
+# Source of the public keys used by the OAuth2 provider to sign tokens
+OAUTH_PUBLIC_KEYS_URL=os.getenv('OAUTH_PUBLIC_KEYS_URL')
+
+
 ### TBD: needed for now, but we the INSECURE_TRANSPORT can be eliminated once out of dev
 # Enable non-HTTPS redirect URI for development/testing.
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'

@@ -70,12 +70,9 @@ def login_user(request):
     if user is not None:
         login(request, user)
         next_url = request.GET.get('next')
-        print('After login redirecting to: ', next_url)
         return redirect(next_url)
     else:
-        # TODO make an 'invalid login' error message / page
-        messages.info(request, "Unable to login")
-        return redirect('index')
+        return redirect('/admin/login')
 
 
 @login_required
