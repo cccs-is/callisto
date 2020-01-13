@@ -41,14 +41,6 @@ OAUTH_TOKEN_AUDIENCE=os.getenv('OAUTH_TOKEN_AUDIENCE')
 OAUTH_PUBLIC_KEYS_URL=os.getenv('OAUTH_PUBLIC_KEYS_URL')
 
 
-### TBD: needed for now, but we the INSECURE_TRANSPORT can be eliminated once out of dev
-# Enable non-HTTPS redirect URI for development/testing.
-#os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-# Allow token scope to not match requested scope. (Other auth libraries allow
-# this, but Requests-OAuthlib raises exception on scope mismatch by default.)
-#os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-#os.environ['OAUTHLIB_IGNORE_SCOPE_CHANGE'] = '1'
-
 # JupyterHub base URL
 JUPYTERHUB_URL = os.getenv('JUPYTERHUB_URL', 'http://localhost:8888')
 
@@ -60,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Local apps. Update these if you add or change app names!
     'gallery.apps.MainConfig'
 ]
@@ -108,20 +99,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hub.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-# https://devcenter.heroku.com/articles/django-app-configuration
+IS_DEVELOPMENT_MODE = os.getenv('CALLISTO_DEVELOPMENT')
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if IS_DEVELOPMENT_MODE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['CALLISTO_DATABASE_NAME'],
+            'HOST': os.environ['CALLISTO_DATABASE_HOST'],
+            'PORT': int(os.environ['CALLISTO_DATABASE_PORT']),
+            'USER': os.environ['CALLISTO_DATABASE_USER'],
+            'PASSWORD': os.environ['CALLISTO_DATABASE_PASSWORD'],
+        }
+    }
 
 
 # Password validation

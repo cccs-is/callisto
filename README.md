@@ -79,3 +79,14 @@ OAUTH_TOKEN_AUDIENCE='https://graph.windows.net'
 # Source of the public keys used by the OAuth2 provider to sign tokens
 OAUTH_PUBLIC_KEYS_URL='https://login.microsoftonline.com/common/discovery/keys'
 
+Database connection info:
+# Are we running in Development mode? Using local SQLite then.
+#CALLISTO_DEVELOPMENT = True
+
+# Callisto database connection info for production environment
+CALLISTO_DATABASE_NAME='callisto'
+CALLISTO_DATABASE_HOST='localhost'
+CALLISTO_DATABASE_PORT=5432
+CALLISTO_DATABASE_USER='my_db_user'
+CALLISTO_DATABASE_PASSWORD='my_db_password'
+
