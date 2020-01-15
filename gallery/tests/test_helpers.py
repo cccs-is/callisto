@@ -10,9 +10,8 @@ from django.contrib.auth.models import User
 class HelpersTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-        settings.JUPYTERHUB_URL = 'http://example.com/'
         self.factory = RequestFactory()
-        self.user = User(username='ab-1234')
+        self.user = User(username='user1')
         self.user.save()
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -24,16 +23,17 @@ class HelpersTest(TestCase):
             data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.notebook.save()
-        self.user_two = User(username='ab-5678')
+        self.user_two = User(username='user2')
         self.user_two.save()
 
     def test_notebook_search(self):
         sources = helpers.find_notebook_by_keywords('foo', 'data_sources')
         tags = helpers.find_notebook_by_keywords('foo', 'tags')
-        user = helpers.find_notebook_by_keywords('test', 'username')
+        user = helpers.find_notebook_by_keywords('test', 'user1')
         self.assertEqual(len(sources), 0)
         self.assertEqual(len(tags), 1)
         self.assertEqual(len(user), 1)
@@ -58,7 +58,8 @@ class HelpersTest(TestCase):
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format(),
-            master_notebook=self.notebook
+            master_notebook=self.notebook,
+            published=True
         )
         self.notebook_two.save()
         self.assertEqual(self.notebook_two.master_notebook, self.notebook)
@@ -74,7 +75,8 @@ class HelpersTest(TestCase):
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format(),
-            master_notebook=self.notebook
+            master_notebook=self.notebook,
+            published=True
         )
         self.notebook_three.save()
         self.assertEqual(self.notebook_three.master_notebook, self.notebook)
@@ -82,9 +84,7 @@ class HelpersTest(TestCase):
         my_handler('SharedNotebook', self.notebook)
         nb_two = SharedNotebook.objects.get(pk=2)
         nb_three = SharedNotebook.objects.get(pk=3)
-        self.assertEqual(
-            nb_three.master_notebook,
-            nb_two)
+        self.assertEqual(nb_three.master_notebook, nb_two)
 
     def test_get_all_data_sources_numeric(self):
         sources_numeric = helpers.get_all_data_sources_numeric()

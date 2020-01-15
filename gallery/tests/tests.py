@@ -1,7 +1,6 @@
 from django.test import TestCase, Client
 from django.conf import settings
 from gallery.models import SharedNotebook, NotebookComment
-import vcr
 import arrow
 from django.contrib.auth.models import User
 
@@ -12,47 +11,37 @@ class GeneralTest(TestCase):
         self.user = User(username='ab-1234')
         self.user.save()
 
-    @vcr.use_cassette('gallery/tests/fixtures/add_notebook.yaml',
-                      record_mode='none')
     def test_add_notebook_not_logged_in(self):
-
         c = Client()
         response = c.post(
-            '/add-notebook-gallery/12/',
+            '/nbupload/',
             {
-                'description': 'foobar',
-                'tags': 'test, tags',
-                'data_sources': 'data,source'
+                'notebook_name': 'twitter-and-fitbit-activity.ipynb',
+                'notebook_contents': open('gallery/tests/fixtures/test_notebook.ipynb').read()
             },
             follow=True)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 401)
         notebooks = SharedNotebook.objects.all()
         self.assertEqual(len(notebooks), 0)
 
-    @vcr.use_cassette('gallery/tests/fixtures/add_notebook.yaml',
-                      record_mode='none')
     def test_add_notebook_logged_in(self):
-
         c = Client()
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         response = c.post(
-            '/add-notebook-gallery/12/',
+            '/nbupload/',
             {
-                'description': 'foobar',
-                'tags': 'test, tags',
-                'data_sources': 'data,source'
+                'notebook_name': 'twitter-and-fitbit-activity.ipynb',
+                'notebook_contents': open('gallery/tests/fixtures/test_notebook.ipynb').read()
             },
             follow=True)
         self.assertEqual(response.status_code, 200)
         notebooks = SharedNotebook.objects.all()
         self.assertEqual(len(notebooks), 1)
-        self.assertEqual(
-            notebooks[0].notebook_name,
-            'twitter-and-fitbit-activity.ipynb')
+        self.assertEqual(notebooks[0].notebook_name, 'twitter-and-fitbit-activity.ipynb')
 
     def test_add_comment(self):
         c = Client()
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         self.assertEqual(len(NotebookComment.objects.all()), 0)
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -64,7 +53,8 @@ class GeneralTest(TestCase):
             data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.notebook.save()
         response = c.post(
@@ -86,11 +76,12 @@ class GeneralTest(TestCase):
             data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.notebook.save()
         c = Client()
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
 
         response = c.post(
             '/edit-notebook/{}/'.format(self.notebook.id),

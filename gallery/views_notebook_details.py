@@ -18,17 +18,22 @@ OAUTH_COOKIE_NAME = '_oauth2_proxy'
 @login_required
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    nbview_session_key = 'nb-view-{}'.format(notebook_id)
+    if not request.session.get(nbview_session_key):
+        request.session[nbview_session_key] = True
+        notebook.views += 1
+        notebook.save()
+
     if notebook.master_notebook:
         other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(pk=notebook.id)
     else:
         other_notebooks = notebook.sharednotebook_set.exclude(pk=notebook.id)
-    liked = False
-    # TODO can we get here without authentication?
-    if request.user.is_authenticated:
-        hub_member = request.user
 
-        if notebook.notebooklike_set.filter(hub_member=hub_member):
-            liked = True
+    liked = False
+    hub_member = request.user
+    if notebook.notebooklike_set.filter(hub_member=hub_member):
+        liked = True
+
     format_notebook = nbformat.reads(notebook.notebook_content, as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
@@ -80,7 +85,10 @@ def open_notebook_hub(request, notebook_id):
     data = {'notebook_name': notebook.notebook_name, 'notebook_contents': notebook.notebook_content}
     # authentication:
     access_token = request.headers.get('X-Access-Token')
-    headers = {'Authorization': 'Bearer ' + access_token}
+    if access_token:
+        headers = {'Authorization': 'Bearer ' + access_token}
+    else:
+        headers = {}
     oauth_cookies = None
     if request.COOKIES.get(OAUTH_COOKIE_NAME) is not None:
         oauth_cookies = {OAUTH_COOKIE_NAME: request.COOKIES.get(OAUTH_COOKIE_NAME)}

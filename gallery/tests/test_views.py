@@ -3,7 +3,6 @@ from django.conf import settings
 from gallery.models import SharedNotebook, NotebookLike
 from gallery.views_notebook_details import render_notebook
 import arrow
-import vcr
 from django.contrib.auth.models import User
 
 
@@ -11,7 +10,7 @@ class ViewTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
         self.factory = RequestFactory()
-        self.user = User(username='ab-1234')
+        self.user = User(username='user1')
         self.user.save()
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -23,7 +22,8 @@ class ViewTest(TestCase):
             data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.notebook.save()
 
@@ -35,32 +35,29 @@ class ViewTest(TestCase):
 
     def test_open_notebook(self):
         c = Client()
+        c.force_login(self.user)
         self.assertEqual(self.notebook.views, 123)
-        c.get('/open-notebook/{}/'.format(self.notebook.id))
+        c.get('/notebook/{}/'.format(self.notebook.id))
         updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
         self.assertEqual(updated_nb.views, 124)
-        c.get('/open-notebook/{}/'.format(self.notebook.id))
+        c.get('/notebook/{}/'.format(self.notebook.id))
         updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
         self.assertEqual(updated_nb.views, 124)
-        c.login(username=self.user.username, password='foobar')
-        c.get('/open-notebook/{}/'.format(self.notebook.id))
+        c.force_login(self.user)
+        c.get('/notebook/{}/'.format(self.notebook.id))
         self.assertEqual(updated_nb.views, 124)
 
     def test_shared(self):
         c = Client()
-        response = c.get('/shared/')
-        self.assertEqual(response.status_code, 200)
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         logged_in_response = c.get('/shared/')
         self.assertEqual(logged_in_response.status_code, 302)
 
     def test_index(self):
         c = Client()
+        c.force_login(self.user)
         response = c.get('/')
-        self.assertEqual(response.status_code, 200)
-        c.login(username=self.user.username, password='foobar')
-        logged_in_response = c.get('/')
-        self.assertEqual(logged_in_response.status_code, 302)
+        self.assertEqual(response.status_code, 302) # redirects to /notebook
 
     def test_about(self):
         c = Client()
@@ -71,28 +68,26 @@ class ViewTest(TestCase):
         c = Client()
         response = c.get('/likes')
         self.assertEqual(response.status_code, 301)
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         logged_in_response = c.get('/likes/')
         self.assertEqual(logged_in_response.status_code, 200)
 
     def test_delete_notebook(self):
         c = Client()
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         self.assertEqual(len(SharedNotebook.objects.all()), 1)
         c.post('/delete-notebook/{}/'.format(self.notebook.pk))
         self.assertEqual(len(SharedNotebook.objects.all()), 0)
 
     def test_notebook_like(self):
         c = Client()
-        c.login(username=self.user.username, password='foobar')
+        c.force_login(self.user)
         self.assertEqual(len(NotebookLike.objects.all()), 0)
         c.post('/like-notebook/{}/'.format(self.notebook.pk))
         self.assertEqual(len(NotebookLike.objects.all()), 1)
         c.post('/like-notebook/{}/'.format(self.notebook.pk))
         self.assertEqual(len(NotebookLike.objects.all()), 0)
 
-    @vcr.use_cassette('gallery/tests/fixtures/suggested_sources.yaml',
-                      record_mode='none')
     def test_search_notebooks(self):
         c = Client()
         post_response = c.post('/search/', {
@@ -128,7 +123,8 @@ class ViewTest(TestCase):
             data_sources='["source3", "source4"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.second_notebook.save()
         c = Client()

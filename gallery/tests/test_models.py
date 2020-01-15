@@ -21,7 +21,8 @@ class SharedNotebookTest(TestCase):
             data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
-            created_at=arrow.now().format()
+            created_at=arrow.now().format(),
+            published=True
         )
         self.notebook.save()
         self.user_two = User(username='ab-5678')

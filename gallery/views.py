@@ -272,14 +272,15 @@ def nbupload(request):
     if request.method != 'POST':
        return HttpResponse('Unexpected method.', status=405)
     # We have to do this explicitly as @login_required will come back as GET request, not POST:
-    user = authenticate(request)
-    if user is None:
-        return HttpResponse(status=401)
-    login(request, user)
-    hub_member = request.user
+    user = request.user
+    if not user.is_authenticated:
+        user = authenticate(request)
+        if user is None:
+            return HttpResponse(status=401)
+        login(request, user)
 
     notebook_name = request.POST.get('notebook_name')
     notebook_content = request.POST.get('notebook_contents')
-    add_notebook_direct(request, hub_member, notebook_name, notebook_content)
+    add_notebook_direct(request, user, notebook_name, notebook_content)
 
     return HttpResponse(status=200)
