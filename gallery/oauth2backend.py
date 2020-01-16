@@ -42,8 +42,12 @@ class OAuth2Authentication:
         cert_obj = load_pem_x509_certificate(cert_str.encode('utf-8'), default_backend())
         public_key = cert_obj.public_key()
         audience = settings.OAUTH_TOKEN_AUDIENCE
+
+        # Ignore expiration date for now until we figure out how to either get refresh tokens
+        # or make environment update them for us:
+        verify_options = {'verify_exp': False}
         try:
-            return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=audience)
+            return jwt.decode(user_token, public_key, algorithms=['RS256'], audience=audience, options=verify_options)
         except jwt.exceptions.InvalidTokenError as e:
             print('Exception: ' + repr(e))
         return None
