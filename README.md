@@ -1,10 +1,6 @@
-# A Jupiter Notebook Gallery: Juno's Exploratory
+# Callisto: a Jupiter Notebook Gallery
 
-[![Build Status](https://travis-ci.org/gedankenstuecke/jupyter-gallery.svg?branch=master)](https://travis-ci.org/gedankenstuecke/jupyter-gallery)
-[![Maintainability](https://api.codeclimate.com/v1/badges/65c9247d5e7293dc94da/maintainability)](https://codeclimate.com/github/gedankenstuecke/jupyter-gallery/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/65c9247d5e7293dc94da/test_coverage)](https://codeclimate.com/github/gedankenstuecke/jupyter-gallery/test_coverage)
-
-This `django` app creates a website that interfaces with an external API (right now only with the one of Open Humans) to import Jupyter Notebooks.
+This `django` app creates a website that interfaces with JupyterHub extensions to import and share Jupyter Notebooks.
 
 Through the app:
 - users can import their own `.ipynb` Notebook files
@@ -19,57 +15,91 @@ That way it's easy to build a community around sharing and re-using notebooks. S
 **Sharing a notebook right from the Jupyter Notebook**
 
 ![](/static/aboutgifs/open.gif)
-**Opening a notebook right from the Gallery**
+**Opening a notebook right from the Callisto**
 
 ## Requirements
 For the whole setup to work your singleuser `JupyterHub` image needs to install & activate 3 extensions to Jupyter:
 
-### custom bundler
-A custom bundler is needed to add the `Share Notebook` menu item. It can be found at [gedankenstuecke/jupyter-bundler-openhumans](https://github.com/gedankenstuecke/jupyter-bundler-openhumans). An easy way to install the `bundler` and `nbextension` provided by this python package is:
+###(1) JupyterHub importer plugin
 
+The plugin is developed at [cccs-is/callisto-nbimport](https://github.com/cccs-is/callisto-nbimport). 
+
+Installation (to be run on a single-user JupyterHub server):
 ```
-git clone https://github.com/gedankenstuecke/jupyter-bundler-openhumans.git
-cd jupyter-bundler-openhumans
-pip install -e .
-jupyter bundlerextension enable --py oh_bundler
-jupyter nbextension install --py oh_bundler --sys-prefix
-jupyter nbextension enable --py oh_bundler --sys-prefix
+pip install --no-cache-dir git+http://github.com/cccs-is/callisto-nbimport 
+jupyter serverextension enable --py callisto_nbimport --sys-prefix
 ```
+###(2) JupyterHub exporter plugin for Lab environment
+For notebooks run in a Lab environment, install plugin [cccs-is/callisto-nbshare](https://github.com/cccs-is/callisto-nbshare). 
 
-Per default the post-sharing redirect will lead to `http://127.0.0.1:5000/shared`. See the [repository](https://github.com/gedankenstuecke/jupyter-bundler-openhumans) for more details on the settings.
-
-### custom URL handler
-This handler is needed for accepting a file in the Jupyter setup when being pushed from the gallery app. The handler Python module is in [gedankenstuecke/jupyter-notebook-importer](https://github.com/gedankenstuecke/jupyter-notebook-importer). The easiest way to install it locally is:
-
+Installation (to be run on a single-user JupyterHub server):
 ```
-git clone https://github.com/gedankenstuecke/jupyter-notebook-importer.git
-cd jupyter-notebook-importer
-pip install -e .
-jupyter serverextension enable --py oh_notebook_importer
+git clone http://github.com/cccs-is/callisto-nbshare
+cd callisto-nbshare
+pip install --no-cache-dir . 
+jupyter labextension install  
 ```
+###(3) JupyterHub exporter plugin for classic environment
+For notebooks run in a classic notebook environment, install plugin [cccs-is/callisto-bundler](https://github.com/cccs-is/callisto-bundler). 
 
+Installation (to be run on a single-user JupyterHub server):
+```
+pip install --no-cache-dir git+http://github.com/cccs-is/callisto-bundler 
+jupyter bundlerextension enable --py callisto_bundler --sys-prefix 
+```
+### Add Callisto URL to JupyterHub
+The 'JUPYTER_CALLISTO_URL' environment variable should be set on JupyterHub poiting to Callisto.
+For example:
+```
+JUPYTER_CALLISTO_URL='localhost:5000'
+```
 ## Deployment
-This app was build with the idea to be deployed to `heroku`. If you already have the `heroku` CLI installed all you should need to do to start the application locally is:
+The app is build to be deployed as a pod in a Kubernetes cluster.
+ 
+- Use the included Dockerfile to build an image;
+- Create a pod based on this image exposing port 5000;
+- Create a service and an ingress to make application reachable.
 
+In a development environment it can be run as a standalone Django app using
 ```
-pipenv install --dev
-pipenv shell
-heroku local:run ./manage.py migrate
-heroku local
+pyhton manage.py runserver 5000
 ```
+making the local app accesible at `127.0.0.1:5000`.
 
-Now your local heroku app should run and be accessible from `127.0.0.1:5000`
+### Authentication
+The app is expected to run behind an authentication proxy, such as OAuth2 proxy.
 
-Most likely it will not work completely unless you have set up some `.env` file in this directory with the following settings:
+The app does no user authentication itself, rather uses OAuth user token which comes
+as a result of authentication performed by the proxy.
+ 
+### Database
+Data is stored in a database - PostreSQL for deployed app; local buil-in SQLite
+for development.
 
-### settings
-what should be in the `.env` file:
+For production environment set the following environment variables:
+- CALLISTO_DATABASE_NAME
+- CALLISTO_DATABASE_HOST
+- CALLISTO_DATABASE_PORT
+- CALLISTO_DATABASE_USER
+- CALLISTO_DATABASE_PASSWORD
+
+For development environment set the following environment variable:
+```
+CALLISTO_DEVELOPMENT = True
+``` 
+to direct the app to use built-in local SQLite database.
+
+
+
+### Settings
+The app requires several environment variables to specify authentication, JupyterHub connection, and database information.
+
+What should be in the `.env` file:
 
 ```
 # the usual stuff for a django app:
 SECRET_KEY='secret_key_here'
 
-# the only UNusual stuff:
 # JupyterHub URL
 JUPYTERHUB_URL = http://localhost:8888
 
@@ -79,14 +109,12 @@ OAUTH_TOKEN_AUDIENCE='https://graph.windows.net'
 # Source of the public keys used by the OAuth2 provider to sign tokens
 OAUTH_PUBLIC_KEYS_URL='https://login.microsoftonline.com/common/discovery/keys'
 
-Database connection info:
-# Are we running in Development mode? Using local SQLite then.
-#CALLISTO_DEVELOPMENT = True
-
-# Callisto database connection info for production environment
+# Callisto database connection info:
 CALLISTO_DATABASE_NAME='callisto'
 CALLISTO_DATABASE_HOST='localhost'
 CALLISTO_DATABASE_PORT=5432
 CALLISTO_DATABASE_USER='my_db_user'
 CALLISTO_DATABASE_PASSWORD='my_db_password'
 
+# Or, if this is a development environment:
+#CALLISTO_DEVELOPMENT = True
