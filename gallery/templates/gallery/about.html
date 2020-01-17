@@ -8,15 +8,11 @@
         <h2>About</h2>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Who's running the <i>Exploratory</i>?</h3>
+            <h3 class="panel-title">What is <i>Callisto</i>?</h3>
           </div>
           <div class="panel-body">
           <p>
-            This project is run by
-            <a href="https://openhumansfoundation.org/">the Open Humans Foundation</a>.
-            You can always get in touch with it via email at <a href="mailto:support@openhumans.org">email</a> at <code>support@openhumans.org</code>.
-
-            <a href='https://www.openhumans.org/activity/junos-personal-data-exploratory/'>See this project's activity page on Open Humans</a>.
+            A place to share your work. Round-trip those notebooks with JupyterHub, show results, and keep the data.
           </p>
           </div>
         </div>
@@ -26,47 +22,14 @@
           </div>
           <div class="panel-body">
           <p>
-            We store different kinds of data depending on whether you are accessing this app as a guest
-            or if you are being logged in with your Open Humans account:
-          </p>
-          <ol>
-            <li>Generally, our hoster <i><a href='https://www.heroku.com'>Heroku</a></i> stores and gives us access to</li>
-            <ol>
-              <li>IP addresses used to access this app</li>
-              <li>the sub-pages visited on this app</li>
-              <li>(Both are stored for up to a week)</li>
-            </ol>
-            <li>By logging in with your <i>Open Humans</i> account we can access:</li>
-            <ol>
-              <li>your <i>Open Humans</i> username</li>
-              <li>notebooks you've shared with Open Humans via the
-                <a href="https://www.openhumans.org/activity/personal-data-notebooks/">Personal Data Notebooks</a> project.
-              </li>
-              <li>(You can always review this app's permissions <a href='https://www.openhumans.org/activity/junos-personal-data-exploratory/'>on Open Humans</a>)</li>
-            </ol>
-            <li>The Exploratory will store:</li>
-            <ol>
-              <li>your Open Humans username</li>
-              <li>the authentication credentials that allow us to look at notebooks you have stored in the <a href="https://www.openhumans.org/activity/personal-data-notebooks/">Personal Data Notebooks</a> project</li>
-              <li>notebooks that you have selected to publicly share through this app, along the description/tags/sources you enter</li>
-              <li>if you like/comment on notebooks we store this data as well</li>
-            </ol>
-          </ol>
-          <p>
-            While you have to log-in through your Open Humans account to share your own notebooks, you can always use this site
-            without registering to just open notebooks.
+            We store basic account information (user name, e-mail). We store the notebooks you shared, comments, and likes.
           </p>
           <p>
-            The Exploratory is covered by Open Humans' <a href='https://www.openhumans.org/terms/'>Terms of Use</a> and
-            <a href='https://www.openhumans.org/data-use/'>Data Use Policy</a>:
+            Remember that until the notebook is published, it is only visible to you.
           </p>
           <p>
-            You can always delete your account and all associated data from the <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
-            This includes the Open Humans authentication credentials, i.e. we won't be able to access your Open Humans account any longer.
-          </p>
-          <p>
-            Removing the authorization on Open Humans does not automatically delete all your data in the Exploratory; if you
-            want this to occur, you should delete your account here before withdrawing from this project in the Open Humans site.
+            You can always delete a notebook or the whole Callisto account from the <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
+            If you delete the Callisto account, all associated information (notebooks, comments, likes) will be purged as well.
           </p>
           </div>
         </div>
@@ -79,32 +42,24 @@
           </div>
           <div class="panel-body">
             <p>
-              Sharing a notebook is a two-step process starting from
-              <a href='https://notebooks.openhumans.org'><code>notebooks.openhumans.org</code></a> that involves first uploading
-              it to Open Humans and then sharing it here:
+              Sharing a notebook is a two step process:
+              <ol>
+                <li>
+                  Start by uploading a notebook (either from file, or from the JupyterHub),
+                </li>
+                <li>
+                  Next, use the <code>Publish</code> button from your <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
+                </li>
+              </ol>
+              When you publish a notebook you will have an opportunity to provide extra information. Other people
+              will be able to discover it in the <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>, or
+              in <i><a href="{%url 'search'%}">Search</a></i>.
             </p>
-            <ol>
-            <li>You can upload a notebook to Open Humans right from open notebooks on
-            <code>notebooks.openhumans.org</code> by</li>
-            <ol>
-              <li>clicking on the <code>File</code> menu,</li>
-              <li>selecting <code>Share Notebook</code>,</li>
-              <li>and clicking <code>Upload to Open Humans</code></li>
-            </ol>
-            <li>Post-sharing you will be taken back to the <i>Exploratory</i>. After you have logged in you can share by:</li>
-            <ol>
-              <li>Selecting shareable notebooks from the <a href="{%url 'dashboard'%}">left side of your <i>dashboard</i></a>.</li>
-              <li>Click <code>add/replace</code> to start the import of the notebook.
-                (If you have previously shared a notebook of the same name the existing one will be updated)</li>
-              <li>In the form that will appear you should give your notebook a <code>Description</code>,
-                along with some <code>Tags</code> that describe your notebook. The <code>Data sources</code> your
-              notebook requires should have been automatically identified. If not, you can manually add them.</li>
-              <li>Press <code>Submit Notebook</code> and you are done. Your notebook is now shared on the
-                <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>.</li>
-            </ol>
-          </ol>
-          <p>Check out this quick GIF below to see how it works in practice:</p>
-          <img data-gifffer="{% static 'aboutgifs/sharing.gif' %}" data-gifffer-width="100%" />
+            <p>
+              If you change your mind you can always update the notebook or its information, or delete it altogether.
+            </p>
+            <p>Check out this quick GIF below to see how it works in practice:</p>
+            <img data-gifffer="{% static 'aboutgifs/sharing.gif' %}" data-gifffer-width="100%" />
           </div>
         </div>
         <div class="panel panel-default">
@@ -113,10 +68,11 @@
           </div>
           <div class="panel-body">
           <p>
-            Getting a notebook copied into your own <code>notebooks.openhumans.org</code> structure is a simple click.
-            When you see a notebook on the <i>Exploratory</i> that you'd like to run just press the <code>open as notebook</code> or <code>Open</code> buttons
-            which are on <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>. If your notebook directory already contains a notebook of the same
-            name it will make sure to append the current date/time to the newly imported notebook, as to not overwrite the existing one.
+            Getting a notebook copied into your own JupyterHub session is a simple click.
+            When you see a notebook on the <i>Callisto</i> that you'd like to run just press the <code>open as notebook</code>
+            or <code>Open as JupyterHub</code> buttons which are on <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>.
+            If your notebook directory already contains a notebook of the same name it will make sure to append the current
+            date/time to the newly imported notebook, as to not overwrite the existing one.
           </p>
           <p>
             See the GIF below for an example:
@@ -138,19 +94,6 @@
             you will have to replace it as outlined above in <i>How do I share a notebook?</i>
           </p>
           <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/edit.png' %}"/>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Can I use the exploratory for notebooks not hosted on <i>Open Humans</i>?</h3>
-          </div>
-          <div class="panel-body">
-          <p>
-            Unfortunately not at this point. But if you run your own JupyterHub installation you can easily set up your
-            own exploratory for it. The required Jupyter extensions and the exploratory are all open source.
-            <a href="https://github.com/gedankenstuecke/jupyter-gallery">Read more about it on the
-            GitHub repository</a> for the exploratory!
-          </p>
           </div>
         </div>
         <div class="panel panel-default">
