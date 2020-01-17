@@ -11,10 +11,10 @@ Through the app:
 
 That way it's easy to build a community around sharing and re-using notebooks. See below for some GIF examples:
 
-![](/static/aboutgifs/sharing.gif)
+![](/static/aboutgifs/notebook_import.gif)
 **Sharing a notebook right from the Jupyter Notebook**
 
-![](/static/aboutgifs/open.gif)
+![](/static/aboutgifs/notebook_export.gif)
 **Opening a notebook right from the Callisto**
 
 ## Requirements
