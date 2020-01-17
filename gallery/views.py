@@ -68,6 +68,8 @@ def login_user(request):
     if user is not None:
         login(request, user)
         next_url = request.GET.get('next')
+        if not next_url:
+            next_url = '/dashboard'
         return redirect(next_url)
     else:
         return redirect('/admin/login')
@@ -80,7 +82,7 @@ def logout_user(request):
     """
     if request.method == 'POST':
         logout(request)
-    return redirect('index')
+    return redirect('about')
 
 
 @login_required
