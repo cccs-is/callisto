@@ -161,6 +161,8 @@ LOGGING = {
 
 LOGIN_URL = '/login/'
 
+AUTH_USER_MODEL = 'gallery.HubUser'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 

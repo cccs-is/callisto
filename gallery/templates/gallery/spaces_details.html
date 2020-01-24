@@ -1,0 +1,114 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+{% block content %}
+
+    {%if edit %}
+      <h1>Edit Hub Space <code>{{space_name}}</code>.</h1>
+    {%else%}
+      <h1>Create Hub Space.</h1>
+    {%endif%}
+
+    <form action="{% url 'space-details' space_id %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Name:</label>
+      <input class="form-control" name="hub_space_name" size=60 type="text" value="{{space_name}}"
+        placeholder="Enter a name for your Hub Space" required>
+        <p class="help-block">
+        Name for a Hub Space - area where people can share their work.
+        </p>
+    </div>
+    <div class="form-group">
+      <label>Type:</label>
+        <select name="type">
+          {% for possible_space_type in all_space_types %}
+            <option value="{{ possible_space_type.0 }}" {% if possible_space_type.0 == space.type %}selected{% endif %}>{{ possible_space_type.1 }}</option>
+          {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea rows=10 class="form-control" name="description" size=60 type="text"
+        placeholder="Enter a description for your Hub Space" required>{{description}}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Administrators:</label>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for space_manager in space.spaces_admin.all %}
+        <tr>
+          <td>
+              {{ space_manager.get_full_name }}
+          </td>
+          <td>
+              {{ space_manager.email }}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label>Participants with Read rights:</label>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for space_read_user in space.spaces_read.all %}
+        <tr>
+          <td>
+              {{ space_read_user.get_full_name }}
+          </td>
+          <td>
+              {{ space_read_user.email }}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label>Participants with Write rights:</label>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for space_write_user in space.spaces_write.all %}
+        <tr>
+          <td>
+              {{ space_write_user.get_full_name }}
+          </td>
+          <td>
+              {{ space_write_user.email }}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+    {%if edit %}
+      <input type="submit" value="Update" style="margin-top:6px;" class="btn btn-primary">
+    {%else%}
+      <input type="submit" value="Publish" style="margin-top:6px;" class="btn btn-primary">
+    {%endif%}
+
+    </form>
+{% endblock %}

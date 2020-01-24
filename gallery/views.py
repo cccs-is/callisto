@@ -7,7 +7,7 @@ from .helpers import find_notebook_by_keywords, get_all_data_sources
 from .helpers import add_notebook_direct
 from .helpers import paginate_items
 from .helpers import get_all_data_sources_numeric
-from .models import SharedNotebook, NotebookComment
+from .models import SharedNotebook, NotebookComment, HubSpace, SpaceTypes
 import arrow
 import json
 from django.db.models import Count
@@ -286,3 +286,36 @@ def nbupload(request):
     add_notebook_direct(request, user, notebook_name, notebook_content)
 
     return HttpResponse(status=200)
+
+
+def spaces_index(request):
+    spaces_list = HubSpace.objects.all()
+    spaces = paginate_items(spaces_list, request.GET.get('page'))
+    return render(request, 'gallery/spaces_index.html', {'spaces': spaces})
+
+@login_required
+def spaces_details(request, space_id):
+    hub_member = request.user
+    space = HubSpace.objects.get(pk=space_id)
+    all_space_types = SpaceTypes.choices()
+
+    # only space admin can edit the space
+    if hub_member not in space.spaces_admin.all():
+        messages.warning(request, 'Permission denied!')
+        return redirect("/space")
+
+    if request.method == "POST":
+        space.space_name = request.POST.get('hub_space_name')
+        space.space_description = request.POST.get('description')
+        space.type = request.POST.get('type')
+        space.save()
+        messages.info(request, 'Updated {}!'.format(space.space_name))
+        return redirect("/space")
+    else:
+        context = {'space_name': space.space_name,
+                   'description': space.space_description,
+                   'space_id': str(space_id),
+                   'all_space_types': all_space_types,
+                   'space': space,
+                   'edit': True} # TODO
+        return render(request, 'gallery/spaces_details.html', context=context)

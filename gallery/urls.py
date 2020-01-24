@@ -22,5 +22,7 @@ urlpatterns = [
     path('delete-notebook/<notebook_id>/', views.delete_notebook, name='delete-notebook'),
     path('upload-notebook/', views.upload_notebook, name='upload-notebook'),
     path('add-comment/<notebook_id>/', views.add_comment, name='add-comment'),
-    path('like-notebook/<notebook_id>/', views_notebook_details.like_notebook, name='like-notebook')
+    path('like-notebook/<notebook_id>/', views_notebook_details.like_notebook, name='like-notebook'),
+    path('space/', views.spaces_index, name='spaces-index'),
+    path('space/<space_id>/', views.spaces_details, name='space-details'),
 ]

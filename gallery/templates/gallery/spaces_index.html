@@ -1,0 +1,52 @@
+{% extends 'gallery/base.html' %}
+{% block content %}
+{% load static %}
+{% load utilities %}
+
+<h1>Hub Spaces</h1>
+<div class="row">
+  <div class="col-md-9">
+    <div class="table-responsive">
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>Space</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for space in spaces%}
+        <tr>
+          <td>
+            <a href="{%url 'space-details' space.id%}">
+              <code>{{space.space_name}}</code> </br>
+            </a>
+          </td>
+          <td>
+            <a href="{%url 'space-details' space.id%}">
+              <code>{{space.get_type_label}}</code> </br>
+            </a>
+          </td>
+        </tr>
+        {%endfor%}
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="pagination">
+          <ul class="pagination">
+            {% if spaces.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a aria-label="Previous" href="?page={{ spaces.previous_page_number }}{%if source%}&source={{source}}{%endif%}">previous</a></li>
+            {% endif %}
+                <li class="active"><a href='#'>Page {{ spaces.number }} of {{ spaces.paginator.num_pages }}</a></li>
+            {% if spaces.has_next %}
+                <li><a href="?order_by={{order_by}}&page={{ spaces.next_page_number }}{%if source%}&source={{source}}{%endif%}">next</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ spaces.paginator.num_pages }}{%if source%}&source={{source}}{%endif%}">last &raquo;</a></li>
+            {% endif %}
+          </ul>
+    </nav>
+  </div>
+</div>
+
+
+{% endblock %}

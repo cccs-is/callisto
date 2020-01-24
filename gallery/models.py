@@ -2,20 +2,40 @@ from django.db import models
 from datetime import timedelta
 import arrow
 import json
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+from enum import Enum
 
 
-def get_full_name(user):
-    """
-    Common method to get descriptive user's name
-    """
-    if user is None:
-        return ''
-    return '{0} {1}'.format(user.first_name, user.last_name)
+class HubUser(AbstractUser):
+    pass
+    # is_staff == is_sys_admin
+
+
+class SpaceTypes(Enum):
+    Private = 0
+    AllCanRead = 1
+    AllCanWrite = 2
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
+
+
+class HubSpace(models.Model):
+    space_name = models.TextField(default='')
+    space_description = models.TextField(default='')
+    type = models.IntegerField(choices=SpaceTypes.choices(), default=SpaceTypes.Private)
+    spaces_read = models.ManyToManyField(HubUser, related_name='spaces_read', blank=True)
+    spaces_write = models.ManyToManyField(HubUser, related_name='spaces_write', blank=True)
+    spaces_admin = models.ManyToManyField(HubUser, related_name='spaces_admin', blank=True)
+
+    def get_type_label(self):
+        return SpaceTypes(self.type).name
 
 
 class SharedNotebook(models.Model):
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
+    hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     notebook_name = models.TextField(default='')
     notebook_content = models.TextField(default='')
     description = models.TextField(default='')
@@ -28,7 +48,7 @@ class SharedNotebook(models.Model):
     published = models.BooleanField(default=False)
 
     def full_user_name(self):
-        return get_full_name(self.hub_member)
+        return self.hub_member.get_full_name()
 
     def get_tags(self):
         return ",".join(json.loads(self.tags)) if self.tags else ''
@@ -50,13 +70,13 @@ class NotebookComment(models.Model):
     """
     comments about a given notebook
     """
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
+    hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
     comment_text = models.TextField(default='')
     created_at = models.DateTimeField(default=arrow.now().format())
 
     def full_user_name(self):
-        return get_full_name(self.hub_member)
+        return self.hub_member.get_full_name()
 
     class Meta:
             ordering = ["created_at"]
@@ -66,9 +86,6 @@ class NotebookLike(models.Model):
     """
     like a given notebook
     """
-    hub_member = models.ForeignKey(User, on_delete=models.CASCADE)
+    hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=arrow.now().format())
-
-    def full_user_name(self):
-        return get_full_name(self.hub_member)
