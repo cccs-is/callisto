@@ -1,0 +1,36 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+{% block content %}
+
+    {%if add %}
+      <h1>Add Users To <code>{{space_name}}</code></h1>
+    {%else%}
+      <h1>Remove Users From <code>{{space_name}}</code></h1>
+    {%endif%}
+
+    <form action="{% url 'space-users' space_id %}" method="post">
+      {% csrf_token %}
+      <div class="row">
+          <div class="form-group">
+            <label>Users:</label>
+            <input type="text" placeholder="Search..." id="userFilter" onkeyup="filterFunction()">
+          </div>
+      </div>
+
+      <div class="row">
+          <select id="userList" class="user-list" name="users" multiple size="20">
+            {% for user in users %}
+            <option value="{{ user.username }}">{{ user.get_full_name }} ({{ user.email }})</option>
+            {% endfor %}
+          </select>
+      </div>
+
+      {%if add %}
+        <input type="submit" value="Add" style="margin-top:6px;" class="btn btn-primary center-button">
+      {%else%}
+        <input type="submit" value="Remove" style="margin-top:6px;" class="btn btn-primary center-button">
+      {%endif%}
+
+    </form>
+
+{% endblock %}

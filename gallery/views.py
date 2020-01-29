@@ -14,7 +14,7 @@ from django.db.models import Count
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -299,10 +299,11 @@ def spaces_details(request, space_id):
     space = HubSpace.objects.get(pk=space_id)
     all_space_types = SpaceTypes.choices()
 
-    # only space admin can edit the space
-    if hub_member not in space.spaces_admin.all():
-        messages.warning(request, 'Permission denied!')
-        return redirect("/space")
+    # only admin or space admin can edit the space
+    if not hub_member.is_superuser:
+        if hub_member not in space.spaces_admin.all():
+            messages.warning(request, 'Permission denied!')
+            return redirect("/space")
 
     if request.method == "POST":
         space.space_name = request.POST.get('hub_space_name')
@@ -312,10 +313,51 @@ def spaces_details(request, space_id):
         messages.info(request, 'Updated {}!'.format(space.space_name))
         return redirect("/space")
     else:
+        user_model = get_user_model()
+        all_users = user_model.objects.all()
         context = {'space_name': space.space_name,
                    'description': space.space_description,
                    'space_id': str(space_id),
                    'all_space_types': all_space_types,
                    'space': space,
+                   'all_users': all_users,
                    'edit': True} # TODO
         return render(request, 'gallery/spaces_details.html', context=context)
+
+
+@login_required
+def spaces_users(request, space_id):
+    hub_member = request.user
+    space = HubSpace.objects.get(pk=space_id)
+
+    # only admin or space admin can edit the space
+    if not hub_member.is_superuser:
+        if hub_member not in space.spaces_admin.all():
+            messages.warning(request, 'Permission denied!')
+            return redirect("/space")
+
+    if request.method == "POST":
+        add_users = request.POST.getlist('users')
+        for username in add_users:
+            user_model = get_user_model()
+            user = user_model.objects.get(username=username)
+            space.spaces_admin.add(user)
+            user.save()
+        space.save()
+        return redirect("/space/" + str(space_id))
+    else:
+        user_model = get_user_model()
+        all_users = user_model.objects.all()
+
+        # TODO variants: admin / read / write
+        # exclude all users already having rights
+        all_admin_users = space.spaces_admin.all()
+        users = all_users.difference(all_admin_users)
+
+
+        context = {'space_name': space.space_name,
+                   'space_id': str(space_id),
+                   'space': space,
+                   'users': users,
+                   'add': True} # TODO add removal
+        return render(request, 'gallery/add_users.html', context=context)

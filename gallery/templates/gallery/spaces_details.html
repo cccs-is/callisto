@@ -31,29 +31,42 @@
       <textarea rows=10 class="form-control" name="description" size=60 type="text"
         placeholder="Enter a description for your Hub Space" required>{{description}}</textarea>
     </div>
-    <div class="form-group">
-      <label>Administrators:</label>
-      <table class='table'>
-        <thead>
+
+    {%if edit %}
+      <input type="submit" value="Update" style="margin-top:6px;" class="btn btn-primary center-button">
+    {%else%}
+      <input type="submit" value="Create" style="margin-top:6px;" class="btn btn-primary center-button">
+    {%endif%}
+
+    </form>
+
+    <form action="{% url 'space-users' space_id %}" method="get">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Administrators:</label>
+        <button type="submit" value="add" class="btn">Add</button>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>E-mail</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for space_manager in space.spaces_admin.all %}
           <tr>
-            <th>Name</th>
-            <th>E-mail</th>
+            <td>
+                {{ space_manager.get_full_name }}
+            </td>
+            <td>
+                {{ space_manager.email }}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-        {% for space_manager in space.spaces_admin.all %}
-        <tr>
-          <td>
-              {{ space_manager.get_full_name }}
-          </td>
-          <td>
-              {{ space_manager.email }}
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
 
     <div class="form-group">
       <label>Participants with Read rights:</label>
@@ -103,12 +116,4 @@
       </table>
     </div>
 
-
-    {%if edit %}
-      <input type="submit" value="Update" style="margin-top:6px;" class="btn btn-primary">
-    {%else%}
-      <input type="submit" value="Publish" style="margin-top:6px;" class="btn btn-primary">
-    {%endif%}
-
-    </form>
 {% endblock %}

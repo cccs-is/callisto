@@ -25,3 +25,13 @@ margin: 20px 0;
 input[type="file"].form-control {
     height: auto;
 }
+
+input.center-button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.user-list {
+  width: 100%;
+}
