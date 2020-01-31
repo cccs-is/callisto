@@ -337,27 +337,65 @@ def spaces_users(request, space_id):
             return redirect("/space")
 
     if request.method == "POST":
-        add_users = request.POST.getlist('users')
-        for username in add_users:
-            user_model = get_user_model()
+        change_users = request.POST.getlist('users')
+        action = request.POST.get('action')
+        user_model = get_user_model()
+        for username in change_users:
             user = user_model.objects.get(username=username)
-            space.spaces_admin.add(user)
+            if action == 'admin-add':
+                space.spaces_admin.add(user)
+            elif action == 'admin-remove':
+                space.spaces_admin.remove(user)
+            elif action == 'read-add':
+                space.spaces_read.add(user)
+            elif action == 'read-remove':
+                space.spaces_read.remove(user)
+            elif action == 'write-add':
+                space.spaces_write.add(user)
+            elif action == 'write-remove':
+                space.spaces_write.remove(user)
+            else:
+                return HttpResponse('Unexpected action: ' + str(action), status=500)
             user.save()
         space.save()
         return redirect("/space/" + str(space_id))
     else:
+        action = request.GET.get('action')
         user_model = get_user_model()
-        all_users = user_model.objects.all()
+        if action == 'admin-add':
+            add_action = True
+            list_group = 'Admins'
+            all_users = user_model.objects.all()
+            list_users = all_users.difference(space.spaces_admin.all())
+        elif action == 'admin-remove':
+            add_action = False
+            list_group = 'Admins'
+            list_users = space.spaces_admin.all()
+        elif action == 'read-add':
+            add_action = True
+            list_group = 'Users-Read'
+            all_users = user_model.objects.all()
+            list_users = all_users.difference(space.spaces_read.all())
+        elif action == 'read-remove':
+            add_action = False
+            list_group = 'Users-Read'
+            list_users = space.spaces_read.all()
+        elif action == 'write-add':
+            add_action = True
+            list_group = 'Users-Write'
+            all_users = user_model.objects.all()
+            list_users = all_users.difference(space.spaces_write.all())
+        elif action == 'write-remove':
+            add_action = False
+            list_group = 'Users-Write'
+            list_users = space.spaces_write.all()
+        else:
+            return HttpResponse('Unexpected action: ' + str(action), status=500)
 
-        # TODO variants: admin / read / write
-        # exclude all users already having rights
-        all_admin_users = space.spaces_admin.all()
-        users = all_users.difference(all_admin_users)
-
-
-        context = {'space_name': space.space_name,
-                   'space_id': str(space_id),
+        context = {'space_id': str(space_id),
                    'space': space,
-                   'users': users,
-                   'add': True} # TODO add removal
+                   'action': action,
+                   'add': add_action,
+                   'users': list_users,
+                   'group': list_group}
         return render(request, 'gallery/add_users.html', context=context)

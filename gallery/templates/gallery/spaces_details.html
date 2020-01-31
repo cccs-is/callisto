@@ -44,7 +44,8 @@
       {% csrf_token %}
       <div class="form-group">
         <label>Administrators:</label>
-        <button type="submit" value="add" class="btn">Add</button>
+        <button type="submit" name="action" value="admin-add" class="btn btn-success">Add</button>
+        <button type="submit" name="action" value="admin-remove"  class="btn btn-danger">Remove</button>
         <table class='table'>
           <thead>
             <tr>
@@ -68,52 +69,62 @@
       </div>
     </form>
 
-    <div class="form-group">
-      <label>Participants with Read rights:</label>
-      <table class='table'>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>E-mail</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for space_read_user in space.spaces_read.all %}
-        <tr>
-          <td>
-              {{ space_read_user.get_full_name }}
-          </td>
-          <td>
-              {{ space_read_user.email }}
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    <form action="{% url 'space-users' space_id %}" method="get">
+      {% csrf_token %}
+        <div class="form-group">
+          <label>Participants with Read rights:</label>
+          <button type="submit" name="action" value="read-add" class="btn btn-success">Add</button>
+          <button type="submit" name="action" value="read-remove"  class="btn btn-danger">Remove</button>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for space_read_user in space.spaces_read.all %}
+            <tr>
+              <td>
+                  {{ space_read_user.get_full_name }}
+              </td>
+              <td>
+                  {{ space_read_user.email }}
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </form>
 
-    <div class="form-group">
-      <label>Participants with Write rights:</label>
-      <table class='table'>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>E-mail</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for space_write_user in space.spaces_write.all %}
-        <tr>
-          <td>
-              {{ space_write_user.get_full_name }}
-          </td>
-          <td>
-              {{ space_write_user.email }}
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    <form action="{% url 'space-users' space_id %}" method="get">
+      {% csrf_token %}
+        <div class="form-group">
+          <label>Participants with Write rights:</label>
+          <button type="submit" name="action" value="write-add" class="btn btn-success">Add</button>
+          <button type="submit" name="action" value="write-remove"  class="btn btn-danger">Remove</button>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for space_write_user in space.spaces_write.all %}
+            <tr>
+              <td>
+                  {{ space_write_user.get_full_name }}
+              </td>
+              <td>
+                  {{ space_write_user.email }}
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </form>
 
 {% endblock %}

@@ -3,12 +3,14 @@
 {% block content %}
 
     {%if add %}
-      <h1>Add Users To <code>{{space_name}}</code></h1>
+      <h1>Add {{group}} To <code>{{space.space_name}}</code></h1>
     {%else%}
-      <h1>Remove Users From <code>{{space_name}}</code></h1>
+      <h1>Remove {{group}} From <code>{{space.space_name}}</code></h1>
     {%endif%}
 
     <form action="{% url 'space-users' space_id %}" method="post">
+      <input type="hidden" name="action" value="{{ action }}" />
+      <input type="hidden" name="access" value="{{ access }}" />
       {% csrf_token %}
       <div class="row">
           <div class="form-group">
