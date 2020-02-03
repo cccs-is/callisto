@@ -70,8 +70,8 @@ class OAuth2Authentication:
                 raise PermissionDenied()
         except User.DoesNotExist:
             user = User(username=user_id)
-            user.first_name =  decoded.get('given_name')
-            user.last_name = decoded.get('family_name')
+            user.first_name =  decoded.get('given_name', '')
+            user.last_name = decoded.get('family_name', '')
             user.email = decoded.get('unique_name') # TODO check if with proper scope we can get e-mail claim
             print('Creating user: ', user.first_name, ' ', user.last_name )
             user.save()
