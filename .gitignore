@@ -10,3 +10,4 @@ staticfiles/*
 dump.rdb
 .idea/
 .ipynb_checkpoints/*
+.vscode/

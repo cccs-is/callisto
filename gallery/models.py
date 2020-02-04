@@ -8,8 +8,17 @@ from enum import Enum
 
 
 class HubUser(AbstractUser):
-    pass
     # is_staff == is_sys_admin
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        If no last name and first name specified, return e-mail.
+        """
+        if self.first_name and self.last_name:
+            full_name = '%s %s' % (self.first_name, self.last_name)
+        else:
+            full_name = self.email
+        return full_name.strip()
 
 
 class SpaceTypes(Enum):
