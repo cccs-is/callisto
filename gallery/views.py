@@ -115,6 +115,11 @@ def edit_notebook(request, notebook_id):
         return redirect("/")
     if request.method == "POST":
         notebook.description = request.POST.get('description')
+        spaces_id = request.POST.getlist('spaces')
+        notebook.spaces.clear()
+        for space_id in spaces_id:
+            space = HubSpace.objects.get(pk=space_id)
+            notebook.spaces.add(space)
         tags = request.POST.get('tags')
         tags = [tag.strip() for tag in tags.split(',')]
         notebook.tags = json.dumps(tags)
@@ -127,7 +132,18 @@ def edit_notebook(request, notebook_id):
         messages.info(request, 'Updated {}!'.format(notebook.notebook_name))
         return redirect("/dashboard")
     else:
+        all_spaces = HubSpace.objects.all()
+        if hub_member.is_staff:
+            available_spaces = all_spaces
+        else:
+            available_spaces = set()
+            for space in all_spaces:
+                if hub_member in space.spaces_admin.all() or hub_member in space.spaces_write.all():
+                    available_spaces.add(space)
+        selected_spaces = notebook.spaces.all()
         context = {'description': notebook.description,
+                   'spaces': available_spaces,
+                   'selected_spaces': selected_spaces,
                    'tags': notebook.get_tags(),
                    'data_sources': notebook.get_data_sources(),
                    'notebook_name': notebook.notebook_name,
