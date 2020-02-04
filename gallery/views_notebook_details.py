@@ -100,6 +100,7 @@ def open_notebook_hub(request, notebook_id):
     jhub_user_url = settings.JUPYTERHUB_URL.rstrip('/') + '/user/' + jhub_user_name
 
     post_url = jhub_user_url + '/notebook-import'
+    print('Sending notebook to: ' + str(post_url))
     response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0)
 
     if response.status_code == 200:
