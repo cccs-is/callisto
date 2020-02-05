@@ -129,14 +129,20 @@
        </script>
     <footer class="footer">
      <div class="fcontainer">
-       <p class="text-muted">
-         <a href="https://github.com/cccs-is/callisto">
-           Proudly open-source.
-         </a>
-         | 
-         <a href="/about">
-         About Callisto Explorer</a>
-       </p>
+       <div>
+         <p class="text-muted">
+           <a href="https://github.com/cccs-is/callisto">Proudly open-source.</a>
+           |
+           <a href="/about">About Callisto Explorer</a>
+         </p>
+       </div>
+       <div>
+         {% if user.is_authenticated %}
+           <p class="text-muted">
+             Logged as: {{user.get_full_name}} {% if user.is_staff %}[Admin]{% endif %}
+           </p>
+         {% endif %}
+       </div>
      </div>
 </footer>
   </body>

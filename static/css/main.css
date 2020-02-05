@@ -35,3 +35,9 @@ input.center-button {
 .user-list {
   width: 100%;
 }
+
+.fcontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
