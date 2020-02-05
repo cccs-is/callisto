@@ -8,6 +8,7 @@ from django.http import HttpResponse
 import arrow
 import requests
 from django.conf import settings
+from django.contrib import messages
 
 
 # This is the cookie name used by OAuth2 proxy
@@ -18,6 +19,11 @@ OAUTH_COOKIE_NAME = '_oauth2_proxy'
 @login_required
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+
+    if not notebook.can_read(request.user):
+        messages.warning(request, 'Permission denied!')
+        return redirect("/")
+
     nbview_session_key = 'nb-view-{}'.format(notebook_id)
     if not request.session.get(nbview_session_key):
         request.session[nbview_session_key] = True

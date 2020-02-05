@@ -96,6 +96,10 @@ class SharedNotebook(models.Model):
     def get_data_sources_json(self):
         return json.loads(self.data_sources)
 
+    def can_read(self, hub_member):
+        spaces_can_read = {x for x in HubSpace.objects.all() if x.can_read(hub_member)}
+        return spaces_can_read & set(self.spaces.all())
+
 
 class NotebookComment(models.Model):
     """

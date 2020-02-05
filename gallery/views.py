@@ -104,6 +104,7 @@ def dashboard(request):
 def likes(request):
     hub_member = request.user
     liked_notebook_list = hub_member.notebooklike_set.all().order_by('-created_at')
+    liked_notebook_list = [x for x in liked_notebook_list if x.notebook.can_read(request.user)]
     liked_notebooks = paginate_items(liked_notebook_list, request.GET.get('page'))
     context = {'liked_notebooks': liked_notebooks, 'section': 'likes'}
     return render(request, 'gallery/likes.html', context=context)
@@ -178,6 +179,7 @@ def notebook_index(request):
         notebook_list = notebook_list.annotate(
             likes=Count('notebooklike'))
     notebook_list = notebook_list.order_by('-{}'.format(order_variable))
+    notebook_list = [x for x in notebook_list if x.can_read(request.user)]
     notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'gallery/notebook_index.html',
@@ -188,6 +190,7 @@ def notebook_index(request):
                    'source': source_filter})
 
 
+@login_required
 def search_notebooks(request):
     if request.method == "POST":
         search_term = request.POST.get('search_term')
@@ -203,6 +206,7 @@ def search_notebooks(request):
         notebook_list = notebook_list.annotate(
             likes=Count('notebooklike'))
     notebook_list = notebook_list.order_by('-{}'.format(order_variable))
+    notebook_list = [x for x in notebook_list if x.can_read(request.user)]
     notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'gallery/search.html',
@@ -316,22 +320,8 @@ def spaces_index(request):
         space_id = space.pk
         return redirect("/space/" + str(space_id))
     else:
-        """
-        spaces_list = HubSpace.objects.all()
-        # only admin or space admin can edit a space
-        if not is_admin:
-            spaces_list_filtered = set() # HubSpace.objects.none()
-            for space in spaces_list:
-                if hub_member in space.spaces_admin.all():
-                    #spaces_list_filtered = spaces_list_filtered | space
-                    spaces_list_filtered.add(space)
-            spaces_list = spaces_list_filtered
-        spaces = spaces_list
-        """
-
-        spaces = spaces_admin(hub_member)
-        # TODO pagination works on Django's QuerySet only - why?
-        #spaces = paginate_items(spaces_list, request.GET.get('page'))
+        spaces = [x for x in HubSpace.objects.all() if x.can_admin(hub_member)]
+        spaces = paginate_items(spaces, request.GET.get('page'))
         context = {
             'spaces': spaces,
             'is_admin': is_admin,
