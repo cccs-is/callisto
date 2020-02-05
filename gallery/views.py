@@ -135,14 +135,7 @@ def edit_notebook(request, notebook_id):
         messages.info(request, 'Updated {}!'.format(notebook.notebook_name))
         return redirect("/dashboard")
     else:
-        all_spaces = HubSpace.objects.all()
-        if hub_member.is_staff:
-            available_spaces = all_spaces
-        else:
-            available_spaces = set()
-            for space in all_spaces:
-                if hub_member in space.spaces_admin.all() or hub_member in space.spaces_write.all():
-                    available_spaces.add(space)
+        available_spaces = {x for x in HubSpace.objects.all() if x.can_write(hub_member)}
         selected_spaces = notebook.spaces.all()
         context = {'description': notebook.description,
                    'spaces': available_spaces,

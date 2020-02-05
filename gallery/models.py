@@ -52,10 +52,14 @@ class HubSpace(models.Model):
     def can_write(self, hub_member):
         if self.can_admin(hub_member):
             return True
+        if self.type == SpaceTypes.AllCanWrite.value():
+            return True
         return hub_member in self.spaces_write.all()
 
     def can_read(self, hub_member):
         if self.can_write(hub_member):
+            return True
+        if self.type == SpaceTypes.AllCanRead.value() or  self.type == SpaceTypes.AllCanWrite.value():
             return True
         return hub_member in self.spaces_read.all()
 
