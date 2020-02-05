@@ -3,9 +3,9 @@
 {% block content %}
 
     {%if edit %}
-      <h1>Edit Hub Space <code>{{space_name}}</code>.</h1>
+      <h1>Edit Hub Space <code>{{space_name}}</code></h1>
     {%else%}
-      <h1>Create Hub Space.</h1>
+      <h1>Create Hub Space</h1>
     {%endif%}
 
     <form action="{% url 'space-details' space_id %}" method="post">
@@ -124,6 +124,13 @@
             {% endfor %}
             </tbody>
           </table>
+        </div>
+    </form>
+
+    <form action="{% url 'space-delete' space_id %}" method="post">
+      {% csrf_token %}
+        <div class="form-group">
+          <input type="submit" value="Remove Hub Space" style="margin-top:6px;" class="btn btn-danger center-button">
         </div>
     </form>
 

@@ -42,6 +42,23 @@ class HubSpace(models.Model):
     def get_type_label(self):
         return SpaceTypes(self.type).name
 
+    def can_admin(self, hub_member):
+        if hub_member.is_staff:
+            return True
+        if hub_member in self.spaces_admin.all():
+            return True
+        return False
+
+    def can_write(self, hub_member):
+        if self.can_admin(hub_member):
+            return True
+        return hub_member in self.spaces_write.all()
+
+    def can_read(self, hub_member):
+        if self.can_write(hub_member):
+            return True
+        return hub_member in self.spaces_read.all()
+
 
 class SharedNotebook(models.Model):
     hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -15,6 +16,8 @@ from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, get_user_model
+from .spaces_utils import spaces_admin, spaces_write, spaces_read
+
 
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -304,10 +307,60 @@ def nbupload(request):
     return HttpResponse(status=200)
 
 
+@login_required
 def spaces_index(request):
-    spaces_list = HubSpace.objects.all()
-    spaces = paginate_items(spaces_list, request.GET.get('page'))
-    return render(request, 'gallery/spaces_index.html', {'spaces': spaces})
+    hub_member = request.user
+    is_admin = hub_member.is_staff
+    if request.method == "POST":
+        # only admin can create space
+        if not hub_member.is_staff:
+            messages.warning(request, 'Permission denied!')
+            return redirect("/space")
+        # Create a new space and open its detail page
+        space_name = 'HubSpace' + str(datetime.now(tz=None))
+        space = HubSpace.objects.create(space_name=space_name, type=SpaceTypes.Private.value)
+        space.save()
+        space_id = space.pk
+        return redirect("/space/" + str(space_id))
+    else:
+        """
+        spaces_list = HubSpace.objects.all()
+        # only admin or space admin can edit a space
+        if not is_admin:
+            spaces_list_filtered = set() # HubSpace.objects.none()
+            for space in spaces_list:
+                if hub_member in space.spaces_admin.all():
+                    #spaces_list_filtered = spaces_list_filtered | space
+                    spaces_list_filtered.add(space)
+            spaces_list = spaces_list_filtered
+        spaces = spaces_list
+        """
+
+        spaces = spaces_admin(hub_member)
+        # TODO pagination works on Django's QuerySet only - why?
+        #spaces = paginate_items(spaces_list, request.GET.get('page'))
+        return render(request, 'gallery/spaces_index.html', {'spaces': spaces, 'is_admin': is_admin})
+
+
+@login_required
+def spaces_delete(request, space_id):
+    hub_member = request.user
+    space = HubSpace.objects.get(pk=space_id)
+    all_space_types = SpaceTypes.choices()
+
+    # only admin or space admin can edit the space
+    if not hub_member.is_staff:
+        if hub_member not in space.spaces_admin.all():
+            messages.warning(request, 'Permission denied!')
+            return redirect("/space")
+
+    if request.method == "POST":
+        space.delete()
+        return redirect("/space")
+    else:
+        messages.warning(request, 'Invalid operation')
+        return redirect("/space")
+
 
 @login_required
 def spaces_details(request, space_id):

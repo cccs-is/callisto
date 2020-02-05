@@ -25,5 +25,6 @@ urlpatterns = [
     path('like-notebook/<notebook_id>/', views_notebook_details.like_notebook, name='like-notebook'),
     path('space/', views.spaces_index, name='spaces-index'),
     path('space/<space_id>/', views.spaces_details, name='space-details'),
+    path('delete-space/<space_id>/', views.spaces_delete, name='space-delete'),
     path('edit-space-users/<space_id>/users/', views.spaces_users, name='space-users'),
 ]

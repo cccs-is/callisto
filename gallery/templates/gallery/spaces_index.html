@@ -4,6 +4,14 @@
 {% load utilities %}
 
 <h1>Hub Spaces</h1>
+
+{%if is_admin %}
+    <form action="{% url 'spaces-index' %}" method="post">
+      {% csrf_token %}
+        <button type="submit" name="action" value="add" class="btn btn-success">Add</button>
+    </form>
+{%endif%}
+
 <div class="row">
   <div class="col-md-9">
     <div class="table-responsive">
