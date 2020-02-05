@@ -367,7 +367,7 @@ def spaces_details(request, space_id):
     all_space_types = SpaceTypes.choices()
 
     # only admin or space admin can edit the space
-    if not hub_member.is_superuser:
+    if not hub_member.is_staff:
         if hub_member not in space.spaces_admin.all():
             messages.warning(request, 'Permission denied!')
             return redirect("/space")
@@ -398,7 +398,7 @@ def spaces_users(request, space_id):
     space = HubSpace.objects.get(pk=space_id)
 
     # only admin or space admin can edit the space
-    if not hub_member.is_superuser:
+    if not hub_member.is_staff:
         if hub_member not in space.spaces_admin.all():
             messages.warning(request, 'Permission denied!')
             return redirect("/space")
