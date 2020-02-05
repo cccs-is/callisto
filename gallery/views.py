@@ -339,7 +339,12 @@ def spaces_index(request):
         spaces = spaces_admin(hub_member)
         # TODO pagination works on Django's QuerySet only - why?
         #spaces = paginate_items(spaces_list, request.GET.get('page'))
-        return render(request, 'gallery/spaces_index.html', {'spaces': spaces, 'is_admin': is_admin})
+        context = {
+            'spaces': spaces,
+            'is_admin': is_admin,
+            'section': 'spaces-index'
+        }
+        return render(request, 'gallery/spaces_index.html', context=context)
 
 
 @login_required
