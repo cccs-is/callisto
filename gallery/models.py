@@ -59,7 +59,7 @@ class HubSpace(models.Model):
     def can_read(self, hub_member):
         if self.can_write(hub_member):
             return True
-        if self.type == SpaceTypes.AllCanRead or  self.type == SpaceTypes.AllCanWrite:
+        if self.type == SpaceTypes.AllCanRead or self.type == SpaceTypes.AllCanWrite:
             return True
         return hub_member in self.spaces_read.all()
 

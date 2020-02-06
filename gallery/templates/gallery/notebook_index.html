@@ -15,19 +15,19 @@
             <th></th>
             <th>
               {%if order_by != 'views'%}
-              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of views' href="?order_by=views&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}"><i class="fas fa-eye"></i></a>
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of views' href="?order_by=views&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}"><i class="fas fa-eye"></i></a>
               {%else%}
               <i class="fas fa-eye"></i> <i class="fas fa-caret-down"></i></th>
               {%endif%}
             <th>
               {%if order_by != 'likes'%}
-              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of likes' href="?order_by=likes&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}"><i class="fas fa-heart"></i></a>
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of likes' href="?order_by=likes&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}"><i class="fas fa-heart"></i></a>
               {%else%}
               <i class="far fa-heart"></i> <i class="fas fa-caret-down"></i></th>
               {%endif%}
             <th>
               {%if order_by != 'updated_at'%}
-              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by latest update' href="?order_by=updated_at&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}">Last updated</a>
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by latest update' href="?order_by=updated_at&page={{notebooks.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">Last updated</a>
               {%else%}
               Last updated <i class="fas fa-caret-down"></i></th>
               {%endif%}
@@ -78,25 +78,38 @@
           <ul class="pagination">
             {% if notebooks.has_previous %}
                 <li><a href="?page=1">&laquo; first</a></li>
-                <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}{%if source%}&source={{source}}{%endif%}">previous</a></li>
+                <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">previous</a></li>
             {% endif %}
                 <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
             {% if notebooks.has_next %}
-                <li><a href="?order_by={{order_by}}&page={{ notebooks.next_page_number }}{%if source%}&source={{source}}{%endif%}">next</a></li>
-                <li><a href="?order_by={{order_by}}&page={{ notebooks.paginator.num_pages }}{%if source%}&source={{source}}{%endif%}">last &raquo;</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ notebooks.next_page_number }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">next</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ notebooks.paginator.num_pages }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">last &raquo;</a></li>
             {% endif %}
           </ul>
     </nav>
   </div>
-  <h3>Filter by data source</h3>
   <div class="col-md-3">
+    <h3>Filter by space</h3>
+    {%for hub_space in notebook_spaces%}
+      {%if hub_space.pk == space %}
+        <a href="{%url 'notebook-index'%}?order_by={{order_by}}{%if source%}&source={{source}}{%endif%}">
+          <span class="btn btn-primary btn-primary btn-lg padded">{{hub_space.space_name}}</span>
+        </a>
+      {%else%}
+        <a href="{%url 'notebook-index'%}?space={{hub_space.pk}}{%if source%}&source={{source}}{%endif%}&order_by={{order_by}}">
+          <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{hub_space.space_name}}</span>
+        </a>
+      {%endif%}
+    {%endfor%}
+    <br/>
+    <h3>Filter by data source</h3>
     {%for data_source in data_sources%}
     {%if data_source != source %}
-    <a href="{%url 'notebook-index'%}?source={{data_source}}&order_by={{order_by}}">
+    <a href="{%url 'notebook-index'%}?source={{data_source}}{%if space%}&space={{space}}{%endif%}&order_by={{order_by}}">
     <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{data_source}}</span>
     </a>
     {%else%}
-    <a href="{%url 'notebook-index'%}?order_by={{order_by}}">
+    <a href="{%url 'notebook-index'%}?order_by={{order_by}}{%if space%}&space={{space}}{%endif%}">
     <span class="btn btn-primary btn-primary btn-lg padded">{{data_source}}</span>
     </a>
     {%endif%}

@@ -15,6 +15,12 @@ def find_notebook_by_keywords(search_term, search_field=None):
         published=True)
     if search_field == 'tags':
         return notebooks_tag.order_by('updated_at')
+    notebooks_space = SharedNotebook.objects.filter(
+        spaces__space_name__contains=search_term,
+        master_notebook=None,
+        published=True)
+    if search_field == 'spaces':
+        return notebooks_space.order_by('updated_at')
     notebooks_source = SharedNotebook.objects.filter(
         data_sources__contains=search_term,
         master_notebook=None,
@@ -36,7 +42,7 @@ def find_notebook_by_keywords(search_term, search_field=None):
         notebook_name__contains=search_term,
         master_notebook=None,
         published=True)
-    nbs = notebooks_tag | notebooks_source | notebooks_description | notebooks_name | notebooks_user
+    nbs = notebooks_tag | notebooks_space | notebooks_source | notebooks_description | notebooks_name | notebooks_user
     nbs = nbs.order_by('updated_at')
     return nbs
 

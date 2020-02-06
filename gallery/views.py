@@ -168,13 +168,28 @@ def notebook_index(request):
     data_sources = sorted(data_sources)
     if order_variable not in ['updated_at', 'likes', 'views']:
         order_variable = 'updated_at'
+
     source_filter = request.GET.get('source', None)
+    space_filter = request.GET.get('space', None)
+    if space_filter:
+        try:
+            space_filter = int(space_filter)
+        except ValueError:
+            space_filter = None
+
+    notebook_list = SharedNotebook.objects.filter(master_notebook=None, published=True)
+    # collect all visible spaces
+    notebook_spaces = set()
+    for notebook in notebook_list:
+        for space in notebook.spaces.all():
+            if space not in notebook_spaces:
+                if space.can_read(request.user):
+                    notebook_spaces.add(space)
+    if space_filter:
+        notebook_list = notebook_list.filter(spaces__pk=space_filter)
     if source_filter:
-        notebook_list = find_notebook_by_keywords(
-                            source_filter,
-                            search_field='data_sources')
-    else:
-        notebook_list = SharedNotebook.objects.filter(master_notebook=None, published=True)
+        notebook_list = notebook_list.filter(data_sources__contains=source_filter)
+
     if order_variable == 'likes':
         notebook_list = notebook_list.annotate(
             likes=Count('notebooklike'))
@@ -187,7 +202,10 @@ def notebook_index(request):
                    'section': 'explore',
                    'order_by': order_variable,
                    'data_sources': data_sources,
-                   'source': source_filter})
+                   'notebook_spaces': notebook_spaces,
+                   'source': source_filter,
+                   'space': space_filter
+                   })
 
 
 @login_required
