@@ -10,6 +10,7 @@
         <thead>
           <tr>
             <th>Notebook</th>
+            <th>Spaces</th>
             <th>Data Sources</th>
             <th></th>
             <th>
@@ -40,6 +41,16 @@
               <code>{{notebook.notebook_name}}</code> </br>
               <small>by {{notebook.full_user_name}} </small><i class="fas fa-info-circle"></i>
             </a>
+          </td>
+          <td>
+            {%for hub_space in notebook.spaces.all %}
+              {% can_read hub_space as user_can_read_flag %}
+              {%if user_can_read_flag %}
+                <a href="{%url 'notebook-index'%}?space={{hub_space.pk}}">
+                  <span class="label label-info">{{hub_space.space_name}}</span>
+                </a>
+              {%endif%}
+            {%endfor%}
           </td>
           <td>
             {%for data_source in notebook.get_data_sources_json%}

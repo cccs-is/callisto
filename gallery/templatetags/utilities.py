@@ -28,3 +28,9 @@ def upto(value, delimiter=None):
 
 
 upto.is_safe = True
+
+
+@register.simple_tag(takes_context=True)
+def can_read(context, space):
+    user = context['user']
+    return space.can_read(user)
