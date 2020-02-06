@@ -325,24 +325,20 @@ def nbupload(request):
 @login_required
 def spaces_index(request):
     hub_member = request.user
-    is_admin = hub_member.is_staff
     if request.method == "POST":
-        # only admin can create space
-        if not hub_member.is_staff:
-            messages.warning(request, 'Permission denied!')
-            return redirect("/space")
         # Create a new space and open its detail page
-        space_name = 'HubSpace' + str(datetime.now(tz=None))
+        space_name = hub_member.get_full_name() + '-HubSpace-' + str(datetime.now(tz=None))
         space = HubSpace.objects.create(space_name=space_name, type=SpaceTypes.Private.value)
+        space.save()
+        space.spaces_admin.add(hub_member)
         space.save()
         space_id = space.pk
         return redirect("/space/" + str(space_id))
     else:
-        spaces = [x for x in HubSpace.objects.all() if x.can_admin(hub_member)]
+        spaces = [x for x in HubSpace.objects.all() if x.can_read(hub_member)]
         spaces = paginate_items(spaces, request.GET.get('page'))
         context = {
             'spaces': spaces,
-            'is_admin': is_admin,
             'section': 'spaces-index'
         }
         return render(request, 'gallery/spaces_index.html', context=context)
@@ -355,7 +351,7 @@ def spaces_delete(request, space_id):
     all_space_types = SpaceTypes.choices()
 
     # only admin or space admin can edit the space
-    if not hub_member.is_staff:
+    if not hub_member.is_superuser:
         if hub_member not in space.spaces_admin.all():
             messages.warning(request, 'Permission denied!')
             return redirect("/space")
@@ -375,7 +371,7 @@ def spaces_details(request, space_id):
     all_space_types = SpaceTypes.choices()
 
     # only admin or space admin can edit the space
-    if not hub_member.is_staff:
+    if not hub_member.is_superuser:
         if hub_member not in space.spaces_admin.all():
             messages.warning(request, 'Permission denied!')
             return redirect("/space")
@@ -406,7 +402,7 @@ def spaces_users(request, space_id):
     space = HubSpace.objects.get(pk=space_id)
 
     # only admin or space admin can edit the space
-    if not hub_member.is_staff:
+    if not hub_member.is_superuser:
         if hub_member not in space.spaces_admin.all():
             messages.warning(request, 'Permission denied!')
             return redirect("/space")

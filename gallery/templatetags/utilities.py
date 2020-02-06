@@ -34,3 +34,27 @@ upto.is_safe = True
 def can_read(context, space):
     user = context['user']
     return space.can_read(user)
+
+
+@register.simple_tag(takes_context=True)
+def can_write(context, space):
+    user = context['user']
+    return space.can_write(user)
+
+
+@register.simple_tag(takes_context=True)
+def can_admin(context, space):
+    user = context['user']
+    return space.can_admin(user)
+
+
+@register.simple_tag(takes_context=True)
+def space_access(context, space):
+    user = context['user']
+    if space.can_admin(user):
+        return 'Admin'
+    elif space.can_write(user):
+        return 'Write'
+    elif space.can_read(user):
+        return 'Read'
+    return 'None'

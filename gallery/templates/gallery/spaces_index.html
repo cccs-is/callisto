@@ -5,12 +5,10 @@
 
 <h1>Hub Spaces</h1>
 
-{%if is_admin %}
-    <form action="{% url 'spaces-index' %}" method="post">
-      {% csrf_token %}
-        <button type="submit" name="action" value="add" class="btn btn-success">Add</button>
-    </form>
-{%endif%}
+<form action="{% url 'spaces-index' %}" method="post">
+  {% csrf_token %}
+    <button type="submit" name="action" value="add" class="btn btn-success">Create</button>
+</form>
 
 <div class="row">
   <div class="col-md-9">
@@ -19,21 +17,28 @@
         <thead>
           <tr>
             <th>Space</th>
-            <th>Type</th>
+            <th>My Access</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-        {%for space in spaces%}
+        {%for hub_space in spaces%}
         <tr>
           <td>
-            <a href="{%url 'space-details' space.id%}">
-              <code>{{space.space_name}}</code> </br>
+            <a href="{%url 'notebook-index'%}?space={{hub_space.pk}}">
+              <code>{{hub_space.space_name}}</code> </br>
             </a>
           </td>
           <td>
-            <a href="{%url 'space-details' space.id%}">
-              <code>{{space.get_type_label}}</code> </br>
+            <a href="{%url 'notebook-index'%}?space={{space.pk}}">
+              <code>{% space_access hub_space %}</code> </br>
             </a>
+          </td>
+          <td>
+            {% can_admin hub_space as user_can_admin_flag %}
+            {%if user_can_admin_flag %}
+              <a href="{%url 'space-details' hub_space.id%}"><button type="button" class="btn btn-light">Edit</button></a>
+            {%endif%}
           </td>
         </tr>
         {%endfor%}

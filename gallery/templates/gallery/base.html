@@ -139,7 +139,7 @@
        <div>
          {% if user.is_authenticated %}
            <p class="text-muted">
-             Logged as: {{user.get_full_name}} {% if user.is_staff %}[Admin]{% endif %}
+             Logged as: {{user.get_full_name}} {% if user.is_superuser %}[Admin]{% endif %}
            </p>
          {% endif %}
        </div>

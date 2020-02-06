@@ -8,7 +8,6 @@ from enum import Enum
 
 
 class HubUser(AbstractUser):
-    # is_staff == is_sys_admin
     def get_full_name(self):
         """
         Return the first_name plus the last_name, with a space in between.
@@ -43,7 +42,7 @@ class HubSpace(models.Model):
         return SpaceTypes(self.type).name
 
     def can_admin(self, hub_member):
-        if hub_member.is_staff:
+        if hub_member.is_superuser:
             return True
         if hub_member in self.spaces_admin.all():
             return True
