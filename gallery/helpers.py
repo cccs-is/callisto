@@ -10,36 +10,36 @@ logger = logging.getLogger(__name__)
 
 def find_notebook_by_keywords(search_term, search_field=None):
     notebooks_tag = SharedNotebook.objects.filter(
-        tags__contains=search_term,
+        tags__icontains=search_term,
         master_notebook=None,
         published=True)
     if search_field == 'tags':
         return notebooks_tag.order_by('updated_at')
     notebooks_space = SharedNotebook.objects.filter(
-        spaces__space_name__contains=search_term,
+        spaces__space_name__icontains=search_term,
         master_notebook=None,
         published=True)
     if search_field == 'spaces':
         return notebooks_space.order_by('updated_at')
     notebooks_source = SharedNotebook.objects.filter(
-        data_sources__contains=search_term,
+        data_sources__icontains=search_term,
         master_notebook=None,
         published=True)
     if search_field == 'data_sources':
         return notebooks_source.order_by('updated_at')
     # TODO verify
     notebooks_user = SharedNotebook.objects.filter(
-        hub_member__username__contains=search_term,
+        hub_member__username__icontains=search_term,
         master_notebook=None,
         published=True)
     if search_field == 'username':
         return notebooks_user.order_by('updated_at')
     notebooks_description = SharedNotebook.objects.filter(
-        description__contains=search_term,
+        description__icontains=search_term,
         master_notebook=None,
         published=True)
     notebooks_name = SharedNotebook.objects.filter(
-        notebook_name__contains=search_term,
+        notebook_name__icontains=search_term,
         master_notebook=None,
         published=True)
     nbs = notebooks_tag | notebooks_space | notebooks_source | notebooks_description | notebooks_name | notebooks_user
