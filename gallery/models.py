@@ -30,6 +30,12 @@ class SpaceTypes(Enum):
         return [(key.value, key.name) for key in cls]
 
 
+class AccessTypes(Enum):
+    Admin = 0
+    Read = 1
+    Write = 2
+
+
 class HubSpace(models.Model):
     space_name = models.TextField(default='')
     space_description = models.TextField(default='')
@@ -61,6 +67,15 @@ class HubSpace(models.Model):
         if self.type == SpaceTypes.AllCanRead or self.type == SpaceTypes.AllCanWrite:
             return True
         return hub_member in self.spaces_read.all()
+
+    def access(self, hub_member):
+        if self.can_admin(hub_member):
+            return AccessTypes.Admin
+        elif self.can_write(hub_member):
+            return AccessTypes.Write
+        elif self.can_read(hub_member):
+            return AccessTypes.Read
+        return None
 
 
 class SharedNotebook(models.Model):

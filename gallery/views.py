@@ -335,10 +335,20 @@ def spaces_index(request):
         space_id = space.pk
         return redirect("/space/" + str(space_id))
     else:
+        order_variable = request.GET.get('order_by', 'name')
+        if order_variable not in ['name', 'access']:
+            order_variable = 'name'
         spaces = [x for x in HubSpace.objects.all() if x.can_read(hub_member)]
+
+        if order_variable == 'access':
+            spaces = sorted(spaces, key=lambda t: t.access(hub_member).value)
+        else:
+            spaces = sorted(spaces, key=lambda t: t.space_name)
+
         spaces = paginate_items(spaces, request.GET.get('page'))
         context = {
             'spaces': spaces,
+            'order_by': order_variable,
             'section': 'spaces-index'
         }
         return render(request, 'gallery/spaces_index.html', context=context)

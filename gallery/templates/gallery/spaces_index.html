@@ -16,8 +16,20 @@
       <table class='table'>
         <thead>
           <tr>
-            <th>Space</th>
-            <th>My Access</th>
+            <th>
+              {%if order_by != 'name'%}
+                <a data-toggle="tooltip" data-container='body' data-placement="bottom" title='Click to sort by names' href="?order_by=name">Space</a>
+              {%else%}
+                Space<i class="fas fa-caret-down"></i>
+              {%endif%}
+            </th>
+            <th>
+              {%if order_by != 'access'%}
+                <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by access rights' href="?order_by=access">My Access</a>
+              {%else%}
+                My Access<i class="fas fa-caret-down"></i>
+              {%endif%}
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -48,13 +60,13 @@
     <nav aria-label="pagination">
           <ul class="pagination">
             {% if spaces.has_previous %}
-                <li><a href="?page=1">&laquo; first</a></li>
-                <li><a aria-label="Previous" href="?page={{ spaces.previous_page_number }}{%if source%}&source={{source}}{%endif%}">previous</a></li>
+                <li><a href="?order_by={{order_by}}&page=1">&laquo; first</a></li>
+                <li><a aria-label="Previous" href="?order_by={{order_by}}&page={{ spaces.previous_page_number }}">previous</a></li>
             {% endif %}
                 <li class="active"><a href='#'>Page {{ spaces.number }} of {{ spaces.paginator.num_pages }}</a></li>
             {% if spaces.has_next %}
-                <li><a href="?order_by={{order_by}}&page={{ spaces.next_page_number }}{%if source%}&source={{source}}{%endif%}">next</a></li>
-                <li><a href="?order_by={{order_by}}&page={{ spaces.paginator.num_pages }}{%if source%}&source={{source}}{%endif%}">last &raquo;</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ spaces.next_page_number }}">next</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ spaces.paginator.num_pages }}">last &raquo;</a></li>
             {% endif %}
           </ul>
     </nav>
