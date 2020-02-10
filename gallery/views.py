@@ -296,9 +296,7 @@ def upload_notebook(request):
                 notebook_content += chunk.decode("utf-8")
             notebook_name = f.name
             add_notebook_direct(request, hub_member, notebook_name, notebook_content)
-        return render(request, 'gallery/upload_notebook.html', {
-            'uploaded_notebook': notebook_name
-        })
+        return redirect("/dashboard")
     return render(request, 'gallery/upload_notebook.html')
 
 

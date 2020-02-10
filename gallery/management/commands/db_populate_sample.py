@@ -71,73 +71,60 @@ class Command(BaseCommand):
 
         # make Peter into Callisto Admin
         user_it.is_superuser = True
-        #user_it.save()
 
         # setup access rights
         space_exchange.spaces_admin.add(user_it)
-        #space_exchange.save()
 
         space_workflow.spaces_admin.add(user_d)
         space_workflow.spaces_admin.add(user_it)
         space_workflow.spaces_write.add(user_d)
         space_workflow.spaces_write.add(user_a)
-        #space_workflow.save()
 
         space_dept_a.spaces_admin.add(user_ha)
         space_dept_a.spaces_write.add(user_a1)
         space_dept_a.spaces_write.add(user_ab1)
-        #space_dept_a.save()
 
         space_dept_a_c.spaces_admin.add(user_ha)
         space_dept_a_c.spaces_read.add(user_d)
         space_dept_a_c.spaces_write.add(user_a1)
         space_dept_a_c.spaces_write.add(user_ab1)
-        #space_dept_a_c.save()
 
         space_dept_b.spaces_admin.add(user_hb)
         space_dept_b.spaces_write.add(user_b1)
         space_dept_b.spaces_write.add(user_ab1)
-        #space_dept_b.save()
 
         space_dept_b_c.spaces_admin.add(user_hb)
         space_dept_b_c.spaces_read.add(user_d)
         space_dept_b_c.spaces_write.add(user_b1)
         space_dept_b_c.spaces_write.add(user_ab1)
-        #space_dept_b_c.save()
 
         # create shared notebooks
-        taxi_wait_time = self.hub_notebook('taxi_wait_time', user_a, space_exchange)
-        ip_and_us = self.hub_notebook('ip_and_us', user_it, space_exchange)
-        twin_prime_conjecture = self.hub_notebook('twin_prime_conjecture', user_int, space_exchange)
-        #space_exchange.save()
+        self.hub_notebook('taxi_wait_time', user_a, space_exchange)
+        self.hub_notebook('ip_and_us', user_it, space_exchange)
+        self.hub_notebook('twin_prime_conjecture', user_int, space_exchange)
 
-        hellow = self.hub_notebook('hellow', user_d, space_workflow)
-        universal_order_form = self.hub_notebook('universal_order_form', user_a, space_workflow)
-        #space_workflow.save()
+        self.hub_notebook('hellow', user_d, space_workflow)
+        self.hub_notebook('universal_order_form', user_a, space_workflow)
 
-        dept_a_plan = self.hub_notebook('dept_a_plan', user_ha, space_dept_a)
-        outgoing = self.hub_notebook('outgoing', user_a1, space_dept_a)
-        survey_a = self.hub_notebook('survey_A', user_ab1, space_dept_a)
-        #space_dept_a.save()
+        self.hub_notebook('dept_a_plan', user_ha, space_dept_a)
+        self.hub_notebook('outgoing', user_a1, space_dept_a)
+        self.hub_notebook('survey_A', user_ab1, space_dept_a)
 
-        dept_a_backlog = self.hub_notebook('dept_a_backlog', user_ha, space_dept_a_c)
-        schedule_a = self.hub_notebook('schedule_A', user_a1, space_dept_a_c)
-        survey_results_a = self.hub_notebook('survey_results_A', user_ab1, space_dept_a_c)
-        space_dept_a_c.save()
+        self.hub_notebook('dept_a_backlog', user_ha, space_dept_a_c)
+        self.hub_notebook('schedule_A', user_a1, space_dept_a_c)
+        self.hub_notebook('survey_results_A', user_ab1, space_dept_a_c)
 
-        dept_b_plan = self.hub_notebook('dept_b_plan', user_hb, space_dept_b)
-        incoming = self.hub_notebook('incoming', user_b1, space_dept_b)
-        survey_b = self.hub_notebook('survey_B', user_ab1, space_dept_b)
-        #space_dept_b.save()
+        self.hub_notebook('dept_b_plan', user_hb, space_dept_b)
+        self.hub_notebook('incoming', user_b1, space_dept_b)
+        self.hub_notebook('survey_B', user_ab1, space_dept_b)
 
         dept_b_backlog = self.hub_notebook('dept_b_backlog', user_hb, space_dept_b_c)
         dept_b_backlog.spaces.add(space_dept_a_c) # Added into 2 spaces
         dept_b_backlog.save()
-        schedule_b = self.hub_notebook('schedule_B', user_b1, space_dept_b_c)
-        survey_results_b = self.hub_notebook('survey_results_B', user_ab1, space_dept_b_c)
-        #space_dept_b_c.save()
+        self.hub_notebook('schedule_B', user_b1, space_dept_b_c)
+        self.hub_notebook('survey_results_B', user_ab1, space_dept_b_c)
 
-        gift_exchange = self.hub_notebook('gift_exchange', user_int, None)
+        self.hub_notebook('gift_exchange', user_int, None)
 
         # save all spaces
         space_exchange.save()
