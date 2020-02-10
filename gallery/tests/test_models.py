@@ -3,14 +3,14 @@ from django.conf import settings
 from gallery.models import SharedNotebook
 from gallery.helpers import identify_master_notebook
 import arrow
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class SharedNotebookTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-
-        self.user = User(username='ab-1234')
+        user_model = get_user_model()
+        self.user = user_model.objects.create(username='ab-1234')
         self.user.save()
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -25,7 +25,7 @@ class SharedNotebookTest(TestCase):
             published=True
         )
         self.notebook.save()
-        self.user_two = User(username='ab-5678')
+        self.user_two = user_model.objects.create(username='ab-5678')
         self.user_two.save()
         self.oh_member_data = {
             'created': '2018-01-19T21:55:40.049169Z',
@@ -46,13 +46,9 @@ class SharedNotebookTest(TestCase):
                     }]}
 
     def test_identify_master_notebook(self):
-        mnb = identify_master_notebook(
-                'test_notebook.ipynb',
-                self.user_two)
+        mnb = identify_master_notebook('test_notebook.ipynb', self.user_two)
         self.assertEqual(mnb, self.notebook)
-        no_mnb = identify_master_notebook(
-                'edited_test_notebook.ipynb',
-                self.user_two)
+        no_mnb = identify_master_notebook('edited_test_notebook.ipynb', self.user_two)
         self.assertEqual(no_mnb, None)
 
     def get_notebook_files(self, oh_member_data):
@@ -70,15 +66,9 @@ class SharedNotebookTest(TestCase):
                 return (data_object['basename'], data_object['download_url'])
 
     def test_get_notebook_oh(self):
-        nbd = self.get_notebook_oh(
-            oh_member_data=self.oh_member_data,
-            notebook_id='12')
-        self.assertEqual(
-            nbd,
-            ('test_notebook.ipynb', 'http://example.com/test_notebook.ipynb'))
+        nbd = self.get_notebook_oh(oh_member_data=self.oh_member_data, notebook_id='12')
+        self.assertEqual(nbd, ('test_notebook.ipynb', 'http://example.com/test_notebook.ipynb'))
 
     def test_metadata_functions(self):
-        self.assertEqual(self.notebook.get_tags(),
-                         'foo,bar')
-        self.assertEqual(self.notebook.get_data_sources(),
-                         'source1,source2')
+        self.assertEqual(self.notebook.get_tags(), 'foo,bar')
+        self.assertEqual(self.notebook.get_data_sources(), 'source1,source2')

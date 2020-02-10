@@ -4,14 +4,15 @@ from django.conf import settings
 import arrow
 from gallery.models import SharedNotebook
 from gallery.signals import my_handler
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class HelpersTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
         self.factory = RequestFactory()
-        self.user = User(username='user1')
+        user_model = get_user_model()
+        self.user = user_model.objects.create(username='user1')
         self.user.save()
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -27,7 +28,7 @@ class HelpersTest(TestCase):
             published=True
         )
         self.notebook.save()
-        self.user_two = User(username='user2')
+        self.user_two = user_model.objects.create(username='user2')
         self.user_two.save()
 
     def test_notebook_search(self):

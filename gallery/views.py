@@ -16,7 +16,6 @@ from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, get_user_model
-from .spaces_utils import spaces_admin, spaces_write, spaces_read
 
 
 # Set up logging.

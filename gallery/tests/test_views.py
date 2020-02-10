@@ -3,14 +3,15 @@ from django.conf import settings
 from gallery.models import SharedNotebook, NotebookLike
 from gallery.views_notebook_details import render_notebook
 import arrow
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class ViewTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
         self.factory = RequestFactory()
-        self.user = User(username='user1')
+        user_model = get_user_model()
+        self.user = user_model.objects.create(username='user1')
         self.user.save()
         self.notebook = SharedNotebook(
             hub_member=self.user,
@@ -90,27 +91,16 @@ class ViewTest(TestCase):
 
     def test_search_notebooks(self):
         c = Client()
-        post_response = c.post('/search/', {
-                        'search_term': 'source1',
-                    })
-        self.assertContains(post_response,
-                            "test_notebook.ipynb",
-                            status_code=200)
-        get_response = c.get('/search/', {
-                        'search_term': 'source1',
-                        'search_field': 'tags'
-                    })
-        self.assertNotContains(
-                get_response,
-                "test_notebook.ipynb",
-                status_code=200)
+        c.force_login(self.user)
+        post_response = c.post('/search/', {'search_term': 'source1'})
+        self.assertContains(post_response, "test_notebook.ipynb", status_code=200)
+        get_response = c.get('/search/', {'search_term': 'source1', 'search_field': 'tags'})
+        self.assertNotContains(get_response, "test_notebook.ipynb", status_code=200)
 
     def test_source_index(self):
         c = Client()
         post_response = c.get('/sources/')
-        self.assertContains(post_response,
-                            "source1",
-                            status_code=200)
+        self.assertContains(post_response, "source1", status_code=200)
 
     def test_notebook_index(self):
         self.second_notebook = SharedNotebook(
@@ -128,6 +118,7 @@ class ViewTest(TestCase):
         )
         self.second_notebook.save()
         c = Client()
+        c.force_login(self.user)
         response = c.get('/notebooks/')
         self.assertContains(response, 'source2', 4, status_code=200)
         response_filtered = c.get('/notebooks/?source=source2')

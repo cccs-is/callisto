@@ -2,13 +2,14 @@ from django.test import TestCase, Client
 from django.conf import settings
 from gallery.models import SharedNotebook, NotebookComment
 import arrow
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class GeneralTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
-        self.user = User(username='ab-1234')
+        user_model = get_user_model()
+        self.user = user_model.objects.create(username='ab-1234')
         self.user.save()
 
     def test_add_notebook_not_logged_in(self):
