@@ -45,6 +45,8 @@ def can_write(context, space):
 @register.simple_tag(takes_context=True)
 def can_admin(context, space):
     user = context['user']
+    if user.is_superuser:
+        return True
     return space.can_admin(user)
 
 

@@ -48,23 +48,19 @@ class HubSpace(models.Model):
         return SpaceTypes(self.type).name
 
     def can_admin(self, hub_member):
-        if hub_member.is_superuser:
-            return True
-        if hub_member in self.spaces_admin.all():
-            return True
-        return False
+        return hub_member in self.spaces_admin.all()
 
     def can_write(self, hub_member):
         if self.can_admin(hub_member):
             return True
-        if self.type == SpaceTypes.AllCanWrite:
+        if self.type == SpaceTypes.AllCanWrite.value:
             return True
         return hub_member in self.spaces_write.all()
 
     def can_read(self, hub_member):
         if self.can_write(hub_member):
             return True
-        if self.type == SpaceTypes.AllCanRead or self.type == SpaceTypes.AllCanWrite:
+        if self.type == SpaceTypes.AllCanRead.value:
             return True
         return hub_member in self.spaces_read.all()
 
@@ -111,6 +107,8 @@ class SharedNotebook(models.Model):
         return json.loads(self.data_sources)
 
     def can_read(self, hub_member):
+        if hub_member == self.hub_member:
+            return True
         spaces_can_read = {x for x in HubSpace.objects.all() if x.can_read(hub_member)}
         return spaces_can_read & set(self.spaces.all())
 

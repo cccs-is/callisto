@@ -13,7 +13,7 @@ def generate_superuser(apps, schema_editor):
 
 def create_default_space(apps, schema_editor):
     HubSpace = apps.get_model('gallery', 'HubSpace')
-    hub_space, created = HubSpace.objects.get_or_create(space_name='Public', type=2)  # SpaceTypes.AllCanWrite
+    hub_space, created = HubSpace.objects.get_or_create(space_name='Exchange', type=2)  # SpaceTypes.AllCanWrite
     hub_space.space_description = 'Common space for all authenticated users.'
     hub_space.save()
 

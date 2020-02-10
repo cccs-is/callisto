@@ -338,7 +338,7 @@ def spaces_index(request):
         order_variable = request.GET.get('order_by', 'name')
         if order_variable not in ['name', 'access']:
             order_variable = 'name'
-        spaces = [x for x in HubSpace.objects.all() if x.can_read(hub_member)]
+        spaces = [x for x in HubSpace.objects.all() if hub_member.is_superuser or x.can_read(hub_member)]
 
         if order_variable == 'access':
             spaces = sorted(spaces, key=lambda t: t.access(hub_member).value)
