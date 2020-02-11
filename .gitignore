@@ -11,3 +11,4 @@ dump.rdb
 .idea/
 .ipynb_checkpoints/*
 .vscode/
+/geckodriver.log

@@ -103,7 +103,7 @@ class Command(BaseCommand):
         self.hub_notebook('ip_and_us', user_it, space_exchange)
         self.hub_notebook('twin_prime_conjecture', user_int, space_exchange)
 
-        self.hub_notebook('hellow', user_d, space_workflow)
+        self.hub_notebook('hello', user_d, space_workflow)
         self.hub_notebook('universal_order_form', user_a, space_workflow)
 
         self.hub_notebook('dept_a_plan', user_ha, space_dept_a)
