@@ -118,11 +118,11 @@ class Command(BaseCommand):
         self.hub_notebook('incoming', user_b1, space_dept_b)
         self.hub_notebook('survey_B', user_ab1, space_dept_b)
 
-        dept_b_backlog = self.hub_notebook('dept_b_backlog', user_hb, space_dept_b_c)
-        dept_b_backlog.spaces.add(space_dept_a_c) # Added into 2 spaces
-        dept_b_backlog.save()
+        self.hub_notebook('dept_b_backlog', user_hb, space_dept_b_c)
         self.hub_notebook('schedule_B', user_b1, space_dept_b_c)
-        self.hub_notebook('survey_results_B', user_ab1, space_dept_b_c)
+        survey_results_B = self.hub_notebook('survey_results_B', user_ab1, space_dept_b_c)
+        survey_results_B.spaces.add(space_dept_a_c) # Added into 2 spaces
+        survey_results_B.save()
 
         self.hub_notebook('gift_exchange', user_int, None)
 

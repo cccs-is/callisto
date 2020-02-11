@@ -2,6 +2,7 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 import os
 from selenium.common.exceptions import NoSuchElementException
+from gallery.models import SharedNotebook
 
 
 class LiveSpacesTestCase(LiveServerTestCase):
@@ -22,11 +23,11 @@ class LiveSpacesTestCase(LiveServerTestCase):
         'ha': {
             'taxi_wait_time', 'ip_and_us', 'twin_prime_conjecture', 'hello', 'universal_order_form', 'dept_a_plan',
             'outgoing', 'survey_A', 'dept_a_backlog', 'schedule_A', 'survey_results_A', 'dept_b_plan',
-            'incoming', 'survey_B', 'dept_b_backlog'},
+            'incoming', 'survey_B', 'survey_results_B'},
         'a1': {
             'taxi_wait_time', 'ip_and_us', 'twin_prime_conjecture', 'hello', 'universal_order_form', 'dept_a_plan',
             'outgoing', 'survey_A', 'dept_a_backlog', 'schedule_A', 'survey_results_A', 'dept_b_plan',
-            'incoming', 'survey_B', 'dept_b_backlog'},
+            'incoming', 'survey_B', 'survey_results_B'},
         'hb': {
             'taxi_wait_time', 'ip_and_us', 'twin_prime_conjecture', 'hello', 'universal_order_form', 'dept_a_plan',
             'outgoing', 'survey_A', 'dept_b_plan', 'incoming', 'survey_B', 'dept_b_backlog', 'schedule_B',
@@ -111,6 +112,35 @@ class LiveSpacesTestCase(LiveServerTestCase):
         }
     }
 
+    # user -> notebook_name -> available_spaces, selected_spaces
+    WRITABLE_SPACES = {
+        'd': {'hello': ({'Exchange', 'WorkFlow'}, {'WorkFlow'})},
+        'a': {'universal_order_form': ({'Exchange', 'WorkFlow'}, {'WorkFlow'}),
+              'taxi_wait_time': ({'Exchange', 'WorkFlow'}, {'Exchange'})
+              },
+        'it': {'ip_and_us': ({'Exchange', 'WorkFlow'}, {'Exchange'})},
+        'ha': {'dept_a_plan': ({'Exchange', 'Department A', 'Department A - Confidential'}, {'Department A'}),
+              'dept_a_backlog': ({'Exchange', 'Department A', 'Department A - Confidential'}, {'Department A - Confidential'})
+              },
+        'a1': {'outgoing': ({'Exchange', 'Department A', 'Department A - Confidential'}, {'Department A'}),
+               'schedule_A': ({'Exchange', 'Department A', 'Department A - Confidential'}, {'Department A - Confidential'})
+              },
+        'hb': {'dept_b_plan': ({'Exchange', 'Department B', 'Department B - Confidential'}, {'Department B'}),
+               'dept_b_backlog': ({'Exchange', 'Department B', 'Department B - Confidential'}, {'Department B - Confidential'})
+              },
+        'b1': {'incoming': ({'Exchange', 'Department B', 'Department B - Confidential'}, {'Department B'}),
+               'schedule_B': ({'Exchange', 'Department B', 'Department B - Confidential'}, {'Department B - Confidential'})
+              },
+        'ab1': {'survey_A': ({'Exchange', 'Department A', 'Department A - Confidential', 'Department B', 'Department B - Confidential'}, {'Department A'}),
+                'survey_results_A': ({'Exchange', 'Department A', 'Department A - Confidential', 'Department B', 'Department B - Confidential'}, {'Department A - Confidential'}),
+                'survey_B': ({'Exchange', 'Department A', 'Department A - Confidential', 'Department B', 'Department B - Confidential'}, {'Department B'}),
+                'survey_results_B': ({'Exchange', 'Department A', 'Department A - Confidential', 'Department B', 'Department B - Confidential'}, {'Department A - Confidential', 'Department B - Confidential'})
+               },
+        'int': {'twin_prime_conjecture': ({'Exchange'}, {'Exchange'}),
+                'gift_exchange': ({'Exchange'}, set())
+               }
+    }
+
     @classmethod
     def setUpClass(cls):
         super(LiveSpacesTestCase, cls).setUpClass()
@@ -161,6 +191,22 @@ class LiveSpacesTestCase(LiveServerTestCase):
                 except NoSuchElementException:
                     button = None
                 spaces[space.text]= (access.text, button.text if button else None)
+
+            # writable notebook spaces
+            writable = self.WRITABLE_SPACES.get(username)
+            for notebook_name in writable:
+                notebook = SharedNotebook.objects.get(notebook_name=notebook_name)
+                self.selenium.get('%s%s' % (self.live_server_url, '/edit-notebook/{}/'.format(notebook.pk)))
+                all_spaces = set()
+                selected_spaces = set()
+                (expected_all_spaces, expected_selected_spaces) = writable.get(notebook_name)
+                spaces_list = self.selenium.find_element_by_id('spacesList')
+                for option in spaces_list.find_elements_by_tag_name("option"):
+                    all_spaces.add(option.text)
+                    if option.get_attribute("selected"):
+                        selected_spaces.add(option.text)
+                self.assertSetEqual(all_spaces, expected_all_spaces, "Available notebook spaces does not match for user {0}, notebook {1}".format(username, notebook_name))
+                self.assertSetEqual(selected_spaces, expected_selected_spaces, "Selected notebook spaces does not match for user {0}, notebook {1}".format(username, notebook_name))
 
             self._django_logout()
             self.assertSetEqual(notebooks, expected_notebooks)
