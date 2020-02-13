@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
-from gallery.models import SharedNotebook, NotebookLike
-from gallery.views_notebook_details import render_notebook
+from gallery.models import SharedDocument, DocumentLike
+from gallery.views_document_details import render_document
 import arrow
 from django.contrib.auth import get_user_model
 
@@ -13,10 +13,10 @@ class ViewTest(TestCase):
         user_model = get_user_model()
         self.user = user_model.objects.create(username='user1')
         self.user.save()
-        self.notebook = SharedNotebook(
+        self.document = SharedDocument(
             hub_member=self.user,
-            notebook_name='test_notebook.ipynb',
-            notebook_content=open(
+            document_name='test_notebook.ipynb',
+            document_content=open(
                 'gallery/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
             tags='["foo", "bar"]',
@@ -26,26 +26,26 @@ class ViewTest(TestCase):
             created_at=arrow.now().format(),
             published=True
         )
-        self.notebook.save()
+        self.document.save()
 
-    def test_notebook_render(self):
+    def test_document_render(self):
         r = self.factory.get('/')
-        rendered_notebook = render_notebook(r, self.notebook.id)
-        self.assertEqual(rendered_notebook.status_code, 200)
-        self.assertIsNotNone(rendered_notebook.content)
+        rendered_document = render_document(r, self.document.id)
+        self.assertEqual(rendered_document.status_code, 200)
+        self.assertIsNotNone(rendered_document.content)
 
-    def test_open_notebook(self):
+    def test_open_document(self):
         c = Client()
         c.force_login(self.user)
-        self.assertEqual(self.notebook.views, 123)
-        c.get('/notebook/{}/'.format(self.notebook.id))
-        updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
+        self.assertEqual(self.document.views, 123)
+        c.get('/document/{}/'.format(self.document.id))
+        updated_nb = SharedDocument.objects.get(pk=self.document.id)
         self.assertEqual(updated_nb.views, 124)
-        c.get('/notebook/{}/'.format(self.notebook.id))
-        updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
+        c.get('/document/{}/'.format(self.document.id))
+        updated_nb = SharedDocument.objects.get(pk=self.document.id)
         self.assertEqual(updated_nb.views, 124)
         c.force_login(self.user)
-        c.get('/notebook/{}/'.format(self.notebook.id))
+        c.get('/document/{}/'.format(self.document.id))
         self.assertEqual(updated_nb.views, 124)
 
     def test_shared(self):
@@ -58,7 +58,7 @@ class ViewTest(TestCase):
         c = Client()
         c.force_login(self.user)
         response = c.get('/')
-        self.assertEqual(response.status_code, 302) # redirects to /notebook
+        self.assertEqual(response.status_code, 302) # redirects to /document
 
     def test_about(self):
         c = Client()
@@ -73,23 +73,23 @@ class ViewTest(TestCase):
         logged_in_response = c.get('/likes/')
         self.assertEqual(logged_in_response.status_code, 200)
 
-    def test_delete_notebook(self):
+    def test_delete_document(self):
         c = Client()
         c.force_login(self.user)
-        self.assertEqual(len(SharedNotebook.objects.all()), 1)
-        c.post('/delete-notebook/{}/'.format(self.notebook.pk))
-        self.assertEqual(len(SharedNotebook.objects.all()), 0)
+        self.assertEqual(len(SharedDocument.objects.all()), 1)
+        c.post('/delete-document/{}/'.format(self.document.pk))
+        self.assertEqual(len(SharedDocument.objects.all()), 0)
 
-    def test_notebook_like(self):
+    def test_document_like(self):
         c = Client()
         c.force_login(self.user)
-        self.assertEqual(len(NotebookLike.objects.all()), 0)
-        c.post('/like-notebook/{}/'.format(self.notebook.pk))
-        self.assertEqual(len(NotebookLike.objects.all()), 1)
-        c.post('/like-notebook/{}/'.format(self.notebook.pk))
-        self.assertEqual(len(NotebookLike.objects.all()), 0)
+        self.assertEqual(len(DocumentLike.objects.all()), 0)
+        c.post('/like-document/{}/'.format(self.document.pk))
+        self.assertEqual(len(DocumentLike.objects.all()), 1)
+        c.post('/like-document/{}/'.format(self.document.pk))
+        self.assertEqual(len(DocumentLike.objects.all()), 0)
 
-    def test_search_notebooks(self):
+    def test_search_documents(self):
         c = Client()
         c.force_login(self.user)
         post_response = c.post('/search/', {'search_term': 'source1'})
@@ -102,11 +102,11 @@ class ViewTest(TestCase):
         post_response = c.get('/sources/')
         self.assertContains(post_response, "source1", status_code=200)
 
-    def test_notebook_index(self):
-        self.second_notebook = SharedNotebook(
+    def test_document_index(self):
+        self.second_document = SharedDocument(
             hub_member=self.user,
-            notebook_name='second_test.ipynb',
-            notebook_content=open(
+            document_name='second_test.ipynb',
+            document_content=open(
                 'gallery/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
             tags='["foo2", "bar2"]',
@@ -116,11 +116,11 @@ class ViewTest(TestCase):
             created_at=arrow.now().format(),
             published=True
         )
-        self.second_notebook.save()
+        self.second_document.save()
         c = Client()
         c.force_login(self.user)
-        response = c.get('/notebooks/')
+        response = c.get('/documents/')
         self.assertContains(response, 'source2', 4, status_code=200)
-        response_filtered = c.get('/notebooks/?source=source2')
+        response_filtered = c.get('/documents/?source=source2')
         self.assertContains(response_filtered, 'source2', status_code=200)
         self.assertContains(response_filtered, 'source3', 2, status_code=200)

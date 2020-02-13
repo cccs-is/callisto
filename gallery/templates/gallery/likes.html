@@ -1,13 +1,13 @@
 {% extends 'gallery/base.html' %}
 {% block content %}
 {% load static %}
-<h1><i class="fas fa-heart"></i> Notebooks you Liked</h1>
-{%if liked_notebooks%}
+<h1><i class="fas fa-heart"></i> Documents you Liked</h1>
+{%if liked_documents%}
 <div class="table-responsive">
   <table class='table'>
     <thead>
       <tr>
-        <th>Notebook</th>
+        <th>Document</th>
         <th>Data Sources</th>
         <th></th>
         <th></th>
@@ -15,26 +15,26 @@
       </tr>
     </thead>
     <tbody>
-    {%for nl in liked_notebooks%}
+    {%for nl in liked_documents%}
     <tr>
       <td>
-        <a href="{%url 'notebook-details' nl.notebook.id%}">
-          <code>{{nl.notebook.notebook_name}}</code> </br>
-          <small>by {{nl.notebook.full_user_name}} </small><i class="fas fa-info-circle"></i>
+        <a href="{%url 'document-details' nl.document.id%}">
+          <code>{{nl.document.document_name}}</code> </br>
+          <small>by {{nl.document.full_user_name}} </small><i class="fas fa-info-circle"></i>
         </a>
       </td>
       <td>
-        {%for source in nl.notebook.get_data_sources_json%}
-        <a href="{%url 'notebook-index'%}?source={{source}}">
+        {%for source in nl.document.get_data_sources_json%}
+        <a href="{%url 'document-index'%}?source={{source}}">
         <span class="label label-info">{{source}}</span>
         </a>
         {%endfor%}
       </td>
       <td>
-        <a href="#previewModal" data-nbid="{{nl.notebook.id}}" data-nbtitle="{{nl.notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
+        <a href="#previewModal" data-nbid="{{nl.document.id}}" data-nbtitle="{{nl.document.document_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
       <td>
-        <i class="fas fa-eye"></i> {{nl.notebook.views}}</br>
-        <i class="far fa-heart"></i> {{nl.notebook.notebooklike_set.all|length}}
+        <i class="fas fa-eye"></i> {{nl.document.views}}</br>
+        <i class="far fa-heart"></i> {{nl.document.documentlike_set.all|length}}
       </td>
       <td>{{nl.created_at|timesince}} ago</td>
     </tr>
@@ -44,19 +44,19 @@
 </div>
 {%else%}
 <p class='lead'>
-You haven't liked any notebooks yet. <a href="{%url 'notebook-index'%}">Explore some of the existing notebooks</a> to find some you like!
+You haven't liked any documents yet. <a href="{%url 'document-index'%}">Explore some of the existing documents</a> to find some you like!
 </p>
 {%endif%}
 <nav aria-label="pagination">
       <ul class="pagination">
-        {% if liked_notebooks.has_previous %}
+        {% if liked_documents.has_previous %}
             <li><a href="?page=1">&laquo; first</a></li>
-            <li><a aria-label="Previous" href="?page={{ liked_notebooks.previous_page_number }}">previous</a></li>
+            <li><a aria-label="Previous" href="?page={{ liked_documents.previous_page_number }}">previous</a></li>
         {% endif %}
-            <li class="active"><a href='#'>Page {{ liked_notebooks.number }} of {{ liked_notebooks.paginator.num_pages }}</a></li>
-        {% if liked_notebooks.has_next %}
-            <li><a href="?page={{ liked_notebooks.next_page_number }}">next</a></li>
-            <li><a href="?page={{ liked_notebooks.paginator.num_pages }}">last &raquo;</a></li>
+            <li class="active"><a href='#'>Page {{ liked_documents.number }} of {{ liked_documents.paginator.num_pages }}</a></li>
+        {% if liked_documents.has_next %}
+            <li><a href="?page={{ liked_documents.next_page_number }}">next</a></li>
+            <li><a href="?page={{ liked_documents.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
       </ul>
 </nav>
@@ -69,10 +69,10 @@ You haven't liked any notebooks yet. <a href="{%url 'notebook-index'%}">Explore 
         <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
       </div>
       <div class="modal-body">
-        <div id='notebook_filler'></div>
+        <div id='document_filler'></div>
       </div>
       <div class="modal-footer">
-        <a id='nbopenId' href='/test2' class="btn btn-default">open as notebook <i class="fas fa-external-link-alt"></i></a>
+        <a id='nbopenId' href='/test2' class="btn btn-default">open document <i class="fas fa-external-link-alt"></i></a>
         <a id='detailId' href='/test' class="btn btn-default">more details <i class="fas fa-info-circle"></i></a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>

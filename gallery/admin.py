@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from .models import SharedNotebook, NotebookComment, NotebookLike, HubSpace, HubUser
+from .models import SharedDocument, DocumentComment, DocumentLike, HubSpace, HubUser
 
 admin.site.register(HubSpace)
 admin.site.register(HubUser)
 
-admin.site.register(SharedNotebook)
-admin.site.register(NotebookComment)
-admin.site.register(NotebookLike)
+admin.site.register(SharedDocument)
+admin.site.register(DocumentComment)
+admin.site.register(DocumentLike)
 

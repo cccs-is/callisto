@@ -74,17 +74,17 @@ class HubSpace(models.Model):
         return None
 
 
-class SharedNotebook(models.Model):
+class SharedDocument(models.Model):
     hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    notebook_name = models.TextField(default='')
-    notebook_content = models.TextField(default='')
+    document_name = models.TextField(default='')
+    document_content = models.TextField(default='')
     description = models.TextField(default='')
     tags = models.TextField(default='')
     data_sources = models.TextField(default='')
     views = models.IntegerField(default=0)
     updated_at = models.DateTimeField(default=(arrow.now() - timedelta(days=7)).format())
     created_at = models.DateTimeField(default=(arrow.now() - timedelta(days=7)).format())
-    master_notebook = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
+    master_document = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
     published = models.BooleanField(default=False)
     spaces = models.ManyToManyField(HubSpace, related_name='spaces', blank=True)
 
@@ -113,12 +113,12 @@ class SharedNotebook(models.Model):
         return spaces_can_read & set(self.spaces.all())
 
 
-class NotebookComment(models.Model):
+class DocumentComment(models.Model):
     """
-    comments about a given notebook
+    comments about a given document
     """
     hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
+    document = models.ForeignKey(SharedDocument, on_delete=models.CASCADE)
     comment_text = models.TextField(default='')
     created_at = models.DateTimeField(default=arrow.now().format())
 
@@ -129,10 +129,10 @@ class NotebookComment(models.Model):
             ordering = ["created_at"]
 
 
-class NotebookLike(models.Model):
+class DocumentLike(models.Model):
     """
-    like a given notebook
+    like a given document
     """
     hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
+    document = models.ForeignKey(SharedDocument, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=arrow.now().format())

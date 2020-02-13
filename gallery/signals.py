@@ -1,14 +1,14 @@
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from .models import SharedNotebook
+from .models import SharedDocument
 
 
-@receiver(post_delete, sender=SharedNotebook)
+@receiver(post_delete, sender=SharedDocument)
 def my_handler(sender, instance, **kwargs):
-    notebooks = SharedNotebook.objects.filter(
-                notebook_name=instance.notebook_name, published=True).order_by('created_at')
-    if notebooks:
-        master_nb = notebooks[0]
-        for notebook in notebooks[1:]:
-            notebook.master_notebook = master_nb
-            notebook.save()
+    documents = SharedDocument.objects.filter(
+                document_name=instance.document_name, published=True).order_by('created_at')
+    if documents:
+        master_nb = documents[0]
+        for document in documents[1:]:
+            document.master_document = master_nb
+            document.save()

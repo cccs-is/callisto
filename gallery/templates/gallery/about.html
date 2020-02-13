@@ -22,14 +22,14 @@
           </div>
           <div class="panel-body">
           <p>
-            We store basic account information (user name, e-mail). We store the notebooks you shared, comments, and likes.
+            We store basic account information (user name, e-mail). We store the documents you shared, comments, and likes.
           </p>
           <p>
-            Remember that until the notebook is published, it is only visible to you.
+            Remember that until the document is published, it is only visible to you.
           </p>
           <p>
-            You can always delete a notebook or the whole Callisto account from the <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
-            If you delete the Callisto account, all associated information (notebooks, comments, likes) will be purged as well.
+            You can always delete a document or the whole Callisto account from the <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
+            If you delete the Callisto account, all associated information (documents, comments, likes) will be purged as well.
           </p>
           </div>
         </div>
@@ -38,25 +38,25 @@
         <h2>FAQ</h2>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">How do I share a notebook?</h3>
+            <h3 class="panel-title">How do I share a document?</h3>
           </div>
           <div class="panel-body">
             <p>
-              Sharing a notebook is a two step process:
+              Sharing a document is a two step process:
               <ol>
                 <li>
-                  Start by uploading a notebook (either from file, or from the JupyterHub),
+                  Start by uploading a document (either from file, or from the JupyterHub),
                 </li>
                 <li>
                   Next, use the <code>Publish</code> button from your <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
                 </li>
               </ol>
-              When you publish a notebook you will have an opportunity to provide extra information. Other people
-              will be able to discover it in the <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>, or
+              When you publish a document you will have an opportunity to provide extra information. Other people
+              will be able to discover it in the <i><a href="{%url 'document-index'%}">list of documents</a></i>, or
               in <i><a href="{%url 'search'%}">Search</a></i>.
             </p>
             <p>
-              If you change your mind you can always update the notebook or its information, or delete it altogether.
+              If you change your mind you can always update the document or its information, or delete it altogether.
             </p>
             <p>Check out this quick GIF below to see how it works in practice:</p>
             <img data-gifffer="{% static 'aboutgifs/notebook_import.gif' %}" data-gifffer-width="100%" />
@@ -70,7 +70,7 @@
           <p>
             Getting a notebook copied into your own JupyterHub session is a simple click.
             When you see a notebook on the <i>Callisto</i> that you'd like to run just press the <code>open as notebook</code>
-            or <code>Open as JupyterHub</code> buttons which are on <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>.
+            or <code>Open as JupyterHub</code> buttons which are on <i><a href="{%url 'document-index'%}">list of documents</a></i>.
             If your notebook directory already contains a notebook of the same name it will make sure to append the current
             date/time to the newly imported notebook, as to not overwrite the existing one.
           </p>
@@ -82,36 +82,36 @@
         </div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Can I edit/delete notebooks I've shared?</h3>
+            <h3 class="panel-title">Can I edit/delete documents I've shared?</h3>
           </div>
           <div class="panel-body">
           <p>
-            Yes, you can. Head to your <a href="{%url 'dashboard'%}"><i>Dashboard</i></a> (<code>My Notebooks</code> in the menu bar above).
-            There you can <code>delete</code> a notebook or select <code>edit description</code> to change the tags/sources/description of a notebook you have published.
+            Yes, you can. Head to your <a href="{%url 'dashboard'%}"><i>Dashboard</i></a> (<code>My Documents</code> in the menu bar above).
+            There you can <code>delete</code> a document or select <code>edit description</code> to change the tags/sources/description of a document you have published.
           </p>
           <p>
-            Note that the <code>edit description</code> does not give a way to edit the notebook itself, but just the associated metadata. To also replace the code notebook itself
-            you will have to replace it as outlined above in <i>How do I share a notebook?</i>
+            Note that the <code>edit description</code> does not give a way to edit the document itself, but just the associated metadata. To also replace the code document itself
+            you will have to replace it as outlined above in <i>How do I share a document?</i>
           </p>
           <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/edit.png' %}"/>
           </div>
         </div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Why isn't my notebook on the <i>Explore</i> page? / What are the <i>Other Notebooks</i> I see when looking at some notebooks?</h3>
+            <h3 class="panel-title">Why isn't my document on the <i>Explore</i> page? / What are the <i>Other Documents</i> I see when looking at some documents?</h3>
           </div>
           <div class="panel-body">
           <p>
-            We are grouping notebooks by their name.
-            So if you are submitting a notebook called <code>mynotebook.ipynb</code>,
-            but there is already another notebook of the same name we assume that your
-            notebook is a (potentially edited) copy of this notebook.
+            We are grouping documents by their name.
+            So if you are submitting a document called <code>mynotebook.ipynb</code>,
+            but there is already another document of the same name we assume that your
+            document is a (potentially edited) copy of this document.
             To keep things a bit more organized we are grouping these together and only list
-            the oldest notebook with that name on the <i>Explore</i> page.
+            the oldest document with that name on the <i>Explore</i> page.
           </p>
           <p>
-            If your notebook isn't an edited copy of an earlier notebook and you want to avoid
-            being grouped with an existing notebook you should rename your notebook prior
+            If your document isn't an edited copy of an earlier document and you want to avoid
+            being grouped with an existing document you should rename your document prior
             to publishing it.
           </p>
           </div>

@@ -37,12 +37,12 @@
         {%for hub_space in spaces%}
         <tr>
           <td>
-            <a href="{%url 'notebook-index'%}?space={{hub_space.pk}}">
+            <a href="{%url 'document-index'%}?space={{hub_space.pk}}">
               <code>{{hub_space.space_name}}</code> </br>
             </a>
           </td>
           <td>
-            <a href="{%url 'notebook-index'%}?space={{space.pk}}">
+            <a href="{%url 'document-index'%}?space={{space.pk}}">
               <code>{% space_access hub_space %}</code> </br>
             </a>
           </td>

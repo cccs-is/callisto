@@ -1,5 +1,5 @@
 import arrow
-from gallery.models import SharedNotebook
+from gallery.models import SharedDocument
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import logging
 from django.contrib import messages
@@ -8,51 +8,51 @@ from collections import defaultdict
 logger = logging.getLogger(__name__)
 
 
-def find_notebook_by_keywords(search_term, search_field=None):
-    notebooks_tag = SharedNotebook.objects.filter(
+def find_document_by_keywords(search_term, search_field=None):
+    documents_tag = SharedDocument.objects.filter(
         tags__icontains=search_term,
-        master_notebook=None,
+        master_document=None,
         published=True)
     if search_field == 'tags':
-        return notebooks_tag.order_by('updated_at')
-    notebooks_space = SharedNotebook.objects.filter(
+        return documents_tag.order_by('updated_at')
+    documents_space = SharedDocument.objects.filter(
         spaces__space_name__icontains=search_term,
-        master_notebook=None,
+        master_document=None,
         published=True)
     if search_field == 'spaces':
-        return notebooks_space.order_by('updated_at')
-    notebooks_source = SharedNotebook.objects.filter(
+        return documents_space.order_by('updated_at')
+    documents_source = SharedDocument.objects.filter(
         data_sources__icontains=search_term,
-        master_notebook=None,
+        master_document=None,
         published=True)
     if search_field == 'data_sources':
-        return notebooks_source.order_by('updated_at')
+        return documents_source.order_by('updated_at')
     # TODO verify
-    notebooks_user = SharedNotebook.objects.filter(
+    documents_user = SharedDocument.objects.filter(
         hub_member__username__icontains=search_term,
-        master_notebook=None,
+        master_document=None,
         published=True)
     if search_field == 'username':
-        return notebooks_user.order_by('updated_at')
-    notebooks_description = SharedNotebook.objects.filter(
+        return documents_user.order_by('updated_at')
+    documents_description = SharedDocument.objects.filter(
         description__icontains=search_term,
-        master_notebook=None,
+        master_document=None,
         published=True)
-    notebooks_name = SharedNotebook.objects.filter(
-        notebook_name__icontains=search_term,
-        master_notebook=None,
+    documents_name = SharedDocument.objects.filter(
+        document_name__icontains=search_term,
+        master_document=None,
         published=True)
-    nbs = notebooks_tag | notebooks_space | notebooks_source | notebooks_description | notebooks_name | notebooks_user
+    nbs = documents_tag | documents_space | documents_source | documents_description | documents_name | documents_user
     nbs = nbs.order_by('updated_at')
     return nbs
 
 
-def identify_master_notebook(notebook_name, hub_member):
-    other_notebooks = SharedNotebook.objects.filter(
-                        notebook_name=notebook_name, published=True).exclude(
+def identify_master_document(document_name, hub_member):
+    other_documents = SharedDocument.objects.filter(
+                        document_name=document_name, published=True).exclude(
                         hub_member=hub_member).order_by('created_at')
-    if other_notebooks:
-        return other_notebooks[0]
+    if other_documents:
+        return other_documents[0]
     return None
 
 
@@ -67,26 +67,26 @@ def paginate_items(queryset, page):
     return paged_queryset
 
 
-def add_notebook_direct(request, hub_member, notebook_name, notebook_content):
-    notebook, created = SharedNotebook.objects.get_or_create(hub_member=hub_member, notebook_name=notebook_name)
-    notebook.notebook_content = notebook_content
-    notebook.notebook_name = notebook_name
-    notebook.updated_at = arrow.now().format()
-    notebook.hub_member = hub_member
-    notebook.master_notebook = identify_master_notebook(notebook_name, hub_member)
-    notebook.tags = '{}'
-    notebook.data_sources = '{}'
+def add_document_direct(request, hub_member, document_name, document_content):
+    document, created = SharedDocument.objects.get_or_create(hub_member=hub_member, document_name=document_name)
+    document.document_content = document_content
+    document.document_name = document_name
+    document.updated_at = arrow.now().format()
+    document.hub_member = hub_member
+    document.master_document = identify_master_document(document_name, hub_member)
+    document.tags = '{}'
+    document.data_sources = '{}'
     if created:
-        notebook.created_at = arrow.now().format()
-        messages.info(request, 'Your notebook {} has been uploaded!'.format(notebook_name))
+        document.created_at = arrow.now().format()
+        messages.info(request, 'Your document {} has been uploaded!'.format(document_name))
     else:
-        messages.info(request, 'Your notebook {} has been updated!'.format(notebook_name))
-    notebook.save()
+        messages.info(request, 'Your document {} has been updated!'.format(document_name))
+    document.save()
 
 
 def get_all_data_sources_numeric():
     sdict = defaultdict(int)
-    for nb in SharedNotebook.objects.filter(master_notebook=None, published=True):
+    for nb in SharedDocument.objects.filter(master_document=None, published=True):
         for source in nb.get_data_sources_json():
             sdict[source] += 1
     sorted_sdict = sorted(sdict.items(), key=lambda x: x[1], reverse=True)

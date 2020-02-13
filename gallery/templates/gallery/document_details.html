@@ -1,0 +1,98 @@
+{% extends 'gallery/base.html' %}
+{% block content %}
+{% load static %}
+{% load utilities %}
+
+<h1>
+  Details for <code>{{document.document_name}}</code>
+  <a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-primary">Open <i class="fas fa-external-link-alt"></i></button></a>
+</h1>
+<h4><small>
+  Published by
+  <a href="{%url 'search' %}?search_term={{document.hub_member.username}}&search_field=username">
+  <i>{{document.full_user_name}}</i>
+  </a>
+  {%if document.master_document%}
+  (This document is an edited copy of
+    <a href="{%url 'document-details' document.master_document.id%}">{{document.master_document.full_user_name}}'s document</a>)
+  {%endif%}
+</small></h4>
+<div class="row">
+  <div class="col-md-5">
+    <p>
+    <h4><i class="fas fa-book-open"></i> Description</h4>
+    {{document.description|markdown}}
+    </p>
+    <h3>
+      <button data-toggle="tooltip" data-container='body' data-placement="top" title='Number of views' class="btn btn-default btn-xs"><i class="fas fa-eye"></i> {{document.views}}</button>
+      <form action="{% url 'like-document' document.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" value="like_document" data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Press to {%if liked%}un{%endif%}like.' class="btn btn-default btn-xs"><i class="fa{%if liked%}s{%else%}r{%endif%} fa-heart"></i> {{document.documentlike_set.all|length}}</button>
+      </form>
+    </h3>
+    <p>
+    <h4><i class="fas fa-tags"></i> Tags & Data Sources</h4>
+    {%for tag in document.get_tags_json%}
+    <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
+    <span class="label label-primary">{{tag}}</span>
+    </a>
+    {%endfor%}
+    {%for source in document.get_data_sources_json%}
+    <a href="{%url 'document-index'%}?source={{source}}">
+    <span class="label label-info">{{source}}</span>
+    </a>
+    {%endfor%}
+    </p>
+    <p>
+      <a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-primary">Open in Jupyterhub<i class="fas fa-external-link-alt"></i></button></a>
+    </p>
+    {% if document.master_document or other_documents%}
+    <h4><i class="far fa-copy"></i> Other Document Versions</h4>
+    <ul>
+      {%if document.master_document%}<li><a href="{%url 'document-details' document.master_document.id%}">{{document.master_document.full_user_name}}'s document</a> (original document)</li>{%endif%}
+      {%for other_document in other_documents%}
+      <li><a href="{%url 'document-details' other_document.id%}">{{other_document.full_user_name}}'s document</a></li>
+      {%endfor%}
+    </ul>
+    {%endif%}
+    <h4><i class="far fa-comments"></i> Comments</h4>
+    {%for comment in document.documentcomment_set.all%}
+    <blockquote>
+      <p>{{comment.comment_text}}</p>
+      <footer>
+        <b>
+          <a href="{%url 'search' %}?search_term={{comment.hub_member.username}}&search_field=username">{{comment.full_user_name}}</a>
+        </b>, {{comment.created_at|timesince}} ago
+      </footer>
+    </blockquote>
+        {%endfor%}
+        <form action="{% url 'add-comment' document.pk %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Comment</label>
+          <textarea class="form-control" rows=4 name="comment_text" size=50 type="text"
+            placeholder="Enter your comment here" required></textarea>
+            <p class="help-block">
+            You have tried this document and have feedback?
+            Or you have questions for the author? Give it a go!
+            </p>
+        </div>
+        <input type="submit"
+                value="Submit Comment"
+                style="margin-top:6px;"
+                class="btn btn-primary">
+        </form>
+      </br>
+  </div>
+  <div class="col-md-7">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Document <div style='float: right;'><small><i class="far fa-clock"></i> Last updated {{document.updated_at|timesince}} ago</small></div></h3>
+      </div>
+      <div class="panel-body">
+        {{document_preview|safe}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

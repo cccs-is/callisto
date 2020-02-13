@@ -1,36 +1,36 @@
 {% extends 'gallery/base.html' %}
 {% block content %}
 {% load static %}
-    <h1>Your Notebooks</h1>
+    <h1>Your Documents</h1>
     <p class="lead">
-    </br>See which notebooks you have shared and can share.
+    </br>See which documents you have shared and can share.
     </p>
     <div class="row">
       <div class="col-md-4">
 
         <p>
-          {%if notebooks_to_publish%}
-          <h4>Notebooks you can publish</h4>
+          {%if documents_to_publish%}
+          <h4>Documents you can publish</h4>
           <div class="table-responsive">
           <table class='table'>
             <thead>
               <tr>
-                <th>Notebook title</th>
+                <th>Document title</th>
               </tr>
             </thead>
             <tbody>
-            {% for notebook in notebooks_to_publish%}
+            {% for document in documents_to_publish%}
             <tr>
               <td>
-                <a href='{% url 'edit-notebook' notebook.id %}'><code>{{notebook.notebook_name}}</code> </a>
+                <a href='{% url 'edit-document' document.id %}'><code>{{document.document_name}}</code> </a>
               </td>
               <td>
-                <a href='{% url 'edit-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">Publish <i class="far fa-plus-square"></i></button></a>
+                <a href='{% url 'edit-document' document.id %}'><button type="button" class="btn btn-default btn-xs">Publish <i class="far fa-plus-square"></i></button></a>
               </td>
               <td>
-                <form action="{% url 'delete-notebook' notebook.id %}" method="post">
+                <form action="{% url 'delete-document' document.id %}" method="post">
                   {% csrf_token %}
-                  <button type="submit" value="delete_notebook" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button>
+                  <button type="submit" value="delete_document" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button>
                 </form>
               </td>
             </tr>
@@ -39,21 +39,21 @@
         </table>
         </div>
         {%else%}
-        You haven't uploaded any notebooks yet! <b>Head to the <a href="/about">About</a> page</b> to learn how to share your own notebooks!
+        You haven't uploaded any documents yet! <b>Head to the <a href="/about">About</a> page</b> to learn how to share your own documents!
         {%endif%}
         </p>
-        <a href='{% url 'upload-notebook' %}'><button type="button" class="btn btn-default">Upload notebook</button></a>
+        <a href='{% url 'upload-document' %}'><button type="button" class="btn btn-default">Upload document</button></a>
       </div>
       <div class="col-md-8">
         <p>
-          <h4>Notebooks you have already published in the gallery</h4>
+          <h4>Documents you have already published in the gallery</h4>
         </p>
-        {% if existing_notebooks %}
+        {% if existing_documents %}
         <div class="table-responsive">
         <table class='table'>
           <thead>
             <tr>
-              <th>Notebook title</th>
+              <th>Document title</th>
               <th></th>
               <th></th>
               <th></th>
@@ -61,19 +61,19 @@
             </tr>
           </thead>
           <tbody>
-          {%for notebook in existing_notebooks%}
+          {%for document in existing_documents%}
             <tr>
-              <td><a href="{%url 'notebook-details' notebook.id%}"><code>{{notebook.notebook_name}}</code><i class="fas fa-info-circle"></i>
+              <td><a href="{%url 'document-details' document.id%}"><code>{{document.document_name}}</code><i class="fas fa-info-circle"></i>
             </a></td>
-              <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit metadata <i class="far fa-edit"></i></button></a></td>
+              <td><a href="{% url 'edit-document' document.id%}"><button type="button" class="btn btn-default btn-xs">edit metadata <i class="far fa-edit"></i></button></a></td>
               <td>
-                <form action="{% url 'delete-notebook' notebook.id %}" method="post">
+                <form action="{% url 'delete-document' document.id %}" method="post">
                   {% csrf_token %}
-                  <button type="submit" value="delete_notebook" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button>
+                  <button type="submit" value="delete_document" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button>
                 </form>
               </td>
-              <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
-              <td><a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+              <td><a href="#previewModal" data-nbid="{{document.id}}" data-nbtitle="{{document.document_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
+              <td><a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-default btn-xs">open document <i class="fas fa-external-link-alt"></i></button></a></td>
             </tr>
           {%endfor%}
           </tbody>
@@ -86,7 +86,7 @@
         {%endif%}
         <form action="{% url 'delete-user' %}" method="post">
           {% csrf_token %}
-          <button type="submit" value="delete" class="btn btn-danger">Delete account & all notebooks <i class="far fa-trash-alt"></i></button>
+          <button type="submit" value="delete" class="btn btn-danger">Delete account & all documents <i class="far fa-trash-alt"></i></button>
         </form>
       </div>
     </div>
@@ -103,7 +103,7 @@
         <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
       </div>
       <div class="modal-body">
-        <div id='notebook_filler'></div>
+        <div id='document_filler'></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

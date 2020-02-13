@@ -6,7 +6,7 @@
   <table class='table'>
     <thead>
       <tr>
-        <th>Notebook</th>
+        <th>Document</th>
         <th>Tags & Data Sources</th>
         <th></th>
         <th></th>
@@ -15,34 +15,34 @@
       </tr>
     </thead>
     <tbody>
-    {%for notebook in notebooks%}
+    {%for document in documents%}
     <tr>
       <td>
-        <a href="{%url 'notebook-details' notebook.id%}">
-          <code>{{notebook.notebook_name}}</code> </br>
-          <small>by {{notebook.full_user_name}} </small><i class="fas fa-info-circle"></i>
+        <a href="{%url 'document-details' document.id%}">
+          <code>{{document.document_name}}</code> </br>
+          <small>by {{document.full_user_name}} </small><i class="fas fa-info-circle"></i>
         </a>
       </td>
       <td>
-        {%for tag in notebook.get_tags_json%}
+        {%for tag in document.get_tags_json%}
         <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
           <span class="label label-primary">{{tag}}</span></a>
         {%endfor%}</br>
-        {%for source in notebook.get_data_sources_json%}
+        {%for source in document.get_data_sources_json%}
         <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
         <span class="label label-info">{{source}}</span>
         </a>
         {%endfor%}
       </td>
-      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
-      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+      <td><a href="#previewModal" data-nbid="{{document.id}}" data-nbtitle="{{document.document_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
+      <a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-default btn-xs">open document <i class="fas fa-external-link-alt"></i></button></a></td>
       <td>
-        <i class="fas fa-eye"></i> {{notebook.views}}</br>
+        <i class="fas fa-eye"></i> {{document.views}}</br>
       </td>
       <td>
-        <i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}
+        <i class="far fa-heart"></i> {{document.documentlike_set.all|length}}
       </td>
-      <td>{{notebook.updated_at|timesince}} ago</td>
+      <td>{{document.updated_at|timesince}} ago</td>
     </tr>
     {%endfor%}
     </tbody>
@@ -50,14 +50,14 @@
 </div>
 <nav aria-label="pagination">
       <ul class="pagination">
-        {% if notebooks.has_previous %}
+        {% if documents.has_previous %}
             <li><a href="?page=1&search_term={{search_term}}">&laquo; first</a></li>
-            <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}&search_term={{search_term}}">previous</a></li>
+            <li><a aria-label="Previous" href="?page={{ documents.previous_page_number }}&search_term={{search_term}}">previous</a></li>
         {% endif %}
-            <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
-        {% if notebooks.has_next %}
-            <li><a href="?page={{ notebooks.next_page_number }}&search_term={{search_term}}">next</a></li>
-            <li><a href="?page={{ notebooks.paginator.num_pages }}&search_term={{search_term}}">last &raquo;</a></li>
+            <li class="active"><a href='#'>Page {{ documents.number }} of {{ documents.paginator.num_pages }}</a></li>
+        {% if documents.has_next %}
+            <li><a href="?page={{ documents.next_page_number }}&search_term={{search_term}}">next</a></li>
+            <li><a href="?page={{ documents.paginator.num_pages }}&search_term={{search_term}}">last &raquo;</a></li>
         {% endif %}
       </ul>
 </nav>
@@ -70,7 +70,7 @@
         <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
       </div>
       <div class="modal-body">
-        <div id='notebook_filler'></div>
+        <div id='document_filler'></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

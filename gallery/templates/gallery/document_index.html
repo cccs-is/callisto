@@ -1,0 +1,147 @@
+{% extends 'gallery/base.html' %}
+{% block content %}
+{% load static %}
+{% load utilities %}
+<h1>Shared Documents</h1>
+<div class="row">
+  <div class="col-md-9">
+    <div class="table-responsive">
+      <table id="document-list-table" class='table'>
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th>Spaces</th>
+            <th>Data Sources</th>
+            <th></th>
+            <th>
+              {%if order_by != 'views'%}
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of views' href="?order_by=views&page={{documents.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}"><i class="fas fa-eye"></i></a>
+              {%else%}
+              <i class="fas fa-eye"></i> <i class="fas fa-caret-down"></i></th>
+              {%endif%}
+            <th>
+              {%if order_by != 'likes'%}
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by number of likes' href="?order_by=likes&page={{documents.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}"><i class="fas fa-heart"></i></a>
+              {%else%}
+              <i class="far fa-heart"></i> <i class="fas fa-caret-down"></i></th>
+              {%endif%}
+            <th>
+              {%if order_by != 'updated_at'%}
+              <a data-toggle="tooltip" data-container='body' data-placement="top" title='Click to sort by latest update' href="?order_by=updated_at&page={{documents.number}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">Last updated</a>
+              {%else%}
+              Last updated <i class="fas fa-caret-down"></i></th>
+              {%endif%}
+          </tr>
+        </thead>
+        <tbody>
+        {%for document in documents%}
+        <tr>
+          <td>
+            <a href="{%url 'document-details' document.id%}">
+              <code>{{document.document_name}}</code> </br>
+              <small>by {{document.full_user_name}} </small><i class="fas fa-info-circle"></i>
+            </a>
+          </td>
+          <td>
+            {%for hub_space in document.spaces.all %}
+              {% can_read hub_space as user_can_read_flag %}
+              {%if user_can_read_flag %}
+                <a href="{%url 'document-index'%}?space={{hub_space.pk}}">
+                  <span class="label label-info">{{hub_space.space_name}}</span>
+                </a>
+              {%endif%}
+            {%endfor%}
+          </td>
+          <td>
+            {%for data_source in document.get_data_sources_json%}
+            <a href="{%url 'document-index'%}?source={{data_source}}">
+            <span class="label label-info">{{data_source}}</span>
+            </a>
+            {%endfor%}
+          </td>
+          <td>
+            <a href="#previewModal" data-nbid="{{document.id}}" data-nbtitle="{{document.document_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a>
+          </td>
+          <td>
+            <i class="fas fa-eye"></i> {{document.views}}</br>
+          </td>
+          <td>
+            <i class="far fa-heart"></i> {{document.documentlike_set.all|length}}
+          </td>
+          <td>{{document.updated_at|timesince|upto:","}} ago</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="pagination">
+          <ul class="pagination">
+            {% if documents.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a aria-label="Previous" href="?page={{ documents.previous_page_number }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">previous</a></li>
+            {% endif %}
+                <li class="active"><a href='#'>Page {{ documents.number }} of {{ documents.paginator.num_pages }}</a></li>
+            {% if documents.has_next %}
+                <li><a href="?order_by={{order_by}}&page={{ documents.next_page_number }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">next</a></li>
+                <li><a href="?order_by={{order_by}}&page={{ documents.paginator.num_pages }}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">last &raquo;</a></li>
+            {% endif %}
+          </ul>
+    </nav>
+  </div>
+  <div class="col-md-3">
+    <h3>Filter by space</h3>
+    {%for hub_space in document_spaces%}
+      {%if hub_space.pk == space %}
+        <a href="{%url 'document-index'%}?order_by={{order_by}}{%if source%}&source={{source}}{%endif%}">
+          <span class="btn btn-primary btn-primary btn-lg padded">{{hub_space.space_name}}</span>
+        </a>
+      {%else%}
+        <a href="{%url 'document-index'%}?space={{hub_space.pk}}{%if source%}&source={{source}}{%endif%}&order_by={{order_by}}">
+          <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{hub_space.space_name}}</span>
+        </a>
+      {%endif%}
+    {%endfor%}
+    <br/>
+    <h3>Filter by data source</h3>
+    {%for data_source in data_sources%}
+    {%if data_source != source %}
+    <a href="{%url 'document-index'%}?source={{data_source}}{%if space%}&space={{space}}{%endif%}&order_by={{order_by}}">
+    <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{data_source}}</span>
+    </a>
+    {%else%}
+    <a href="{%url 'document-index'%}?order_by={{order_by}}{%if space%}&space={{space}}{%endif%}">
+    <span class="btn btn-primary btn-primary btn-lg padded">{{data_source}}</span>
+    </a>
+    {%endif%}
+    {%endfor%}
+    <br/>
+    <small>
+      Your favorite data source is still missing? Read our
+      <a href="{%url 'about' %}"><i>About</i> page</a> to learn how to
+        share your own document!
+      </small>
+  </div>
+</div>
+
+
+<div id="previewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
+      </div>
+      <div class="modal-body">
+        <div id='document_filler'></div>
+      </div>
+      <div class="modal-footer">
+        <a id='nbopenId' href='/test2' class="btn btn-default">open document <i class="fas fa-external-link-alt"></i></a>
+        <a id='detailId' href='/test' class="btn btn-default">more details <i class="fas fa-info-circle"></i></a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

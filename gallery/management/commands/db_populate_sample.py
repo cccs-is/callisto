@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand
-from gallery.models import HubSpace, SpaceTypes, SharedNotebook
+from gallery.models import HubSpace, SpaceTypes, SharedDocument
 from django.contrib.auth import get_user_model
 
-TEST_NOTEBOOK_CONTENTS = '{"cells": [' + \
+TEST_DOC_CONTENTS = '{"cells": [' + \
   '{ "cell_type": "code", "execution_count": 1, "metadata": {}, "outputs": [ { "name": "stdout", "output_type": "stream", "text": [ "Hi" ] } ], "source": [ "print(\'Hi\')" ] },' + \
   '{ "cell_type": "code", "execution_count": null, "metadata": {}, "outputs": [], "source": [] }],' + \
   '"metadata": { "kernelspec": { "display_name": "Python 3", "language": "python", "name": "python3" },' + \
@@ -32,22 +32,22 @@ class Command(BaseCommand):
         return user
 
 
-    def hub_notebook(self, notebook_name, owner, initial_space):
-        notebook = SharedNotebook.objects.filter(notebook_name=notebook_name).first()
-        if notebook:
-            return notebook
-        notebook = SharedNotebook.objects.create(
+    def hub_document(self, document_name, owner, initial_space):
+        document = SharedDocument.objects.filter(document_name=document_name).first()
+        if document:
+            return document
+        document = SharedDocument.objects.create(
             hub_member=owner,
-            notebook_name=notebook_name,
-            notebook_content=TEST_NOTEBOOK_CONTENTS,
+            document_name=document_name,
+            document_content=TEST_DOC_CONTENTS,
             description="Sample",
             tags='["sample"]',
             data_sources='["None"]',
             published=True)
         if initial_space:
-            notebook.spaces.add(initial_space)
-            notebook.save()
-        return notebook
+            document.spaces.add(initial_space)
+            document.save()
+        return document
 
     def handle(self, *args, **options):
         # create spaces
@@ -98,33 +98,33 @@ class Command(BaseCommand):
         space_dept_b_c.spaces_write.add(user_b1)
         space_dept_b_c.spaces_write.add(user_ab1)
 
-        # create shared notebooks
-        self.hub_notebook('taxi_wait_time', user_a, space_exchange)
-        self.hub_notebook('ip_and_us', user_it, space_exchange)
-        self.hub_notebook('twin_prime_conjecture', user_int, space_exchange)
+        # create shared documents
+        self.hub_document('taxi_wait_time', user_a, space_exchange)
+        self.hub_document('ip_and_us', user_it, space_exchange)
+        self.hub_document('twin_prime_conjecture', user_int, space_exchange)
 
-        self.hub_notebook('hello', user_d, space_workflow)
-        self.hub_notebook('universal_order_form', user_a, space_workflow)
+        self.hub_document('hello', user_d, space_workflow)
+        self.hub_document('universal_order_form', user_a, space_workflow)
 
-        self.hub_notebook('dept_a_plan', user_ha, space_dept_a)
-        self.hub_notebook('outgoing', user_a1, space_dept_a)
-        self.hub_notebook('survey_A', user_ab1, space_dept_a)
+        self.hub_document('dept_a_plan', user_ha, space_dept_a)
+        self.hub_document('outgoing', user_a1, space_dept_a)
+        self.hub_document('survey_A', user_ab1, space_dept_a)
 
-        self.hub_notebook('dept_a_backlog', user_ha, space_dept_a_c)
-        self.hub_notebook('schedule_A', user_a1, space_dept_a_c)
-        self.hub_notebook('survey_results_A', user_ab1, space_dept_a_c)
+        self.hub_document('dept_a_backlog', user_ha, space_dept_a_c)
+        self.hub_document('schedule_A', user_a1, space_dept_a_c)
+        self.hub_document('survey_results_A', user_ab1, space_dept_a_c)
 
-        self.hub_notebook('dept_b_plan', user_hb, space_dept_b)
-        self.hub_notebook('incoming', user_b1, space_dept_b)
-        self.hub_notebook('survey_B', user_ab1, space_dept_b)
+        self.hub_document('dept_b_plan', user_hb, space_dept_b)
+        self.hub_document('incoming', user_b1, space_dept_b)
+        self.hub_document('survey_B', user_ab1, space_dept_b)
 
-        self.hub_notebook('dept_b_backlog', user_hb, space_dept_b_c)
-        self.hub_notebook('schedule_B', user_b1, space_dept_b_c)
-        survey_results_B = self.hub_notebook('survey_results_B', user_ab1, space_dept_b_c)
+        self.hub_document('dept_b_backlog', user_hb, space_dept_b_c)
+        self.hub_document('schedule_B', user_b1, space_dept_b_c)
+        survey_results_B = self.hub_document('survey_results_B', user_ab1, space_dept_b_c)
         survey_results_B.spaces.add(space_dept_a_c) # Added into 2 spaces
         survey_results_B.save()
 
-        self.hub_notebook('gift_exchange', user_int, None)
+        self.hub_document('gift_exchange', user_int, None)
 
         # save all spaces
         space_exchange.save()

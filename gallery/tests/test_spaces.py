@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
-from gallery.models import SharedNotebook, HubSpace
+from gallery.models import SharedDocument, HubSpace
 from django.contrib.auth import get_user_model
 
 
@@ -28,11 +28,11 @@ class ViewTest(TestCase):
         self.assertNotContains(response, "Department A - Confidential", status_code=200)
         self.assertNotContains(response, "Department B - Confidential", status_code=200)
 
-    def _direct_notebook_access(self, client, notebook_name, should_work):
-        notebook = SharedNotebook.objects.get(notebook_name=notebook_name)
-        response = client.get('/notebook/{}/'.format(notebook.pk))
+    def _direct_document_access(self, client, document_name, should_work):
+        document = SharedDocument.objects.get(document_name=document_name)
+        response = client.get('/document/{}/'.format(document.pk))
         if should_work:
-            self.assertEqual(response.status_code, 200, "Wrong HTTP code for notebook {}".format(notebook_name))
+            self.assertEqual(response.status_code, 200, "Wrong HTTP code for document {}".format(document_name))
         else:
             self.assertRedirects(response, '/', fetch_redirect_response=False)
 
@@ -48,14 +48,14 @@ class ViewTest(TestCase):
         c = Client()
         user_model = get_user_model()
 
-        # User 'hA' - check direct access to notebooks and spaces
+        # User 'hA' - check direct access to documents and spaces
         ha_user = user_model.objects.get(username='ha')
         c.force_login(ha_user)
 
-        self._direct_notebook_access(c, 'ip_and_us', True)
-        self._direct_notebook_access(c, 'survey_results_B', True)
-        self._direct_notebook_access(c, 'schedule_B', False)
-        self._direct_notebook_access(c, 'gift_exchange', False)
+        self._direct_document_access(c, 'ip_and_us', True)
+        self._direct_document_access(c, 'survey_results_B', True)
+        self._direct_document_access(c, 'schedule_B', False)
+        self._direct_document_access(c, 'gift_exchange', False)
 
         self._direct_space_access(c, 'Department A', True)
         self._direct_space_access(c, 'Department B', False)

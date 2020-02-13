@@ -2,9 +2,9 @@
 {% load static %}
 {% block content %}
 
-    <h1>Upload notebook</h1>
+    <h1>Upload document</h1>
 
-    <form action="{% url 'upload-notebook' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'upload-document' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
         <div class="form-group">
             <label>Select file(s):</label>

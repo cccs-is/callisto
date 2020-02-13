@@ -4,12 +4,10 @@ $(document).ready(function(){
       var nbtitle = $(e.relatedTarget).data('nbtitle');
       console.log(nbtitle);
       console.log($('#nbtitle_fill').html);
-      $('#notebook_filler').load('/render-notebook/'+nbid);
+      $('#document_filler').load('/render-document/'+nbid);
       $('#nbtitle_fill').html(nbtitle);
-      $('#nbopenId').attr("href", '/open-notebook/'+nbid);
-      $('#detailId').attr("href", '/notebook/'+nbid);
-      //document.getElementById("notebook_filler").innerHTML = "new content"
-        ///alert('The modal will show'+nbid);
+      $('#nbopenId').attr("href", '/open-document/'+nbid);
+      $('#detailId').attr("href", '/document/'+nbid);
     });
     $('[data-toggle="tooltip"]').tooltip();
 });

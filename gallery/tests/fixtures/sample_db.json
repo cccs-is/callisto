@@ -3,7 +3,7 @@
     "model": "gallery.hubuser",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$150000$VvLoA2i1QLQx$pI9VEuWLcejSLEB9zC9stk9y+EUNcj3G0URqFA82ITY=",
+        "password": "pbkdf2_sha256$150000$xrAWbNab4muc$YWL4rx0XiW0HU7rP1oMSWgVf+COn0k7Q2uFxvS2R5io=",
         "last_login": null,
         "is_superuser": true,
         "username": "admin",
@@ -12,7 +12,7 @@
         "email": "admin@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:44.949Z",
+        "date_joined": "2020-02-13T16:50:55.848Z",
         "groups": [],
         "user_permissions": []
     }
@@ -21,7 +21,7 @@
     "model": "gallery.hubuser",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$150000$aYa2l9O3recq$PQfUS0zA2rEc4s3y7AofptOPIOjD7IBR1iNivyEZ/us=",
+        "password": "pbkdf2_sha256$150000$K5fjl9dIMAET$LNNhbSq96pKUh2pawt5N4Gm/Xp91IVl71Wvd7wqYNJw=",
         "last_login": null,
         "is_superuser": false,
         "username": "d",
@@ -30,7 +30,7 @@
         "email": "Brian.Miller@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.502Z",
+        "date_joined": "2020-02-13T16:51:05.925Z",
         "groups": [],
         "user_permissions": []
     }
@@ -39,7 +39,7 @@
     "model": "gallery.hubuser",
     "pk": 3,
     "fields": {
-        "password": "pbkdf2_sha256$150000$BKoRgG4sXPkJ$IRcPAuqPV4a5uleJDuftQO0bC+fq4PbLrxpNz2fUykM=",
+        "password": "pbkdf2_sha256$150000$cIjBOV7Urlty$+STSbZ6wBoaLsiL9t5CZhMY0Ctuozk9ootxmUx0RREo=",
         "last_login": null,
         "is_superuser": false,
         "username": "a",
@@ -48,7 +48,7 @@
         "email": "Ashley.Clark@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.585Z",
+        "date_joined": "2020-02-13T16:51:06.006Z",
         "groups": [],
         "user_permissions": []
     }
@@ -57,7 +57,7 @@
     "model": "gallery.hubuser",
     "pk": 4,
     "fields": {
-        "password": "pbkdf2_sha256$150000$QUAcs1Fqj0Fy$n+x0RP5jMun2VQgQzCfpKyzT/lcN0BKs3C6RqpggkCM=",
+        "password": "pbkdf2_sha256$150000$rdxCaWRivGcG$0wHRJw488WUqFFgucfwXODdrJLynG6NZlAR35vVPC9c=",
         "last_login": null,
         "is_superuser": true,
         "username": "it",
@@ -66,7 +66,7 @@
         "email": "Peter.King@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.660Z",
+        "date_joined": "2020-02-13T16:51:06.079Z",
         "groups": [],
         "user_permissions": []
     }
@@ -75,7 +75,7 @@
     "model": "gallery.hubuser",
     "pk": 5,
     "fields": {
-        "password": "pbkdf2_sha256$150000$fgqb8vQwvUWc$TcfIzki7HrQRA3Zd+JezyczB+xBNKo8LvExtV51y4Wk=",
+        "password": "pbkdf2_sha256$150000$dtnUNOLXIvSL$6wj9/NLq0q3KhtOD7RLivqMjblZpowI0uMGPSb1P3ZU=",
         "last_login": null,
         "is_superuser": false,
         "username": "ha",
@@ -84,7 +84,7 @@
         "email": "Lucy.Taylor@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.735Z",
+        "date_joined": "2020-02-13T16:51:06.153Z",
         "groups": [],
         "user_permissions": []
     }
@@ -93,7 +93,7 @@
     "model": "gallery.hubuser",
     "pk": 6,
     "fields": {
-        "password": "pbkdf2_sha256$150000$JW962oqi9xbK$U/HTeI6xqkTjFhLGXK+dkv/RURb9184P11R8U+DCVBY=",
+        "password": "pbkdf2_sha256$150000$L2FTJBvxciIn$EEajJxEdSwGwkYOl/5fa6SAP/kDoemGFxgIrrspTjOE=",
         "last_login": null,
         "is_superuser": false,
         "username": "a1",
@@ -102,7 +102,7 @@
         "email": "Scott.Jackson@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.809Z",
+        "date_joined": "2020-02-13T16:51:06.228Z",
         "groups": [],
         "user_permissions": []
     }
@@ -111,7 +111,7 @@
     "model": "gallery.hubuser",
     "pk": 7,
     "fields": {
-        "password": "pbkdf2_sha256$150000$6wkWTu299AkU$ZHcWRdsg6wxJY7sEb4s8hmV4uLFAGzWM/VCNoCgXKRk=",
+        "password": "pbkdf2_sha256$150000$b4HabQhrsIg6$KYfhTBix05WuUUvtUALV/i7X6LDQocze5cpHaKo4XDo=",
         "last_login": null,
         "is_superuser": false,
         "username": "hb",
@@ -120,7 +120,7 @@
         "email": "Miles.Miller@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.886Z",
+        "date_joined": "2020-02-13T16:51:06.304Z",
         "groups": [],
         "user_permissions": []
     }
@@ -129,7 +129,7 @@
     "model": "gallery.hubuser",
     "pk": 8,
     "fields": {
-        "password": "pbkdf2_sha256$150000$N5FVoCUJqt3n$Q4tEV4GmYwKNHKfqG5KCpRLFp0xgzH4ibR3fwk2IVsA=",
+        "password": "pbkdf2_sha256$150000$AijqscoQDhpE$GdM80CZbnOsgr9WYo5io2Zt+Wt0J/PM0tD2zFG5da5k=",
         "last_login": null,
         "is_superuser": false,
         "username": "b1",
@@ -138,7 +138,7 @@
         "email": "Teresa.Williams@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:52.961Z",
+        "date_joined": "2020-02-13T16:51:06.377Z",
         "groups": [],
         "user_permissions": []
     }
@@ -147,7 +147,7 @@
     "model": "gallery.hubuser",
     "pk": 9,
     "fields": {
-        "password": "pbkdf2_sha256$150000$0SorqZIdCihJ$sTC60ecj3Q87dn3Kc0oxqVWPMO7FLH/C3lmHwrIUkNo=",
+        "password": "pbkdf2_sha256$150000$M0T4Os0BRvAF$KWbSDn6L/EdIz9HF1sURKlhS2g1aZ+XVsiIW4OnAeGU=",
         "last_login": null,
         "is_superuser": false,
         "username": "ab1",
@@ -156,7 +156,7 @@
         "email": "Antonio.Johnson@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:53.035Z",
+        "date_joined": "2020-02-13T16:51:06.451Z",
         "groups": [],
         "user_permissions": []
     }
@@ -165,7 +165,7 @@
     "model": "gallery.hubuser",
     "pk": 10,
     "fields": {
-        "password": "pbkdf2_sha256$150000$SPIRBSLgs2h7$73dTexEAjTZGgKJPyno/OACH7oQeGYdZ0enpQAZQD+0=",
+        "password": "pbkdf2_sha256$150000$6hYxhHeoTHo3$MmMlz9G4hFLeQQrCPwmWcwsKdBjckNwzD2tw1Jqo7OA=",
         "last_login": null,
         "is_superuser": false,
         "username": "int",
@@ -174,7 +174,7 @@
         "email": "Julian.Green@example.com",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2020-02-11T21:00:53.110Z",
+        "date_joined": "2020-02-13T16:51:06.525Z",
         "groups": [],
         "user_permissions": []
     }
@@ -322,21 +322,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 1,
     "fields": {
         "hub_member": [
             "a"
         ],
-        "notebook_name": "taxi_wait_time",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "taxi_wait_time",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             1
@@ -344,21 +344,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 2,
     "fields": {
         "hub_member": [
             "it"
         ],
-        "notebook_name": "ip_and_us",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "ip_and_us",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             1
@@ -366,21 +366,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 3,
     "fields": {
         "hub_member": [
             "int"
         ],
-        "notebook_name": "twin_prime_conjecture",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "twin_prime_conjecture",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             1
@@ -388,21 +388,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 4,
     "fields": {
         "hub_member": [
             "d"
         ],
-        "notebook_name": "hello",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "hello",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             2
@@ -410,21 +410,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 5,
     "fields": {
         "hub_member": [
             "a"
         ],
-        "notebook_name": "universal_order_form",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "universal_order_form",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             2
@@ -432,21 +432,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 6,
     "fields": {
         "hub_member": [
             "ha"
         ],
-        "notebook_name": "dept_a_plan",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "dept_a_plan",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             3
@@ -454,21 +454,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 7,
     "fields": {
         "hub_member": [
             "a1"
         ],
-        "notebook_name": "outgoing",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "outgoing",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             3
@@ -476,21 +476,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 8,
     "fields": {
         "hub_member": [
             "ab1"
         ],
-        "notebook_name": "survey_A",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "survey_A",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             3
@@ -498,21 +498,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 9,
     "fields": {
         "hub_member": [
             "ha"
         ],
-        "notebook_name": "dept_a_backlog",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "dept_a_backlog",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             4
@@ -520,21 +520,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 10,
     "fields": {
         "hub_member": [
             "a1"
         ],
-        "notebook_name": "schedule_A",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "schedule_A",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             4
@@ -542,21 +542,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 11,
     "fields": {
         "hub_member": [
             "ab1"
         ],
-        "notebook_name": "survey_results_A",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "survey_results_A",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             4
@@ -564,21 +564,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 12,
     "fields": {
         "hub_member": [
             "hb"
         ],
-        "notebook_name": "dept_b_plan",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "dept_b_plan",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             5
@@ -586,21 +586,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 13,
     "fields": {
         "hub_member": [
             "b1"
         ],
-        "notebook_name": "incoming",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "incoming",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             5
@@ -608,21 +608,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 14,
     "fields": {
         "hub_member": [
             "ab1"
         ],
-        "notebook_name": "survey_B",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "survey_B",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             5
@@ -630,21 +630,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 15,
     "fields": {
         "hub_member": [
             "hb"
         ],
-        "notebook_name": "dept_b_backlog",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "dept_b_backlog",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             6
@@ -652,21 +652,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 16,
     "fields": {
         "hub_member": [
             "b1"
         ],
-        "notebook_name": "schedule_B",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "schedule_B",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             6
@@ -674,21 +674,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 17,
     "fields": {
         "hub_member": [
             "ab1"
         ],
-        "notebook_name": "survey_results_B",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "survey_results_B",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": [
             4,
@@ -697,21 +697,21 @@
     }
 },
 {
-    "model": "gallery.sharednotebook",
+    "model": "gallery.shareddocument",
     "pk": 18,
     "fields": {
         "hub_member": [
             "int"
         ],
-        "notebook_name": "gift_exchange",
-        "notebook_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
+        "document_name": "gift_exchange",
+        "document_content": "{\"cells\": [{ \"cell_type\": \"code\", \"execution_count\": 1, \"metadata\": {}, \"outputs\": [ { \"name\": \"stdout\", \"output_type\": \"stream\", \"text\": [ \"Hi\" ] } ], \"source\": [ \"print('Hi')\" ] },{ \"cell_type\": \"code\", \"execution_count\": null, \"metadata\": {}, \"outputs\": [], \"source\": [] }],\"metadata\": { \"kernelspec\": { \"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\" },\"language_info\": { \"codemirror_mode\": { \"name\": \"ipython\", \"version\": 3 }, \"file_extension\": \".py\", \"mimetype\": \"text/x-python\", \"name\": \"python\", \"nbconvert_exporter\": \"python\", \"pygments_lexer\": \"ipython3\", \"version\": \"3.7.4\" } }, \"nbformat\": 4, \"nbformat_minor\": 4 }",
         "description": "Sample",
         "tags": "[\"sample\"]",
         "data_sources": "[\"None\"]",
         "views": 0,
-        "updated_at": "2020-02-04T21:00:52Z",
-        "created_at": "2020-02-04T21:00:52Z",
-        "master_notebook": null,
+        "updated_at": "2020-02-06T16:51:05Z",
+        "created_at": "2020-02-06T16:51:05Z",
+        "master_document": null,
         "published": true,
         "spaces": []
     }

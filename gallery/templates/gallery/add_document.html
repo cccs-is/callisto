@@ -3,18 +3,18 @@
 {% block content %}
 
     {%if edit %}
-      <h1>Update your existing notebook <code>{{notebook_name}}</code>.</h1>
+      <h1>Update your existing document <code>{{document_name}}</code>.</h1>
     {%else%}
-    <h1>Publish your notebook <code>{{notebook_name}}</code>.</h1>
+    <h1>Publish your document <code>{{document_name}}</code>.</h1>
     {%endif%}
-    <form action="{% url 'add-notebook-gallery' notebook_url notebook_name %}" method="post">
+    <form action="{% url 'add-document-gallery' document_url document_name %}" method="post">
     {% csrf_token %}
     <div class="form-group">
       <label>Description</label>
       <textarea class="form-control" rows=10 name="description" size=60 type="text"
-        placeholder="Enter a description for your notebook" required>{{description}}</textarea>
+        placeholder="Enter a description for your document" required>{{description}}</textarea>
         <p class="help-block">
-        Please give a description of what your notebook does, which data sources it uses etc.
+        Please give a description of what your document does, which data sources it uses etc.
         You can <a href="https://guides.github.com/features/mastering-markdown/">
           format this text using Markdown</a>.
         </p>
@@ -25,26 +25,26 @@
         value="{{tags}}"
         placeholder="Enter a comma-separated list of tags" required>
       <p class="help-block">
-      Tags make your notebook more discoverable as people can search & screen for them.
+      Tags make your document more discoverable as people can search & screen for them.
       </p>
     </div>
     <div class="form-group">
       <label>Data Sources</label>
       <input class="form-control" name="data_sources" size=60 type="text"
         value="{{data_sources}}"
-        placeholder="Enter a comma-separated list of data sources your notebook uses" required>
+        placeholder="Enter a comma-separated list of data sources your document uses" required>
       <p class="help-block">
         {%if not edit%}
         <b>
-          We have tried to extract the names of all <i>Open Humans</i> data sources we found in your notebook.
+          We have tried to extract the names of all <i>Open Humans</i> data sources we found in your document.
           Please check whether these are correct.
         </b>
         {%endif%}
-      Please specify the data sources your notebook uses. This makes it easier for people to find notebooks relevant for them.
+      Please specify the data sources your document uses. This makes it easier for people to find documents relevant for them.
       </p>
     </div>
     <input type="submit"
-            value="Submit Notebook"
+            value="Submit Document"
             style="margin-top:6px;"
             class="btn btn-primary">
     </form>

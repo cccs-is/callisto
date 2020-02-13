@@ -10,7 +10,7 @@
     <!-- Uncomment the following if a favicon is added. -->
     <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
 
-    <title>Callisto - Sharing Notebooks</title>
+    <title>Callisto - Sharing Documents</title>
 
     <!-- Bootstrap via CDN. -->
     <!-- Latest compiled and minified CSS -->
@@ -56,14 +56,14 @@
               <li class='dropdown'>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li {% if section == 'explore' %} class="active" {%endif%}><a href="{%url "notebook-index"%}">All Notebooks</a></li>
+                  <li {% if section == 'explore' %} class="active" {%endif%}><a href="{%url "document-index"%}">All Documents</a></li>
                   <li {% if section == 'sources' %} class="active" {%endif%}><a href="{%url "data-source-index"%}">Data Sources</a></li>
                 </ul>
               </li>
             </ul>
             <form class="navbar-form navbar-left" action="{% url 'search'%}" method="get">
               <div class="form-group">
-                <input type="text" class="form-control" size=17 name="search_term" placeholder="Search Notebook">
+                <input type="text" class="form-control" size=17 name="search_term" placeholder="Search Document">
               </div>
               <button type="submit" class="btn btn-primary btn-primary-hollow">Submit</button>
             </form>
@@ -73,7 +73,7 @@
               {% if request.user.is_authenticated %}
               <ul class="nav navbar-nav">
                 <li {% if section == 'dashboard' %} class="active" {%endif%}><a href="{% url 'dashboard'%}">Dashboard</a></li>
-                <li {% if section == 'likes' %} class="active" {%endif%}><a href="{% url 'likes'%}">Liked Notebooks</a></li>
+                <li {% if section == 'likes' %} class="active" {%endif%}><a href="{% url 'likes'%}">Liked Documents</a></li>
                 <li {% if section == 'spaces-index' %} class="active" {%endif%}><a href="{% url 'spaces-index'%}">Spaces</a></li>
               </ul>
                   <form class='navbar-form navbar-right' action="{% url 'logout' %}" method="post">

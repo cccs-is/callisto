@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, views_notebook_details
+from . import views, views_document_details
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -9,20 +9,20 @@ urlpatterns = [
     path('shared/', views.shared, name='shared'),
     path('logout/', views.logout_user, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('notebooks/', views.notebook_index, name='notebook-index'),
-    path('search/', views.search_notebooks, name='search'),
+    path('documents/', views.document_index, name='document-index'),
+    path('search/', views.search_documents, name='search'),
     path('likes/', views.likes, name='likes'),
     path('sources/', views.data_source_index, name='data-source-index'),
     path('nbupload/', views.nbupload, name='nbupload'),
-    path('notebook_by_source/', views.notebook_by_source, name='notebook_by_source'),
-    path('notebook/<notebook_id>/', views_notebook_details.notebook_details, name='notebook-details'),
-    path('open-notebook/<notebook_id>/', views_notebook_details.open_notebook_hub, name='open-notebook'),
-    path('edit-notebook/<notebook_id>/', views.edit_notebook, name='edit-notebook'),
-    path('render-notebook/<notebook_id>/', views_notebook_details.render_notebook, name='render-notebook'),
-    path('delete-notebook/<notebook_id>/', views.delete_notebook, name='delete-notebook'),
-    path('upload-notebook/', views.upload_notebook, name='upload-notebook'),
-    path('add-comment/<notebook_id>/', views.add_comment, name='add-comment'),
-    path('like-notebook/<notebook_id>/', views_notebook_details.like_notebook, name='like-notebook'),
+    path('document_by_source/', views.document_by_source, name='document_by_source'),
+    path('document/<document_id>/', views_document_details.document_details, name='document-details'),
+    path('open-document/<document_id>/', views_document_details.open_document_hub, name='open-document'),
+    path('edit-document/<document_id>/', views.edit_document, name='edit-document'),
+    path('render-document/<document_id>/', views_document_details.render_document, name='render-document'),
+    path('delete-document/<document_id>/', views.delete_document, name='delete-document'),
+    path('upload-document/', views.upload_document, name='upload-document'),
+    path('add-comment/<document_id>/', views.add_comment, name='add-comment'),
+    path('like-document/<document_id>/', views_document_details.like_document, name='like-document'),
     path('space/', views.spaces_index, name='spaces-index'),
     path('space/<space_id>/', views.spaces_details, name='space-details'),
     path('delete-space/<space_id>/', views.spaces_delete, name='space-delete'),
