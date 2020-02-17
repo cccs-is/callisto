@@ -39,7 +39,6 @@ class DocTypeNotebook(DocTypeBase):
     @classmethod
     def exporter(cls, request, document):
         # payload: document contents, document name
-        # FIXME notebook_name -> document_name, notebook_contents -> document_contents
         data = {'notebook_name': document.document_name, 'notebook_contents': document.document_content}
         # URL to call :
         # This must matches processing done by the JupyterHub authenticator to convert external 'unique_name'
@@ -48,7 +47,7 @@ class DocTypeNotebook(DocTypeBase):
         jhub_user_name = unique_name.split('@')[0].replace('.', '-')
         jhub_user_url = settings.JUPYTERHUB_URL.rstrip('/') + '/user/' + jhub_user_name
 
-        post_url = jhub_user_url + '/document-import'
+        post_url = jhub_user_url + '/notebook-import'
         headers = cls._oauth_header(request)
         oauth_cookies = cls._oauth_header(request)
         response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0)
