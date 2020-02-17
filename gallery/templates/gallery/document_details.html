@@ -44,7 +44,7 @@
     {%endfor%}
     </p>
     <p>
-      <a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-primary">Open in Jupyterhub<i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-document' document.id %}'><button type="button" class="btn btn-primary">{{open_label}} <i class="fas fa-external-link-alt"></i></button></a>
     </p>
     {% if document.master_document or other_documents%}
     <h4><i class="far fa-copy"></i> Other Document Versions</h4>

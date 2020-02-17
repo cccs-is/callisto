@@ -67,23 +67,6 @@ def paginate_items(queryset, page):
     return paged_queryset
 
 
-def add_document_direct(request, hub_member, document_name, document_content):
-    document, created = SharedDocument.objects.get_or_create(hub_member=hub_member, document_name=document_name)
-    document.document_content = document_content
-    document.document_name = document_name
-    document.updated_at = arrow.now().format()
-    document.hub_member = hub_member
-    document.master_document = identify_master_document(document_name, hub_member)
-    document.tags = '{}'
-    document.data_sources = '{}'
-    if created:
-        document.created_at = arrow.now().format()
-        messages.info(request, 'Your document {} has been uploaded!'.format(document_name))
-    else:
-        messages.info(request, 'Your document {} has been updated!'.format(document_name))
-    document.save()
-
-
 def get_all_data_sources_numeric():
     sdict = defaultdict(int)
     for nb in SharedDocument.objects.filter(master_document=None, published=True):

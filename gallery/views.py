@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from .helpers import find_document_by_keywords, get_all_data_sources
-from .helpers import add_document_direct
 from .helpers import paginate_items
 from .helpers import get_all_data_sources_numeric
 from .models import SharedDocument, DocumentComment, HubSpace, SpaceTypes
@@ -16,6 +15,7 @@ from django.urls import reverse
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, get_user_model
+from gallery.doc_types.doc_type_manager import doc_type_manager
 
 
 # Set up logging.
@@ -283,7 +283,10 @@ def upload_document(request):
             for chunk in f.chunks():
                 document_content += chunk.decode("utf-8")
             document_name = f.name
-            add_document_direct(request, hub_member, document_name, document_content)
+
+            document_type = doc_type_manager.doc_type(document_name, document_content)
+            # TODO default doc type <- now might be None
+            doc_type_manager.importer(request, document_type, document_name, document_content)
         return redirect("/dashboard")
     return render(request, 'gallery/upload_document.html')
 
@@ -301,10 +304,11 @@ def nbupload(request):
             return HttpResponse(status=401)
         login(request, user)
 
-    document_name = request.POST.get('document_name')  # FIXME document_name
+    document_name = request.POST.get('notebook_name')  # FIXME document_name
     document_content = request.POST.get('notebook_contents')  # FIXME document_contents
-    add_document_direct(request, user, document_name, document_content)
 
+    # FIXME make the endpoint more generic, require doc type to be passed in
+    doc_type_manager.importer(request, 'notebook', document_name, document_content)
     return HttpResponse(status=200)
 
 

@@ -17,7 +17,7 @@ class GeneralTest(TestCase):
         response = c.post(
             '/nbupload/',
             {
-                'document_name': 'twitter-and-fitbit-activity.ipynb',
+                'notebook_name': 'twitter-and-fitbit-activity.ipynb',
                 'notebook_contents': open('gallery/tests/fixtures/test_notebook.ipynb').read()
             },
             follow=True)
@@ -31,7 +31,7 @@ class GeneralTest(TestCase):
         response = c.post(
             '/nbupload/',
             {
-                'document_name': 'twitter-and-fitbit-activity.ipynb',
+                'notebook_name': 'twitter-and-fitbit-activity.ipynb',
                 'notebook_contents': open('gallery/tests/fixtures/test_notebook.ipynb').read()
             },
             follow=True)

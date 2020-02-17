@@ -29,8 +29,9 @@ class ViewTest(TestCase):
         self.document.save()
 
     def test_document_render(self):
-        r = self.factory.get('/')
-        rendered_document = render_document(r, self.document.id)
+        c = Client()
+        c.force_login(self.user)
+        rendered_document = c.get('/render-document/{}/'.format(self.document.id))
         self.assertEqual(rendered_document.status_code, 200)
         self.assertIsNotNone(rendered_document.content)
 

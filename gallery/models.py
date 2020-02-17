@@ -77,6 +77,7 @@ class HubSpace(models.Model):
 class SharedDocument(models.Model):
     hub_member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     document_name = models.TextField(default='')
+    document_type = models.TextField(default='notebook')
     document_content = models.TextField(default='')
     description = models.TextField(default='')
     tags = models.TextField(default='')
