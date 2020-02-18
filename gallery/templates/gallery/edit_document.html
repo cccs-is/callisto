@@ -20,6 +20,17 @@
       </p>
     </div>
     <div class="form-group">
+      <label>Document Type</label>
+          <select class="form-control" name="document_type">
+            {% for doc_type in available_doc_types %}
+            <option value="{{ doc_type }}" {% if doc_type == document.document_type %}selected="selected"{% endif %}>{{ doc_type }}</option>
+            {% endfor %}
+          </select>
+      <p class="help-block">
+        Changes registered document type.
+      </p>
+    </div>
+    <div class="form-group">
       <label>Description</label>
       <textarea rows=3 class="form-control" name="description" size=60 type="text"
         placeholder="Enter a description for your document" required>{{description}}</textarea>

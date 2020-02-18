@@ -13,6 +13,9 @@ class DocTypeManager:
         DocTypeXML.doc_type(): DocTypeXML()
     }
 
+    def available_doc_types(self):
+        return self.ALL_DOC_TYPES.keys()
+
     def doc_type(self, document_name, document_content):
         for key, doc_type_impl in self.ALL_DOC_TYPES.items():
             if doc_type_impl.is_my_type(document_name, document_content):

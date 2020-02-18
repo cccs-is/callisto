@@ -109,7 +109,12 @@ def edit_document(request, document_id):
     if request.method == "POST":
         document.description = request.POST.get('description')
         spaces_id = request.POST.getlist('spaces')
-        document.document_name = request.POST.get('document_name')
+        document_name = request.POST.get('document_name')
+        if document_name:
+            document.document_name = document_name
+        document_type = request.POST.get('document_type')
+        if document_type:
+            document.document_type = document_type
         document.spaces.clear()
         for space_id in spaces_id:
             space = HubSpace.objects.get(pk=space_id)
@@ -128,7 +133,10 @@ def edit_document(request, document_id):
     else:
         available_spaces = {x for x in HubSpace.objects.all() if x.can_write(hub_member)}
         selected_spaces = document.spaces.all()
-        context = {'description': document.description,
+        available_doc_types = doc_type_manager.available_doc_types()
+        context = {'document': document,
+                   'description': document.description,
+                   'available_doc_types': available_doc_types,
                    'spaces': available_spaces,
                    'selected_spaces': selected_spaces,
                    'tags': document.get_tags(),
