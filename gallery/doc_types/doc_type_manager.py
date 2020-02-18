@@ -1,4 +1,5 @@
 from gallery.doc_types.doc_type_notebook import DocTypeNotebook
+from gallery.doc_types.doc_type_xml import DocTypeXML
 
 
 class DocTypeManager:
@@ -7,13 +8,15 @@ class DocTypeManager:
     """
 
     # Map DocTypeName -> Implementation
-    ALL_DOC_TYPES = {DocTypeNotebook.doc_type(): DocTypeNotebook()}
+    ALL_DOC_TYPES = {
+        DocTypeNotebook.doc_type(): DocTypeNotebook(),
+        DocTypeXML.doc_type(): DocTypeXML()
+    }
 
     def doc_type(self, document_name, document_content):
         for key, doc_type_impl in self.ALL_DOC_TYPES.items():
-            if doc_type_impl.doc_type() == key:
-                if doc_type_impl.is_my_type(document_name, document_content):
-                    return key
+            if doc_type_impl.is_my_type(document_name, document_content):
+                return key
         return None
 
     def export_label(self, document):
