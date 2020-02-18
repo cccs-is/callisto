@@ -109,6 +109,7 @@ def edit_document(request, document_id):
     if request.method == "POST":
         document.description = request.POST.get('description')
         spaces_id = request.POST.getlist('spaces')
+        document.document_name = request.POST.get('document_name')
         document.spaces.clear()
         for space_id in spaces_id:
             space = HubSpace.objects.get(pk=space_id)

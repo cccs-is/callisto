@@ -11,6 +11,15 @@
     <form action="{% url 'edit-document' document_id %}" method="post">
     {% csrf_token %}
     <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="document_name" size=60 type="text"
+        value="{{document_name}}"
+        placeholder="Change the name of the document" required>
+      <p class="help-block">
+      Use this field to rename the document.
+      </p>
+    </div>
+    <div class="form-group">
       <label>Description</label>
       <textarea rows=3 class="form-control" name="description" size=60 type="text"
         placeholder="Enter a description for your document" required>{{description}}</textarea>
