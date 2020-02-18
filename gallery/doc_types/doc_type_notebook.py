@@ -49,13 +49,13 @@ class DocTypeNotebook(DocTypeBase):
 
         post_url = jhub_user_url + '/notebook-import'
         headers = cls._oauth_header(request)
-        oauth_cookies = cls._oauth_header(request)
+        oauth_cookies = cls._oauth_cookies(request)
         response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0)
 
         if response.status_code == 200:
             response_data = response.json()
-            actual_document_name = response_data.get('document_name')
-            redirect_url = jhub_user_url + '/documents/' + actual_document_name
+            actual_document_name = response_data.get('notebook_name')
+            redirect_url = jhub_user_url + '/lab/tree/' + actual_document_name # For old JHub UI:  + '/documents/' +
             return redirect(redirect_url)
 
         return HttpResponse('Upload failed. Jupyter Hub returned code: {0} with message {1}'.
