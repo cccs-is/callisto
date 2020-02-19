@@ -1,3 +1,4 @@
+import html
 from gallery.doc_types.doc_type_notebook import DocTypeNotebook
 from gallery.doc_types.doc_type_xml import DocTypeXML
 
@@ -36,7 +37,12 @@ class DocTypeManager:
 
     def render(self, request, document):
         doc_type_impl = self.ALL_DOC_TYPES.get(document.document_type)
-        return doc_type_impl.render(request, document)
+        try:
+            return doc_type_impl.render(request, document)
+        except Exception as e:
+            error_message = html.escape(str(e))
+            doc_type = doc_type_impl.doc_type()
+            return '<div><p>Unable to render as {0}:</p> <p>{1}</p> </div>'.format(doc_type, error_message)
 
 
 doc_type_manager = DocTypeManager()
