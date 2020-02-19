@@ -11,6 +11,7 @@
           <tr>
             <th>Document</th>
             <th>Spaces</th>
+            <th>Type</th>
             <th>Data Sources</th>
             <th></th>
             <th>
@@ -53,6 +54,11 @@
             {%endfor%}
           </td>
           <td>
+                <a href="{%url 'document-index'%}?type={{document.document_type}}">
+                  <span class="label label-info">{{document.document_type}}</span>
+                </a>
+          </td>
+          <td>
             {%for data_source in document.get_data_sources_json%}
             <a href="{%url 'document-index'%}?source={{data_source}}">
             <span class="label label-info">{{data_source}}</span>
@@ -92,12 +98,25 @@
     <h3>Filter by space</h3>
     {%for hub_space in document_spaces%}
       {%if hub_space.pk == space %}
-        <a href="{%url 'document-index'%}?order_by={{order_by}}{%if source%}&source={{source}}{%endif%}">
+        <a href="{%url 'document-index'%}?order_by={{order_by}}{%if source%}&source={{source}}{%endif%}{%if selected_document_type%}&type={{selected_document_type}}{%endif%}">
           <span class="btn btn-primary btn-primary btn-lg padded">{{hub_space.space_name}}</span>
         </a>
       {%else%}
-        <a href="{%url 'document-index'%}?space={{hub_space.pk}}{%if source%}&source={{source}}{%endif%}&order_by={{order_by}}">
+        <a href="{%url 'document-index'%}?space={{hub_space.pk}}{%if source%}&source={{source}}{%endif%}{%if selected_document_type%}&type={{selected_document_type}}{%endif%}&order_by={{order_by}}">
           <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{hub_space.space_name}}</span>
+        </a>
+      {%endif%}
+    {%endfor%}
+    <br/>
+    <h3>Filter by type</h3>
+    {%for document_type in available_document_types%}
+      {%if document_type == selected_document_type %}
+        <a href="{%url 'document-index'%}?order_by={{order_by}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}">
+          <span class="btn btn-primary btn-primary btn-lg padded">{{document_type}}</span>
+        </a>
+      {%else%}
+        <a href="{%url 'document-index'%}?type={{document_type}}{%if source%}&source={{source}}{%endif%}{%if space%}&space={{space}}{%endif%}&order_by={{order_by}}">
+          <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{document_type}}</span>
         </a>
       {%endif%}
     {%endfor%}
@@ -105,11 +124,11 @@
     <h3>Filter by data source</h3>
     {%for data_source in data_sources%}
     {%if data_source != source %}
-    <a href="{%url 'document-index'%}?source={{data_source}}{%if space%}&space={{space}}{%endif%}&order_by={{order_by}}">
+    <a href="{%url 'document-index'%}?source={{data_source}}{%if space%}&space={{space}}{%endif%}{%if selected_document_type%}&type={{selected_document_type}}{%endif%}&order_by={{order_by}}">
     <span class="btn btn-primary btn-primary-hollow btn-lg padded">{{data_source}}</span>
     </a>
     {%else%}
-    <a href="{%url 'document-index'%}?order_by={{order_by}}{%if space%}&space={{space}}{%endif%}">
+    <a href="{%url 'document-index'%}?order_by={{order_by}}{%if space%}&space={{space}}{%endif%}{%if selected_document_type%}&type={{selected_document_type}}{%endif%}">
     <span class="btn btn-primary btn-primary btn-lg padded">{{data_source}}</span>
     </a>
     {%endif%}

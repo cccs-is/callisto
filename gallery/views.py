@@ -168,6 +168,7 @@ def document_index(request):
         order_variable = 'updated_at'
 
     source_filter = request.GET.get('source', None)
+    type_filter = request.GET.get('type', None)
     space_filter = request.GET.get('space', None)
     if space_filter:
         try:
@@ -187,6 +188,8 @@ def document_index(request):
         document_list = document_list.filter(spaces__pk=space_filter)
     if source_filter:
         document_list = document_list.filter(data_sources__contains=source_filter)
+    if type_filter:
+        document_list = document_list.filter(document_type=type_filter)
 
     if order_variable == 'likes':
         document_list = document_list.annotate(
@@ -201,6 +204,8 @@ def document_index(request):
                    'order_by': order_variable,
                    'data_sources': data_sources,
                    'document_spaces': document_spaces,
+                   'available_document_types': doc_type_manager.available_doc_types(),
+                   'selected_document_type': type_filter,
                    'source': source_filter,
                    'space': space_filter
                    })
