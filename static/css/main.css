@@ -41,3 +41,15 @@ input.center-button {
   flex-direction: row;
   justify-content: space-between;
 }
+
+.xml-tag {
+  color: #3f7cec !important;
+}
+
+.xml-attr-name {
+  color: #e840c5 !important;
+}
+
+.xml-attr-value {
+  color: #0d3c93 !important;
+}
