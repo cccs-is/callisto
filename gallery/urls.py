@@ -21,6 +21,7 @@ urlpatterns = [
     path('render-document/<document_id>/', views_document_details.render_document, name='render-document'),
     path('delete-document/<document_id>/', views.delete_document, name='delete-document'),
     path('upload-document/', views.upload_document, name='upload-document'),
+    path('download-document/<document_id>/', views.download_document, name='download-document'),
     path('add-comment/<document_id>/', views.add_comment, name='add-comment'),
     path('like-document/<document_id>/', views_document_details.like_document, name='like-document'),
     path('space/', views.spaces_index, name='spaces-index'),

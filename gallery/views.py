@@ -305,7 +305,18 @@ def upload_document(request):
     return render(request, 'gallery/upload_document.html')
 
 
-# TODO rename document_upload
+@login_required
+def download_document(request, document_id):
+    document = SharedDocument.objects.get(pk=document_id)
+    if not document.can_read(request.user):
+        messages.warning(request, 'Permission denied!')
+        return redirect("/")
+    response = HttpResponse(document.document_content, content_type='text/xml')
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(document.document_name)
+    return response
+
+
+# TODO rename import_document ?
 @csrf_exempt
 def nbupload(request):
     if request.method != 'POST':
