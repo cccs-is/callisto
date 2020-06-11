@@ -43,14 +43,14 @@ class DocTypeNotebook(DocTypeBase):
         # URL to call :
         # This must matches processing done by the JupyterHub authenticator to convert external 'unique_name'
         # into the name used by the Hub:
-        unique_name = request.user.email
-        jhub_user_name = unique_name.split('@')[0].replace('.', '-')
+        username = request.user.name
+        jhub_user_name = username.lower().replace(', ', '_').replace(' ', '_').replace('.', '_').replace(',', '_')
         jhub_user_url = settings.JUPYTERHUB_URL.rstrip('/') + '/user/' + jhub_user_name
 
         post_url = jhub_user_url + '/notebook-import'
         headers = cls._oauth_header(request)
         oauth_cookies = cls._oauth_cookies(request)
-        response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0)
+        response = requests.post(url=post_url, headers=headers, cookies=oauth_cookies, json=data, timeout=60.0, verify="/code/cert_bundle.pem")
 
         if response.status_code == 200:
             response_data = response.json()

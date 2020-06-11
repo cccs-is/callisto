@@ -71,6 +71,7 @@ class OAuth2Authentication:
                 raise PermissionDenied()
         except user_model.DoesNotExist:
             user = user_model(username=user_id)
+            user.name = decoded.get('name', '')
             user.first_name = decoded.get('given_name', '')
             user.last_name = decoded.get('family_name', '')
             user.email = decoded.get('unique_name') # TODO check if with proper scope we can get e-mail claim
